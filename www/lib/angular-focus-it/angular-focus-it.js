@@ -4,10 +4,8 @@ angular.module('focusIt', [])
 		return function(id) {
 			$timeout(function() {
 				var element = document.getElementById(id);
-				console.log('element', element);
-				console.log('focus', element.focus());
 				if(element) element.focus();
-			}, 500);
+			});
 		};
 	}])
 	.directive('focusOn', ['focus', function(focus) {
