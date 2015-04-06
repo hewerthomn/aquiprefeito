@@ -22,6 +22,7 @@ module.exports = function(grunt) {
 					'www/app/scripts/directives/main.js',
 
 					'www/app/scripts/controllers/main.js',
+					'www/app/scripts/controllers/AppCtrl.js',
 					'www/app/scripts/controllers/HomeCtrl.js',
 					'www/app/scripts/controllers/GalleryCtrl.js',
 

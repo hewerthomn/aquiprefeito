@@ -15,8 +15,8 @@ function AppCtrl($scope)
 
 	$scope.takePhoto = function()
 	{
-		alert('take photo!');
-		console.log('Photo!');
+		console.log('takePhoto()');
+		alert('takePhoto()');
 	};
 
 	_init();
