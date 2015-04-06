@@ -13,7 +13,6 @@ function MapService($http)
 
 			this.setCenterMap();
 			this.fixMapHeight();
-			this.bindEvents();
 		},
 
 		/**
@@ -61,17 +60,17 @@ function MapService($http)
 	    var self = this;
 
 	    self._baselayer = {
-				OSM: 				   		 0,
 				GOOGLE_MAP:    		 1,
+				OSM: 				   		 0,
 				GOOGLE_MAP_NIGHT:  2,
 				GOOGLE_MAP_HYBRID: 3
 			};
 
 			self._baselayers = [
-				new OpenLayers.Layer.OSM('OpenStreetMap'),
 				new OpenLayers.Layer.Google('Google Maps', {
 					numZoomLevels: 19
 				}),
+				new OpenLayers.Layer.OSM('OpenStreetMap'),
 				new OpenLayers.Layer.Google('Google Maps Night', {
 					type: 'styled',
 					numZoomLevels: 19
@@ -569,23 +568,16 @@ function MapService($http)
 			return $http.jsonp('http://www.telize.com/geoip?callback=JSON_CALLBACK');
 		},
 
-		fixMapHeight: function()
+		fixMapHeight: function(offset)
 		{
 			var self   = this,
 					height = window.innerHeight,
 					element = self._map.div.id;
 
-			height -=  106;
+			height -=  offset | 0;
 			element = document.getElementById(element);
 			element.style.height = height + 'px';
 			self._map.updateSize();
-		},
-
-		bindEvents: function()
-		{
-			var self = this;
-
-
 		}
 	};
 }
