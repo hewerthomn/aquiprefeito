@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="build/css/app.min.css" rel="stylesheet">
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+    <script src="js/OpenLayers-app.js"></script>
+    <script src="build/js/app.min.js"></script>
+  </head>
+  <body>
+
+    <ion-pane>
+
+      <ion-header-bar class="bar-dark">
+        <h1 class="title">Aqui!</h1>
+      </ion-header-bar>
+
+      <ion-tabs class="tabs-dark tabs-icon-only">
+      	<ion-tab ui-sref="home" icon-on="ion-home balanced" icon-off="ion-home">
+      		<ion-nav-view name="home"></ion-nav-view>
+      	</ion-tab>
+        <ion-tab ui-sref="search" icon-on="ion-search calm" icon-off="ion-search">
+        	<ion-nav-view name="search"></ion-nav-view>
+        </ion-tab>
+        <ion-tab icon-on="ion-camera positive" icon-off="ion-camera" on-select="takePhoto()"></ion-tab>
+        <ion-tab ui-sref="gallery" icon-on="ion-images assertive" icon-off="ion-images">
+        	<ion-nav-view name="gallery"></ion-nav-view>
+        </ion-tab>
+        <ion-tab ui-sref="help" icon-on="ion-help-circled energized" icon-off="ion-help-circled">
+        	<ion-nav-view name="help"></ion-nav-view>
+        </ion-tab>
+      </ion-tabs>
+
+      <ion-nav-view></ion-nav-view>
+
+    </ion-pane>
+  </body>
+</html>

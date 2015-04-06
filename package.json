@@ -1,0 +1,25 @@
+{
+  "name": "aqui",
+  "version": "1.0.0",
+  "description": "aqui: An Ionic project",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "~0.7.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^1.0.0",
+    "time-grunt": "^1.0.0"
+  },
+  "devDependencies": {
+
+  },
+  "cordovaPlugins": [
+    "org.apache.cordova.device",
+    "org.apache.cordova.console",
+    "com.ionic.keyboard"
+  ],
+  "cordovaPlatforms": []
+}
