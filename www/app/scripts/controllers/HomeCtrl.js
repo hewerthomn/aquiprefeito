@@ -14,6 +14,14 @@ function HomeCtrl($scope, $location, $window, Map)
 			startLonlat: $scope.startLonlat
 		});
 
+		Map.getPosition(function(position) {
+			Map.setCenterMap(position, 12);
+		}, function(error) {
+			console.error('error', error);
+			alert(error);
+		}, function() {
+		});
+
 		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
 	}
 
