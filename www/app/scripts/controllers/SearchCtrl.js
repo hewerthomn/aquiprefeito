@@ -1,11 +1,11 @@
 /*
- * App Controller
+ * Search Controller
  */
-function AppCtrl($scope, $location)
+function SearchCtrl($scope, focus)
 {
 	function _init()
 	{
-
+		focus('inputSearch');
 	}
 
 	function _apply()
@@ -18,15 +18,9 @@ function AppCtrl($scope, $location)
 		$location.path(path);
 	};
 
-	$scope.takePhoto = function()
-	{
-		console.log('takePhoto()');
-		alert('takePhoto()');
-	};
-
 	_init();
 };
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', AppCtrl]);
+	.controller('SearchCtrl', ['$scope', 'focus', SearchCtrl]);
