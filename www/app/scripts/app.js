@@ -1,5 +1,6 @@
 angular.module('app', [
 	'ionic',
+	'focusIt',
 
 	'app.controllers',
 	'app.directives',
@@ -16,6 +17,7 @@ angular.module('app', [
 		})
 		.state('search', {
 			url: '/search',
+			controller: 'SearchCtrl',
 			templateUrl: 'app/views/search.html'
 		})
 		.state('gallery', {
