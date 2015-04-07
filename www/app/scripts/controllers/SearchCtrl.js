@@ -13,11 +13,6 @@ function SearchCtrl($scope, focus)
 		if(!$scope.$$phase) $scope.$apply();
 	};
 
-	$scope.goto = function(path)
-	{
-		$location.path(path);
-	};
-
 	_init();
 };
 

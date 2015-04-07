@@ -1,12 +1,13 @@
 angular.module('app', [
 	'ionic',
+	'ngCordova',
 	'focusIt',
 
 	'app.controllers',
 	'app.directives',
 	'app.services'
 ])
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
@@ -29,6 +30,8 @@ angular.module('app', [
 			url: '/help',
 			templateUrl: 'app/views/help.html'
 		});
+
+		$ionicConfigProvider.tabs.position('bottom');
 })
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

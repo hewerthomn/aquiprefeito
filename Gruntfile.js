@@ -19,6 +19,7 @@ module.exports = function(grunt) {
 					'www/lib/angular-ui-router/release/angular-ui-router.js',
 					'www/lib/ionic/js/ionic.js',
 					'www/lib/ionic/js/ionic-angular.js',
+					'www/lib/ngCordova/dist/ng-cordova.js',
 
 					'www/app/scripts/directives/main.js',
 
@@ -30,6 +31,7 @@ module.exports = function(grunt) {
 
 					'www/app/scripts/services/main.js',
 					'www/app/scripts/services/MapService.js',
+					'www/app/scripts/services/CameraService.js',
 
 					'www/app/scripts/app.js'
 				]
