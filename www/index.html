@@ -42,12 +42,23 @@
       <script id="modal-photo.html" type="text/ng-template">
 			  <ion-modal-view>
 			    <ion-header-bar>
-			      <h1 class="title">Enviar foto de problema</h1>
+			      <h1 class="title">Reportar problema</h1>
 			    </ion-header-bar>
 			    <ion-content>
 			      <div class="list card">
-			      	<div class="item item-image">
-			      		<img ng-src="{{ imageData }}">
+
+			      	<div class="row">
+			      		<div class="col">
+					      	<div class="item item-thumbnail-left" href="#">
+							      <img ng-src="{{ imageData }}">
+							    </div>
+			      		</div>
+			      		<div class="col col-75">
+			      			<label class="item item-input item-floating-label">
+								    <span class="input-label">Comentário</span>
+								    <input type="text" placeholder="Comentário (opcional)">
+								  </label>
+			      		</div>
 			      	</div>
 
 						  <label class="item item-input item-select">
@@ -61,9 +72,20 @@
 						    </select>
 						  </label>
 
-				      <button class="button button-full button-clear" ng-click="closeModal()">Cancelar</button>
+						  <div class="item item-checkbox">
+						     <label class="checkbox">
+						       <input type="checkbox">
+						     </label>
+						     Compartilhar no facebook
+						  </div>
 
+						  <div class="item">
+					      <button class="button button-positive" ng-click="closeModal()">
+					      	<i class="ion-paper-airplane"></i> Enviar
+					      </button>
+						  </div>
 						</div><!--list card-->
+
 			    </ion-content>
 			  </ion-modal-view>
 			</script>
