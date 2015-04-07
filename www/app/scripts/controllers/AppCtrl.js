@@ -13,7 +13,10 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
   		})
   		.then(function(modal) {
   			$scope.modalPhoto = modal;
+  			$scope.imageData = "http://placehold.it/340x220";
+  			// $scope.modalPhoto.show();
   		});
+
 	};
 
 	function _apply()
