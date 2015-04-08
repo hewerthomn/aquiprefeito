@@ -42,11 +42,16 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 
 	function _takePhoto()
 	{
+		Map.getPosition(function(lonlat) {
+			$scope.issue.location = lonlat;
+		}, function(error) {
+			alert(error);
+		});
+
 		Camera.getPicture(function(imageUri) {
 			$scope.issue.image = imageUri;
   		$scope.openModal();
 		}, function(error) {
-			console.log(error);
 			alert(error);
 		});
 	};
