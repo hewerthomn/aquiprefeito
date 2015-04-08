@@ -149,7 +149,7 @@ function MapService($http, $cordovaGeolocation)
 
 	  	if(opts.hasOwnProperty('transformTo'))
 	  	{
-	  		point = point.transform(new OpenLayers.Projection(opts.transformTo), self._map.getProjection());
+	  		point = point.transform(opts.transformTo, self._map.getProjection());
 	  	}
 
 	    self._map.setCenter(point || self._startLonlat, zoom || self._startZoom);
@@ -265,7 +265,6 @@ function MapService($http, $cordovaGeolocation)
 	  		.getCurrentPosition(positionOptions)
 	  		.then(function(position) {
 	  			var lonlat = { lon: position.coords.longitude, lat: position.coords.latitude };
-	  			lonlat = self.transform(lonlat, 'EPSG:4326', 'EPSG:900913');
 	  			successCallback(lonlat);
 	  			if(typeof alwaysCallback === 'function') alwaysCallback();
 	  		}, function(error) {

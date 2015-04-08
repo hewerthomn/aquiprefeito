@@ -15,7 +15,7 @@ function HomeCtrl($scope, $location, $window, Map)
 		});
 
 		Map.getPosition(function(lonlat) {
-			Map.setCenterMap(lonlat, 12);
+			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
 		}, function(error) {
 			alert(error);
 		});
