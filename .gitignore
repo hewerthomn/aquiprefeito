@@ -4,5 +4,6 @@
 node_modules/
 platforms/
 plugins/
-www/build
 proxy/
+www/build
+www/lib
