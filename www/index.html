@@ -43,6 +43,7 @@
 			  <ion-modal-view>
 			    <ion-header-bar>
 			      <h1 class="title">Reportar problema</h1>
+			      <button class="button button-clear" ng-click="closeModal()"><i class="ion-close"></i></button>
 			    </ion-header-bar>
 			    <ion-content>
 			      <div class="list card">
@@ -50,37 +51,36 @@
 			      	<div class="row">
 			      		<div class="col">
 					      	<div class="item item-thumbnail-left" href="#">
-							      <img ng-src="{{ imageData }}">
+							      <img ng-src="{{ issue.image }}">
 							    </div>
 			      		</div>
-			      		<div class="col col-75">
+			      		<div class="col col-80">
 			      			<label class="item item-input item-floating-label">
 								    <span class="input-label">Comentário</span>
-								    <input type="text" placeholder="Comentário (opcional)">
+								    <input type="text" placeholder="Comentário (opcional)" ng-model="issue.comment">
 								  </label>
 			      		</div>
 			      	</div>
 
 						  <label class="item item-input item-select">
-						    <div class="input-label">
+						  	<div class="input-label">
 						      Categoria
+					      	<img ng-src="{{ categories[issue.category_id].icon }}">
 						    </div>
-						    <select>
-						      <option selected>Buraco na rua</option>
-						      <option>Iluminação pública</option>
-						      <option>Limpeza urbana</option>
+						    <select ng-model="issue.category_id">
+						    	<option ng-repeat="category in categories" value="{{ category.id }}">{{ category.name }}</option>
 						    </select>
 						  </label>
 
 						  <div class="item item-checkbox">
 						     <label class="checkbox">
-						       <input type="checkbox">
+						       <input type="checkbox" ng-model="issue.share_facebook">
 						     </label>
 						     Compartilhar no facebook
 						  </div>
 
 						  <div class="item">
-					      <button class="button button-positive" ng-click="closeModal()">
+					      <button class="button button-positive" ng-click="send(issue)">
 					      	<i class="ion-paper-airplane"></i> Enviar
 					      </button>
 						  </div>

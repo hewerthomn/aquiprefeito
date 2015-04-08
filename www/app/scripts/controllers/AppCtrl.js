@@ -6,6 +6,23 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 	/* private methods */
 	function _init()
 	{
+		$scope.categories = [
+		{ id: 0, name: 'Selecione a categoria' },
+		{ id: 1, name: 'Pavimentação', icon: 'img/categories/1.png' },
+		{ id: 2, name: 'Iluminação Pública', icon: 'img/categories/2.png' },
+		{ id: 3, name: 'Queimada Urbana', icon: 'img/categories/3.png' },
+		{ id: 4, name: 'Limpeza Urbana', icon: 'img/categories/4.png' },
+		{ id: 5, name: 'Transporte Público', icon: 'img/categories/5.png' },
+		{ id: 6, name: 'Sinalização de Trânsito', icon: 'img/categories/6.png' },
+		];
+
+		$scope.issue = {
+			image: "http://placehold.it/340x220",
+			comment: '',
+			category_id: 0,
+			location: { lon: 0, lat: 0 }
+		};
+
 		$ionicModal
 			.fromTemplateUrl('modal-photo.html', {
   			scope: $scope,
@@ -13,7 +30,6 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
   		})
   		.then(function(modal) {
   			$scope.modalPhoto = modal;
-  			$scope.imageData = "http://placehold.it/340x220";
   			// $scope.modalPhoto.show();
   		});
 
@@ -26,8 +42,8 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 
 	function _takePhoto()
 	{
-		Camera.getPicture(function(imageData) {
-			$scope.imageData = "data:image/jpeg;base64," + imageData;
+		Camera.getPicture(function(imageUri) {
+			$scope.issue.image = imageUri;
   		$scope.openModal();
 		}, function(error) {
 			console.log(error);
@@ -68,6 +84,12 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 					return true;
 				}
 		});
+	};
+
+	$scope.send = function(issue)
+	{
+		console.log('issue', issue);
+		alert(JSON.stringify(issue));
 	};
 
 	_init();
