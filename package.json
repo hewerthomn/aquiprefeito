@@ -1,7 +1,7 @@
 {
-  "name": "aqui",
+  "name": "aquiprefeito",
   "version": "1.0.0",
-  "description": "aqui: An Ionic project",
+  "description": "AquiPrefeito: Reporte os problemas da sua cidade",
   "dependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-copy": "~0.7.0",
