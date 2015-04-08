@@ -9,6 +9,11 @@
 	<br><br>
 
 	<div class="list card">
+	  <label class="item item-input">
+	    <i class="icon ion-search placeholder-icon"></i>
+	    <input type="text" placeholder="Escreva para procurar" ng-model="query">
+	  </label>
+
     <div class="item item-thumbnail-left" ng-repeat="issue in issues">
       <img src="{{ issue.photo }}">
       <h2>{{ issue.category.name }}</h2>
