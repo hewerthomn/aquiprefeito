@@ -1,5 +1,20 @@
 <ion-content has-subheader="true">
 	<div class="bar bar-subheader">
-	  <h2 class="title">Galeria</h2>
+	  <h2 class="title">
+	  	Últimos problemas reportados
+	  </h2>
 	</div>
+
+	<br><br>
+	<br><br>
+
+	<div class="list card">
+    <div class="item item-thumbnail-left" ng-repeat="issue in issues">
+      <img src="{{ issue.photo }}">
+      <h2>{{ issue.category.name }}</h2>
+      <p>{{ issue.created_at | date }}</p>
+      <p>{{ issue.comment }}</p>
+    </div>
+	</div>
+
 </ion-content>
