@@ -15,15 +15,13 @@ function CameraService($cordovaCamera)
 			_onDeviceReady(function() {
 
 				var options = {
-		      quality: 90,
-		      destinationType: Camera.DestinationType.DATA_URL,
-		      sourceType: Camera.PictureSourceType.CAMERA,
+		      quality: 95,
 		      allowEdit: true,
+		      destinationType: Camera.DestinationType.FILE_URI,
+		      sourceType: Camera.PictureSourceType.CAMERA,
 		      encodingType: Camera.EncodingType.JPEG,
-		      targetWidth: 320,
-		      targetHeight: 120,
 		      popoverOptions: CameraPopoverOptions,
-		      saveToPhotoAlbum: false
+		      saveToPhotoAlbum: true
 		    };
 
 		    $cordovaCamera
