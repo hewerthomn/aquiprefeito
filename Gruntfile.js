@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 					'www/app/scripts/controllers/GalleryCtrl.js',
 
 					'www/app/scripts/services/main.js',
+					'www/app/scripts/services/AquiService.js',
 					'www/app/scripts/services/MapService.js',
 					'www/app/scripts/services/CameraService.js',
 

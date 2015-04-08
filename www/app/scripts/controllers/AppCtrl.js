@@ -1,20 +1,12 @@
 /*
  * App Controller
  */
-function AppCtrl($scope, $location, $timeout, $ionicModal, Camera, Map)
+function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map)
 {
 	/* private methods */
 	function _init()
 	{
-		$scope.categories = [
-		{ id: 0, name: 'Selecione a categoria' },
-		{ id: 1, name: 'Pavimentação', icon: 'img/categories/1.png' },
-		{ id: 2, name: 'Iluminação Pública', icon: 'img/categories/2.png' },
-		{ id: 3, name: 'Queimada Urbana', icon: 'img/categories/3.png' },
-		{ id: 4, name: 'Limpeza Urbana', icon: 'img/categories/4.png' },
-		{ id: 5, name: 'Transporte Público', icon: 'img/categories/5.png' },
-		{ id: 6, name: 'Sinalização de Trânsito', icon: 'img/categories/6.png' },
-		];
+		$scope.categories = Aqui.Category.getAll();
 
 		$scope.issue = {
 			image: "http://placehold.it/340x220",
@@ -79,8 +71,8 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Camera, Map)
 
 	$scope.send = function(issue)
 	{
-		console.log('issue', issue);
-		alert(JSON.stringify(issue));
+		Aqui.Issue.save(issue);
+		$scope.closeModal();
 	};
 
 	_init();
@@ -88,4 +80,4 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Camera, Map)
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', 'Camera', 'Map', AppCtrl]);
+	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', 'Aqui', 'Camera', 'Map', AppCtrl]);
