@@ -2,7 +2,7 @@
  * Map Service
  *
  */
-function MapService($http)
+function MapService($http, $cordovaGeolocation)
 {
 
 	return {
@@ -60,37 +60,16 @@ function MapService($http)
 	    var self = this;
 
 	    self._baselayer = {
-				GOOGLE_MAP:    		 1,
-				OSM: 				   		 0,
-				GOOGLE_MAP_NIGHT:  2,
-				GOOGLE_MAP_HYBRID: 3
+				GOOGLE_MAP: 0
 			};
 
 			self._baselayers = [
 				new OpenLayers.Layer.Google('Google Maps', {
 					numZoomLevels: 19
-				}),
-				new OpenLayers.Layer.OSM('OpenStreetMap'),
-				new OpenLayers.Layer.Google('Google Maps Night', {
-					type: 'styled',
-					numZoomLevels: 19
-				}),
-				new OpenLayers.Layer.Google('Google Maps Satellite', {
-					numZoomLevels: 19,
-					type: google.maps.MapTypeId.HYBRID
 				})
 			];
 
 			self._layers = {
-				position: new OpenLayers.Layer.Vector('Position', {
-					styleMap: new OpenLayers.StyleMap({
-						'default': {
-							externalGraphic: "${icon}",
-							graphicWidth: 40,
-							cursor: 'pointer'
-						}
-					})
-				})
 			};
 
 			self._map.addLayers(self._baselayers);
@@ -98,28 +77,6 @@ function MapService($http)
 			{
 				self._map.addLayer(self._layers[key]);
 			}
-
-			self.setStyles();
-	  },
-
-	  setStyles: function()
-	  {
-	  	var self = this,
-	  		styleNight = [{
-					featureType: 'all',
-					elementType: 'all',
-						"stylers": [
-				      { "invert_lightness": true },
-				      { "visibility": "on" },
-				      { "hue": "#00bbff" },
-				      { "saturation": 1 }
-				    ]
-				}];
-		  styledNightOptions = { name: 'Styled Map' },
-		  styledNightType = new google.maps.StyledMapType(styleNight, styledNightOptions);
-
-			self._baselayers[self._baselayer.GOOGLE_MAP_NIGHT].mapObject.mapTypes.set('styled', styledNightType);
-			self._baselayers[self._baselayer.GOOGLE_MAP_NIGHT].mapObject.setMapTypeId('styled');
 	  },
 
 		/**
@@ -164,8 +121,7 @@ function MapService($http)
         selectPoint: new OpenLayers.Control.SelectFeature([self._layers.position], {
         	autoActivate: true,
         	onSelect: self.onSelectPoint
-        }),
-	      mousePosition: new OpenLayers.Control.MousePosition()
+        })
 	    };
 
 	    for(var key in this._controls)
@@ -281,49 +237,6 @@ function MapService($http)
 			}
 		},
 
-		showPopup: function(lonlat, content, opts)
-		{
-			var self = this,
-					opts = opts || {},
-					popup = null,
-					defaultOpts = {
-						clear: true,
-						type: 'Point'
-					};
-
-			OpenLayers.Util.applyDefaults(opts, defaultOpts);
-
-			popup = new OpenLayers.Popup('Popup ' + opts.type,
-				new OpenLayers.LonLat(lonlat.lon, lonlat.lat),
-				null,
-				content,
-				true
-			);
-			popup.opacity = .9;
-
-			if (opts.hasOwnProperty('clear') && opts.clear)
-			{
-				self.removePopups();
-			}
-
-			self._map.addPopup(popup);
-
-			popup.fixPadding();
-			popup.updateSize();
-		},
-
-		/**
-		 * removePopups method
-		 */
-		removePopups: function()
-		{
-			var self = this;
-			for(var key in self._map.popups)
-			{
-				self._map.removePopup(self._map.popups[key]);
-			}
-		},
-
 		/**
 		* onSelectPointFeature
 		* @private
@@ -340,110 +253,26 @@ function MapService($http)
 			self.onSelectPointFeature = callback;
 		},
 
-	  getPosition: function(callbackSuccess, callbackFailed, callbackAlways)
+	  getPosition: function(successCallback, errorCallback, alwaysCallback)
 	  {
-	  	var self = this,
-	  			point;
+	  	var self = this;
+	  	var positionOptions = {
+	  		timeout: 10000,
+	  		enableHighAccuracy: true
+	  	};
 
-	  	if(!self._layers.hasOwnProperty('geolocate'))
-	  	{
-	  		self._layers.geolocate = new OpenLayers.Layer.Vector('Geolocate');
-	      self._map.addLayer(self._layers.geolocate);
-	  	}
-
-	  	if (!self._controls.hasOwnProperty('geolocate'))
-	  	{
-	  		self._controls.geolocate = new OpenLayers.Control.Geolocate({
-	        bind: false,
-	        geolocationOption: {
-	          enableHighAccuracy: true,
-	          maximumAge: 0,
-	          timeout: 10000
-	        }
-	      });
-
-	      self._controls.geolocate.events.register('locationuncapable', this, function() {
-	      	callbackAlways();
-	      	callbackFailed('The device does not support Geolocation.');
-	      });
-
-	  		self._controls.geolocate.events.register('locationfailed', this, function(e) {
-	  			callbackAlways();
-	  			if(e.hasOwnProperty('error'))
-	  			{
-	  				var message = 'PositionError (Code ' + e.error.code + ')\n\n';
-	  				message += e.error.message;
-
-	  				callbackFailed(message);
-	  			}
-	  			else
-	  			{
-		      	callbackFailed('Failed to get your position.');
-	  			}
-		    });
-
-		    self._controls.geolocate.events.register('locationupdated', self._controls.geolocate, function(e) {
-					callbackAlways();
-
-					var lonlat = {
-						lon: e.point.x,
-						lat: e.point.y
-					};
-
-		      callbackSuccess(lonlat);
-		    });
-
-		    self._map.addControl(self._controls.geolocate);
-	  		self._controls.geolocate.activate();
-	  	}
-
-	  	self._controls.geolocate.getCurrentLocation();
-	  },
-
-	  enableDragPoint: function(callback, opts)
-	  {
-	  	var self = this,
-	  			point = {},
-	  			opts  = opts || {},
-	  			defaultOpts = {
-	  			};
-
-	  	OpenLayers.Util.applyDefaults(opts, defaultOpts);
-
-	  	if(!self._controls.hasOwnProperty('dragPoint'))
-	  	{
-	  		self._controls.dragPoint = new OpenLayers.Control.DragFeature(self._layers.position, {
-	  			hover: true,
-	  			selectStyle: {
-	  				cursor: 'pointer'
-	  			},
-	  			documentDrag: true
+	  	$cordovaGeolocation
+	  		.getCurrentPosition(positionOptions)
+	  		.then(function(position) {
+	  			var lonlat = { lon: position.coords.longitude, lat: position.coords.latitude };
+	  			lonlat = self.transform(lonlat, 'EPSG:4326', 'EPSG:900913');
+	  			successCallback(lonlat);
+	  			if(typeof alwaysCallback === 'function') alwaysCallback();
+	  		}, function(error) {
+	  			errorCallback(error);
+	  			alert(JSON.stringify(error));
+	  			if(typeof alwaysCallback === 'function') alwaysCallback();
 	  		});
-	  		self._controls.dragPoint.onComplete = function(featurePoint, pxl)
-	  		{
-	  			point = {
-	  				lon: featurePoint.geometry.x,
-	  				lat: featurePoint.geometry.y
-	  			};
-
-	  			self._layers.position.addFeatures([featurePoint]);
-
-	  			callback(point);
-	  		};
-
-	  		self._map.addControl(self._controls.dragPoint);
-	  	}
-
-	  	self._controls.dragPoint.activate();
-	  },
-
-	  disableDragPoint: function()
-	  {
-	  	if(this._controls.hasOwnProperty('dragPoint'))
-	  	{
-	  		this._controls.dragPoint.deactivate();
-	  		this._controls.selectPoint.activate();
-	  	}
 	  },
 
 	  getCenter: function()
@@ -474,76 +303,7 @@ function MapService($http)
 	  	}
 	  },
 
-	  locationToXY: function(location)
-		{
-			location = location.substring(6);
-			location = location.slice(0, -1);
-			location = location.split(' ');
-			location = {
-				x: location[0],
-				y: location[1]
-			}
-
-			return location;
-		},
-
-		/**
-		* Converts a lonlat object from EPSG:4326 projection to xy object with EPSG:900913 projection.
-		*
-		* @param hash lonlat
-		* return hash with x and y axis
-		**/
-		lonlat2xy: function(lonlat)
-		{
-			var self = this;
-			var lonlat = new OpenLayers.LonLat(lonlat.lon, lonlat.lat);
-			lonlat = lonlat.transform('EPSG:4326', 'EPSG:900913');
-
-			// console.log('lonlat2xy lonlat: 	', lonlat.lon, lonlat.lat); console.log('lonlat2xy xy: 			', lonlat.lon, lonlat.lat);
-
-			return {
-				x: lonlat.lon,
-				y: lonlat.lat
-			};
-		},
-
-		/**
-		* Converts a xy object from EPSG:900913 projection to lonlat object with EPSG:4326 projection.
-		*
-		* @param hash xy
-		* return hash with lon and lat
-		**/
-		xy2lonlat: function(xy)
-		{
-			var self = this;
-			var point = new OpenLayers.Geometry.Point(xy.x, xy.y);
-			point = point.transform('EPSG:900913', 'EPSG:4326');
-
-			// console.log('xy2lonlat(): xy:			', point.x, point.y); console.log('xy2lonlat(): lonlat:	', point.x, point.y);
-
-			return {
-				lon: point.x,
-				lat: point.y
-			};
-		},
-
-		/**
-		 * Transform latlon hash from projection to anoter
-		 *
-		 * @param hash lonlat with lon and lat
-		 * @param string from from projection
-		 * @param string to to projection
-		 *
-		 * @return hash hash with lon and lat properties
-		 */
-		transform: function(lonlat, from, to)
-		{
-			var dest = new OpenLayers.LonLat(lonlat.lon, lonlat.lat);
-			dest = dest.transform(from, to);
-			return { lon: dest.lon, lat: dest.lat };
-		},
-
-		searchPlace: function(query)
+	  searchPlace: function(query)
 		{
 			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
 				params: {
@@ -563,9 +323,20 @@ function MapService($http)
 			});
 		},
 
-		getGeoIP: function()
+		/**
+		 * Transform latlon hash from projection to anoter
+		 *
+		 * @param hash lonlat with lon and lat
+		 * @param string from from projection
+		 * @param string to to projection
+		 *
+		 * @return hash hash with lon and lat properties
+		 */
+		transform: function(lonlat, from, to)
 		{
-			return $http.jsonp('http://www.telize.com/geoip?callback=JSON_CALLBACK');
+			var dest = new OpenLayers.LonLat(lonlat.lon, lonlat.lat);
+			dest = dest.transform(from, to);
+			return { lon: dest.lon, lat: dest.lat };
 		},
 
 		fixMapHeight: function(offset)
@@ -584,4 +355,4 @@ function MapService($http)
 
 angular
 	.module('app.services')
-	.service('Map', ['$http', MapService]);
+	.service('Map', ['$http', '$cordovaGeolocation', MapService]);
