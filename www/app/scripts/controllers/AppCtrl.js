@@ -1,7 +1,7 @@
 /*
  * App Controller
  */
-function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Camera)
+function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Camera, Map)
 {
 	/* private methods */
 	function _init()
@@ -74,21 +74,7 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 
 	$scope.actionCamera = function()
 	{
-		var hideSheet = $ionicActionSheet.show({
-				buttons: [
-					{ text: "Tirar foto" },
-					{ text: "Selecionar da galeria" }
-				],
-				cancelText: "Cancelar",
-				buttonClicked: function(btnIndex) {
-					switch(btnIndex)
-					{
-						case 0: _takePhoto(); break;
-						case 1: break;
-					}
-					return true;
-				}
-		});
+		_takePhoto();
 	};
 
 	$scope.send = function(issue)
@@ -102,4 +88,4 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicActionSheet', '$ionicModal', 'Camera', AppCtrl]);
+	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicActionSheet', '$ionicModal', 'Camera', 'Map', AppCtrl]);
