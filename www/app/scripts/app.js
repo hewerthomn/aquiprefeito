@@ -16,11 +16,6 @@ angular.module('app', [
 			controller: 'HomeCtrl',
 			templateUrl: 'app/views/home.html'
 		})
-		.state('search', {
-			url: '/search',
-			controller: 'SearchCtrl',
-			templateUrl: 'app/views/search.html'
-		})
 		.state('gallery', {
 			url: '/gallery',
 			controller: 'GalleryCtrl',
