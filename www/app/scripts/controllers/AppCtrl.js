@@ -1,7 +1,7 @@
 /*
  * App Controller
  */
-function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Camera, Map)
+function AppCtrl($scope, $location, $timeout, $ionicModal, Camera, Map)
 {
 	/* private methods */
 	function _init()
@@ -88,4 +88,4 @@ function AppCtrl($scope, $location, $timeout, $ionicActionSheet, $ionicModal, Ca
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicActionSheet', '$ionicModal', 'Camera', 'Map', AppCtrl]);
+	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', 'Camera', 'Map', AppCtrl]);
