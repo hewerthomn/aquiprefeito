@@ -10,7 +10,7 @@ function AquiService($http)
 			getAll: function()
 			{
 				return [
-					{ id: 0, name: 'Selecione a categoria' },
+					{ id: 0, name: 'Selecione' },
 					{ id: 1, name: 'Pavimentação', icon: 'img/categories/1.png' },
 					{ id: 2, name: 'Iluminação Pública', icon: 'img/categories/2.png' },
 					{ id: 3, name: 'Queimada Urbana', icon: 'img/categories/3.png' },
@@ -26,7 +26,7 @@ function AquiService($http)
 			new: function(issue)
 			{
 				return {
-					image: 'http://placehold.it/1',
+					image: 'http://placehold.it/122/100',
 					comment: '',
 					username: '',
 					category_id: 0,
