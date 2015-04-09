@@ -20,7 +20,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
   		})
   		.then(function(modal) {
   			$scope.modalPhoto = modal;
-  			// $scope.modalPhoto.show();
+  			$scope.modalPhoto.show();
   		});
 
 		_getCity();
@@ -96,6 +96,18 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 	$scope.closeModal = function()
 	{
 		$scope.modalPhoto.hide();
+	};
+
+	$scope.categoryIcon = function(category_id)
+	{
+		if(category_id > 0)
+		{
+			var icon = '';
+			angular.forEach($scope.categories, function(value) {
+				if(value.id == category_id) icon = value.icon;
+			});
+			return icon;
+		}
 	};
 
 	$scope.actionCamera = function()

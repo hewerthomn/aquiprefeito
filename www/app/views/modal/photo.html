@@ -1,7 +1,7 @@
 <ion-modal-view>
   <ion-header-bar>
     <h1 class="title">
-    	<img ng-src="{{ categories[issue.category_id].icon }}" style="">
+    	<img ng-src="{{ categoryIcon(issue.category_id) }}" style="">
     	Reportar problema
     </h1>
     <button class="button button-clear" ng-click="closeModal()"><i class="ion-close"></i></button>
