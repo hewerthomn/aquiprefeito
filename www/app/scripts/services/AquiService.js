@@ -10,7 +10,6 @@ function AquiService($http)
 			getAll: function()
 			{
 				return [
-					{ id: 0, name: 'Selecione' },
 					{ id: 1, name: 'Pavimentação', icon: 'img/categories/1.png' },
 					{ id: 2, name: 'Iluminação Pública', icon: 'img/categories/2.png' },
 					{ id: 3, name: 'Queimada Urbana', icon: 'img/categories/3.png' },
