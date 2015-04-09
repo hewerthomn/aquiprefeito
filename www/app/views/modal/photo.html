@@ -1,6 +1,9 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">Reportar problema</h1>
+    <h1 class="title">
+    	<img ng-src="{{ categories[issue.category_id].icon }}" style="">
+    	Reportar problema
+    </h1>
     <button class="button button-clear" ng-click="closeModal()"><i class="ion-close"></i></button>
   </ion-header-bar>
   <ion-content>
@@ -8,7 +11,6 @@
 		  <label class="item item-input item-select">
 		  	<div class="input-label">
 		      Categoria
-	      	<img ng-src="{{ categories[issue.category_id].icon }}">
 		    </div>
 		    <select ng-model="issue.category_id">
 		    	<option ng-repeat="category in categories" value="{{ category.id }}">{{ category.name }}</option>
