@@ -1,12 +1,15 @@
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $location, $window, Map)
+function HomeCtrl($scope, $window, Map)
 {
 	function _init()
 	{
 		$scope.zoom = 4;
-		$scope.startLonlat = { lon: -11.620992573114625, lat: -50.98007812499999 };
+		$scope.startLonlat = {
+			lon: -5801876.194150391,
+			lat: -1027313.6600097648
+		};
 
 		Map.init({
 			id: 'map',
@@ -15,18 +18,23 @@ function HomeCtrl($scope, $location, $window, Map)
 			startLonlat: $scope.startLonlat
 		});
 
+		$scope.getPosition();
+
+		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
+	}
+
+	$scope.getPosition = function()
+	{
 		Map.getPosition(function(lonlat) {
 			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
 		}, function(error) {
 			alert(error);
 		});
-
-		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
-	}
+	};
 
 	_init();
 };
 
 angular
 	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$location', '$window', 'Map', HomeCtrl]);
+	.controller('HomeCtrl', ['$scope', '$window', 'Map', HomeCtrl]);
