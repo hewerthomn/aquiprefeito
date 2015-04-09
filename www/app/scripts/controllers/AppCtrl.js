@@ -17,13 +17,13 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 		};
 
 		$ionicModal
-			.fromTemplateUrl('modal-photo.html', {
+			.fromTemplateUrl('/app/views/modal/photo.html', {
   			scope: $scope,
   			animation: 'slide-in-up'
   		})
   		.then(function(modal) {
   			$scope.modalPhoto = modal;
-  			// $scope.modalPhoto.show();
+  			$scope.modalPhoto.show();
   		});
 
   		_getPosition();
