@@ -26,12 +26,23 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
   			// $scope.modalPhoto.show();
   		});
 
+  		_getPosition();
 	};
 
 	function _apply()
 	{
 		if(!$scope.$$phase) $scope.$apply();
 	};
+
+	function _getPosition()
+	{
+		Map.getPosition(function(lonlat) {
+				_getCity(lonlat);
+				$scope.issue.location = lonlat;
+			}, function(error) {
+				alert(error);
+			});
+	}
 
 	function _getCity(lonlat)
 	{
@@ -50,13 +61,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 
 	function _takePhoto()
 	{
-		Map.getPosition(function(lonlat) {
-			_getCity(lonlat);
-			$scope.issue.location = lonlat;
-
-		}, function(error) {
-			alert(error);
-		});
+		_getPosition();
 
 		Camera.getPicture(function(imageUri) {
 			$scope.issue.image = imageUri;
