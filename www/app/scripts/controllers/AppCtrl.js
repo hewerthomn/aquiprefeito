@@ -12,12 +12,13 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 			city: '...',
 			image: "http://placehold.it/340x220",
 			comment: '',
+			username: '',
 			category_id: 0,
 			location: { lon: 0, lat: 0 }
 		};
 
 		$ionicModal
-			.fromTemplateUrl('/app/views/modal/photo.html', {
+			.fromTemplateUrl('app/views/modal/photo.html', {
   			scope: $scope,
   			animation: 'slide-in-up'
   		})
