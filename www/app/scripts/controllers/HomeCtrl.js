@@ -24,16 +24,6 @@ function HomeCtrl($scope, $location, $window, Map)
 		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
 	}
 
-	function _apply()
-	{
-		if(!$scope.$$phase) $scope.$apply();
-	};
-
-	$scope.goto = function(to)
-	{
-		$location.path(to);
-	};
-
 	_init();
 };
 
