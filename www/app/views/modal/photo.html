@@ -8,6 +8,11 @@
   </ion-header-bar>
   <ion-content>
     <div class="list card">
+
+	    <div ng-show="issue.category_id == 0" class="padding positive">
+	    	<i class="ion-information-circled"></i> Selecione a categoria do problema
+	    </div>
+
 		  <label class="item item-input item-select">
 		  	<div class="input-label">
 		      Categoria

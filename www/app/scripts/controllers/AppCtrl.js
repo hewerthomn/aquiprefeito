@@ -105,8 +105,15 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 
 	$scope.send = function(issue)
 	{
-		Aqui.Issue.save(issue, $scope.city);
-		$scope.closeModal();
+		if(issue.category_id == 0)
+		{
+			alert('Selecione a categoria do problema');
+		}
+		else
+		{
+			Aqui.Issue.save(issue, $scope.city);
+			$scope.closeModal();
+		}
 	};
 
 	_init();
