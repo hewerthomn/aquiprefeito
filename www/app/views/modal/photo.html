@@ -5,21 +5,6 @@
   </ion-header-bar>
   <ion-content>
     <div class="list card">
-
-    	<div class="row">
-    		<div class="col">
-	      	<div class="item item-thumbnail-left" href="#">
-			      <img ng-src="{{ issue.image }}">
-			    </div>
-    		</div>
-    		<div class="col col-75">
-    			<label class="item item-input item-floating-label">
-				    <span class="input-label">Comentário</span>
-				    <input type="text" placeholder="Comentário (opcional)" ng-model="issue.comment">
-				  </label>
-    		</div>
-    	</div>
-
 		  <label class="item item-input item-select">
 		  	<div class="input-label">
 		      Categoria
@@ -30,12 +15,31 @@
 		    </select>
 		  </label>
 
-		  <div class="item item-checkbox">
+    	<div class="row">
+    		<div class="col">
+	      	<div class="item item-thumbnail-left" href="#">
+			      <img ng-src="{{ issue.image }}">
+			    </div>
+    		</div>
+    		<div class="col col-75">
+    			<label class="item item-input item-floating-label">
+				    <small class="input-label positive">Nome</small>
+				    <input type="text" placeholder="Nome (opcional)" ng-model="issue.username">
+				  </label>
+    		</div>
+    	</div>
+
+    	<label class="item item-input item-floating-label">
+		    <small class="input-label positive">Comentário</small>
+		    <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
+		  </label>
+
+		  <!--div class="item item-checkbox">
 		     <label class="checkbox">
 		       <input type="checkbox" ng-model="issue.share_facebook">
 		     </label>
 		     Compartilhar no facebook
-		  </div>
+		  </div-->
 
 		  <div class="item">
 	      <button class="button button-positive" ng-click="send(issue)">
