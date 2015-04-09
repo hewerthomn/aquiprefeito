@@ -20,7 +20,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
   		})
   		.then(function(modal) {
   			$scope.modalPhoto = modal;
-  			$scope.modalPhoto.show();
+  			// $scope.modalPhoto.show();
   		});
 
 		_getCity();
