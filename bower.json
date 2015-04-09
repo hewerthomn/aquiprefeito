@@ -8,5 +8,8 @@
     "angular-focus-it": "~1.0.1",
     "ngCordova": "~0.1.14-alpha",
     "angular": "1.4"
+  },
+  "resolutions": {
+    "angular": "1.4"
   }
 }
