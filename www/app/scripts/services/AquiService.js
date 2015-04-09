@@ -23,6 +23,17 @@ function AquiService($http)
 
 		Issue:
 		{
+			new: function(issue)
+			{
+				return {
+					image: 'http://placehold.it/1',
+					comment: '',
+					username: '',
+					category_id: 0,
+					lonlat: { lon: 0, lat: 0 }
+				};
+			},
+
 			getLasts: function()
 			{
 				return [{
@@ -48,10 +59,13 @@ function AquiService($http)
 				}];
 			},
 
-			save: function(issue)
+			save: function(issue, city)
 			{
 				console.log('issue', issue);
+				console.log('city', city);
+
 				alert(JSON.stringify(issue));
+				alert(JSON.stringify(city));
 			}
 		}
 	}
