@@ -8,7 +8,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 	{
 		$scope.city = {
 			name: '...',
-			position: { lon: 0, lat: 0 }
+			lonlat: { lon: 0, lat: 0 }
 		};
 		$scope.issue = Aqui.Issue.new();
 		$scope.categories = Aqui.Category.getAll();
