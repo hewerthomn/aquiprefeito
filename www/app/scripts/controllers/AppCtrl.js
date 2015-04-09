@@ -6,16 +6,12 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 	/* private methods */
 	function _init()
 	{
-		$scope.categories = Aqui.Category.getAll();
-
-		$scope.issue = {
-			city: '...',
-			image: "http://placehold.it/340x220",
-			comment: '',
-			username: '',
-			category_id: 0,
-			location: { lon: 0, lat: 0 }
+		$scope.city = {
+			name: '...',
+			position: { lon: 0, lat: 0 }
 		};
+		$scope.issue = Aqui.Issue.new();
+		$scope.categories = Aqui.Category.getAll();
 
 		$ionicModal
 			.fromTemplateUrl('app/views/modal/photo.html', {
@@ -24,10 +20,10 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
   		})
   		.then(function(modal) {
   			$scope.modalPhoto = modal;
-  			$scope.modalPhoto.show();
+  			// $scope.modalPhoto.show();
   		});
 
-  		_getPosition();
+		_getCity();
 	};
 
 	function _apply()
@@ -35,33 +31,47 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 		if(!$scope.$$phase) $scope.$apply();
 	};
 
-	function _getPosition()
+	function _getCity()
 	{
 		Map.getPosition(function(lonlat) {
-				_getCity(lonlat);
-				$scope.issue.location = lonlat;
-			}, function(error) {
-				alert(error);
-			});
-	}
+			_getCityInfo(lonlat);
+		}, function(error) {
+			alert(error);
+			console.log(error);
+		});
+	};
 
-	function _getCity(lonlat)
+	function _getCityInfo(lonlat)
 	{
+		$scope.city.lonlat = lonlat;
+
 		Geocoder
 			.getPlaceInfo(lonlat)
 			.success(function(response) {
 				if(response.hasOwnProperty('results'))
 				{
-					$scope.issue.city = response.results[0].address_components[4].long_name;
+					$scope.city.name = response.results[0].address_components[4].long_name;
 				}
 			})
 			.error(function(error){
 				console.error(error);
+				alert(error);
 			});
 	};
 
+	function _getPosition()
+	{
+		Map.getPosition(function(lonlat) {
+			$scope.issue.lonlat = lonlat;
+		}, function(error) {
+			alert(error);
+		});
+	}
+
 	function _takePhoto()
 	{
+		$scope.issue = Aqui.Issue.new();
+
 		_getPosition();
 
 		Camera.getPicture(function(imageUri) {
@@ -95,7 +105,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 
 	$scope.send = function(issue)
 	{
-		Aqui.Issue.save(issue);
+		Aqui.Issue.save(issue, $scope.city);
 		$scope.closeModal();
 	};
 
