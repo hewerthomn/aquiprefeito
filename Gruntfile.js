@@ -32,6 +32,7 @@ module.exports = function(grunt) {
 					'www/app/scripts/services/AquiService.js',
 					'www/app/scripts/services/MapService.js',
 					'www/app/scripts/services/CameraService.js',
+					'www/app/scripts/services/GeocoderService.js',
 
 					'www/app/scripts/app.js'
 				]

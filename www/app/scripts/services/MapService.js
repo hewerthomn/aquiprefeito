@@ -2,7 +2,7 @@
  * Map Service
  *
  */
-function MapService($http, $cordovaGeolocation)
+function MapService($cordovaGeolocation)
 {
 
 	return {
@@ -32,6 +32,7 @@ function MapService($http, $cordovaGeolocation)
 
 	    self._startZoom  = opts.startZoom;
 	    self._startLonlat = new OpenLayers.LonLat(opts.startLonlat.lon, opts.startLonlat.lat);
+	    self._offset = opts.offset | 0;
 
 	    self._layers     = [];
 	    self._baselayers = [];
@@ -302,26 +303,6 @@ function MapService($http, $cordovaGeolocation)
 	  	}
 	  },
 
-	  searchPlace: function(query)
-		{
-			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-				params: {
-					address: query,
-					sensor: false
-				}
-			});
-		},
-
-		getPlaceInfo: function(lonlat)
-		{
-			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-				params: {
-					latlng: lonlat.lat + ',' + lonlat.lon,
-					sensor: false
-				}
-			});
-		},
-
 		/**
 		 * Transform latlon hash from projection to anoter
 		 *
@@ -344,7 +325,7 @@ function MapService($http, $cordovaGeolocation)
 					height = window.innerHeight,
 					element = self._map.div.id;
 
-			height -=  offset | 0;
+			height -=  self._offset | 0;
 			element = document.getElementById(element);
 			element.style.height = height + 'px';
 			self._map.updateSize();
@@ -354,4 +335,4 @@ function MapService($http, $cordovaGeolocation)
 
 angular
 	.module('app.services')
-	.service('Map', ['$http', '$cordovaGeolocation', MapService]);
+	.service('Map', ['$cordovaGeolocation', MapService]);
