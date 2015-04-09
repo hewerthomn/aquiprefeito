@@ -10,6 +10,7 @@ function HomeCtrl($scope, $location, $window, Map)
 
 		Map.init({
 			id: 'map',
+			offset: 90,
 			startZoom: $scope.zoom,
 			startLonlat: $scope.startLonlat
 		});

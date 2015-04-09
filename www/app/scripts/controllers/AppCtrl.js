@@ -1,7 +1,7 @@
 /*
  * App Controller
  */
-function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map)
+function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Geocoder)
 {
 	/* private methods */
 	function _init()
@@ -9,6 +9,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map)
 		$scope.categories = Aqui.Category.getAll();
 
 		$scope.issue = {
+			city: '...',
 			image: "http://placehold.it/340x220",
 			comment: '',
 			category_id: 0,
@@ -32,10 +33,27 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map)
 		if(!$scope.$$phase) $scope.$apply();
 	};
 
+	function _getCity(lonlat)
+	{
+		Geocoder
+			.getPlaceInfo(lonlat)
+			.success(function(response) {
+				if(response.hasOwnProperty('results'))
+				{
+					$scope.issue.city = response.results[0].address_components[4].long_name;
+				}
+			})
+			.error(function(error){
+				console.error(error);
+			});
+	};
+
 	function _takePhoto()
 	{
 		Map.getPosition(function(lonlat) {
+			_getCity(lonlat);
 			$scope.issue.location = lonlat;
+
 		}, function(error) {
 			alert(error);
 		});
@@ -80,4 +98,4 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map)
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', 'Aqui', 'Camera', 'Map', AppCtrl]);
+	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', 'Aqui', 'Camera', 'Map', 'Geocoder', AppCtrl]);
