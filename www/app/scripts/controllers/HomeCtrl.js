@@ -1,7 +1,7 @@
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $window, Aqui, Map)
+function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 {
 	function _init()
 	{
@@ -12,8 +12,12 @@ function HomeCtrl($scope, $window, Aqui, Map)
 		};
 
 		$scope.issues = [];
-
 		$scope.categories = Aqui.Category.getAll();
+
+		$scope.issue = {
+			id: 1,
+
+		};
 
 		Map.init({
 			id: 'map',
@@ -27,14 +31,27 @@ function HomeCtrl($scope, $window, Aqui, Map)
 
 		_loadIssues();
 
+		$ionicModal
+			.fromTemplateUrl('app/views/modal/issue.html', {
+  			scope: $scope,
+  			animation: 'slide-in-up'
+  		})
+  		.then(function(modal) {
+  			$scope.modalIssue = modal;
+  			// $scope.modalIssue.show();
+  		});
+
 		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
 	}
 
 	function _onSelectPoint(feature)
 	{
-		var point = feature.data;
+		$scope.issue = Aqui.Issue.get(feature.data.id);
+		$scope.issue.category = Aqui.Category.get($scope.issue.category_id);
 
-		console.log('point', point);
+		console.log($scope.issue);
+
+		$scope.modalIssue.show();
 	};
 
 	function _loadIssues()
@@ -73,4 +90,4 @@ function HomeCtrl($scope, $window, Aqui, Map)
 
 angular
 	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$window', 'Aqui', 'Map', HomeCtrl]);
+	.controller('HomeCtrl', ['$scope', '$window', '$ionicModal', 'Aqui', 'Map', HomeCtrl]);

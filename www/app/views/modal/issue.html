@@ -1,0 +1,46 @@
+<ion-modal-view>
+  <ion-content>
+    <div class="list card">
+    	<div class="padding">
+  			<button class="button button-small button-clear" ng-click="modalIssue.hide()" style="float:right"><i class="ion-close"></i></button>
+    	</div>
+    	<div class="item item-avatar">
+		    <img ng-src="{{ issue.category.icon }}">
+		    <h2>{{ issue.category.name }}</h2>
+		    <p>{{ issue.created_at | date }}</p>
+		  </div>
+
+		  <div class="item item-body">
+		    <img class="full-image" ng-src="{{ issue.photo }}">
+		    <p>
+		      {{ issue.comment }}
+		    </p>
+		    <p>
+		      <a href="#" class="subdued" ng-if="issue.likes > 0">
+		      	<ng-pluralize count="issue.likes" when="{'one': '1 Like', 'other': '{} Likes'}"></ng-pluralize>
+		      </a>
+		      <a href="#" class="subdued" ng-if="issue.comments > 0">
+		      	<ng-pluralize count="issue.comments" when="{'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
+		      </a>
+		    </p>
+		  </div>
+
+		  <div class="item tabs tabs-secondary tabs-icon-left">
+		    <a class="tab-item" href="#">
+		      <i class="icon ion-thumbsup"></i>
+		      Like
+		    </a>
+		    <a class="tab-item" href="#">
+		      <i class="icon ion-chatbox"></i>
+		      Comentar
+		    </a>
+		    <a class="tab-item" href="#">
+		      <i class="icon ion-share"></i>
+		      Compartilhar
+		    </a>
+		  </div>
+
+		</div><!--list card-->
+
+  </ion-content>
+</ion-modal-view>
