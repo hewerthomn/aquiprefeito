@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+	require('time-grunt')(grunt);
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		concat: {
@@ -65,7 +67,7 @@ module.exports = function(grunt) {
 			combine: {
 				files: {
 					'www/build/css/app.min.css': [
-						'www/lib/ionic/css/ionic.css',
+						'www/lib/ionic/css/ionic.min.css',
 						'www/css/app.css',
 					]
 				}
@@ -74,23 +76,17 @@ module.exports = function(grunt) {
 
 		watch: {
 			min: {
-				files: ['Gruntfile.js', 'www/lib/**/*.*', 'www/app/scripts/**/*.js', 'www/css/**/*.css'],
+				files: ['Gruntfile.js', 'www/app/scripts/**/*.js', 'www/css/**/*.css'],
 				tasks: ['concat:app', 'cssmin'],
 				options: {
-					atBegin: true,
-					liveReload: true
+					atBegin: true
 				}
 			}
-		},
-
-		jshint: {
-			all: ['Gruntfile.js', 'www/app/scripts/**/*.js']
 		}
 	});
 
-	grunt.registerTask('dev', ['concat:app', 'uglify:app', 'cssmin']);
-	grunt.registerTask('default', ['concat:app', 'cssmin', 'copy:fonts']);
+	grunt.registerTask('dev', ['concat:app', 'cssmin']);
+	grunt.registerTask('default', ['concat:app', 'uglify:app', 'cssmin', 'copy:fonts']);
 
-	require('time-grunt')(grunt);
-	require('load-grunt-tasks')(grunt);
+	require('jit-grunt')(grunt);
 };
