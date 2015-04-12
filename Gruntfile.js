@@ -86,7 +86,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('dev', ['concat:app', 'cssmin']);
-	grunt.registerTask('default', ['concat:app', 'uglify:app', 'cssmin', 'copy:fonts']);
+	grunt.registerTask('default', ['concat:app', 'cssmin', 'copy:fonts']);
 
 	require('jit-grunt')(grunt);
 };
