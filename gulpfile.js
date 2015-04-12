@@ -3,7 +3,8 @@ var gulp = require('gulp'),
 		concat = require('gulp-concat'),
 		cssmin = require('gulp-cssmin'),
 		rename = require('gulp-rename'),
-		concatCss = require('gulp-concat-css');
+		concatCss = require('gulp-concat-css'),
+		uglify = require('gulp-uglify');
 
 gulp.task('default', function() {
 
@@ -56,4 +57,10 @@ gulp.task('cssmin', function() {
 	])
 	.pipe(cssmin())
 	.pipe(gulp.dest('www/build/css/'));
+});
+
+gulp.task('uglify', function() {
+	return gulp.src('www/build/js/app.min.js')
+	.pipe(uglify({mangle: false}))
+	.pipe(gulp.dest('www/build/js/'));
 });

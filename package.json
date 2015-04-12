@@ -10,8 +10,8 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
-    "load-grunt-tasks": "^1.0.0",
-    "time-grunt": "^1.0.0"
+    "time-grunt": "^1.0.0",
+    "jit-grunt": "^0.9.1"
   },
   "devDependencies": {
     "gulp": "^3.8.11",
@@ -19,6 +19,7 @@
     "gulp-concat-css": "^2.2.0",
     "gulp-cssmin": "^0.1.6",
     "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4"
   },
   "cordovaPlugins": [

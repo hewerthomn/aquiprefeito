@@ -71,6 +71,21 @@ function MapService($cordovaGeolocation)
 			];
 
 			self._layers = {
+				issues: new OpenLayers.Layer.Vector('Problemas', {
+					styleMap: new OpenLayers.StyleMap({
+						'default': {
+							label: "${label}",
+							labelYOffset: 27,
+							fontSize: '16px',
+							fontWeight: 'bold',
+							externalGraphic: "${icon}",
+							graphicWidth: 28
+						},
+						'select': {
+							cursor: 'pointer'
+						}
+					})
+				})
 			};
 
 			self._map.addLayers(self._baselayers);
@@ -119,7 +134,7 @@ function MapService($cordovaGeolocation)
           documentDrag: true,
           dragPanOptions: { enableKinetic: true }
         }),
-        selectPoint: new OpenLayers.Control.SelectFeature([self._layers.position], {
+        selectPoint: new OpenLayers.Control.SelectFeature([self._layers.issues], {
         	autoActivate: true,
         	onSelect: self.onSelectPoint
         })
@@ -171,7 +186,7 @@ function MapService($cordovaGeolocation)
 			var self = this,
 					opts = opts || {},
 					defaultOpts = {
-						layer: 'position',
+						layer: 'issues',
 						clearBefore: true,
 					},
 					arrPontos    = [];
@@ -234,7 +249,8 @@ function MapService($cordovaGeolocation)
 
 			if(feature.geometry.id.indexOf("Point") > -1)
 			{
-				self.onSelectPointFeature(feature);
+				var lonlat = { lon: feature.data.lon, lat: feature.data.lat };
+				self.onSelectPointFeature(lonlat);
 			}
 		},
 
@@ -244,7 +260,7 @@ function MapService($cordovaGeolocation)
 		*/
 		onSelectPointFeature: function(feature)
 		{
-			return feature;
+			return { lon: feature.data.lon, lat: feature.data.lat };
 		},
 
 		onSelectPoint: function(callback)

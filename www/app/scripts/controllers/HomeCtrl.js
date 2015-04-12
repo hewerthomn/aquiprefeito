@@ -1,37 +1,88 @@
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $location, $window, Map)
+function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 {
 	function _init()
 	{
 		$scope.zoom = 4;
-		$scope.startLonlat = { lon: -11.620992573114625, lat: -50.98007812499999 };
+		$scope.startLonlat = {
+			lon: -5801876.194150391,
+			lat: -1027313.6600097648
+		};
+
+		$scope.issues = [];
+		$scope.categories = Aqui.Category.getAll();
+
+		$scope.issue = {
+			id: 1,
+
+		};
 
 		Map.init({
 			id: 'map',
 			offset: 90,
 			startZoom: $scope.zoom,
-			startLonlat: $scope.startLonlat
+			startLonlat: $scope.startLonlat,
+			onSelectPoint: _onSelectPoint
 		});
 
+		$scope.getPosition();
+
+		_loadIssues();
+
+		$ionicModal
+			.fromTemplateUrl('app/views/modal/issue.html', {
+  			scope: $scope,
+  			animation: 'slide-in-up'
+  		})
+  		.then(function(modal) {
+  			$scope.modalIssue = modal;
+  			// $scope.modalIssue.show();
+  		});
+
+		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
+	}
+
+	function _onSelectPoint(feature)
+	{
+		$scope.issue = Aqui.Issue.get(feature.data.id);
+		$scope.issue.category = Aqui.Category.get($scope.issue.category_id);
+
+		console.log($scope.issue);
+
+		$scope.modalIssue.show();
+	};
+
+	function _loadIssues()
+	{
+		var points = [];
+
+		$scope.issues = Aqui.Issue.getLasts();
+
+		angular.forEach($scope.issues, function(value, key) {
+			var category = Aqui.Category.get(value.category_id);
+
+			points.push({
+				id: value.id,
+				icon: category.icon,
+				lon: value.lonlat.lon,
+				lat: value.lonlat.lat,
+			});
+		});
+
+		var options = { transformTo: 'EPSG:4326' };
+
+		Map.addPoints(points, options);
+	}
+
+	$scope.getPosition = function()
+	{
 		Map.getPosition(function(lonlat) {
 			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
 		}, function(error) {
 			alert(error);
 		});
-
-		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
-	}
-
-	function _apply()
-	{
-		if(!$scope.$$phase) $scope.$apply();
-	};
-
-	$scope.goto = function(to)
-	{
-		$location.path(to);
 	};
 
 	_init();
@@ -39,4 +90,4 @@ function HomeCtrl($scope, $location, $window, Map)
 
 angular
 	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$location', '$window', 'Map', HomeCtrl]);
+	.controller('HomeCtrl', ['$scope', '$window', '$ionicModal', 'Aqui', 'Map', HomeCtrl]);
