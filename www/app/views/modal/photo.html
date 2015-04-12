@@ -50,8 +50,12 @@
 		</div><!--list card-->
 
 	  <div class="padding">
-      <button class="button button-block button-positive" ng-click="send(issue)">
+      <button class="button button-block button-positive" ng-click="send(issue)" ng-hide="sending">
       	<i class="ion-paper-airplane"></i> Enviar
+      </button>
+
+      <button class="button button-block button-positive" ng-show="sending" disabled="disabled">
+      	<ion-spinner icon="ripple"></ion-spinner> Enviando...
       </button>
 	  </div>
 
