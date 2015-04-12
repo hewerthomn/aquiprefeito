@@ -4,11 +4,9 @@ var gulp = require('gulp'),
 		cssmin = require('gulp-cssmin'),
 		rename = require('gulp-rename'),
 		concatCss = require('gulp-concat-css'),
-		uglify = require('gulp-uglify');
-
-gulp.task('default', function() {
-
-});
+		uglify = require('gulp-uglify'),
+		copy = require('gulp-copy'),
+		watch = require('gulp-watch');
 
 gulp.task('concat', function() {
 	return gulp.src([
@@ -64,3 +62,23 @@ gulp.task('uglify', function() {
 	.pipe(uglify({mangle: false}))
 	.pipe(gulp.dest('www/build/js/'));
 });
+
+gulp.task('copyfonts', function() {
+	return gulp.src([
+		['www/lib/ionic/fonts/**.*']
+	])
+	.pipe(gulp.dest('www/build/fonts'));
+});
+
+gulp.task('watch', ['concat', 'cssmin'], function() {
+	return gulp.src([
+		'gulpfile.js',
+		'www/app/scripts/**/*.js',
+		'www/css/**/*.css'
+	])
+	.pipe(watch(['gulpfile.js','www/app/scripts/**/*.js', 'www/css/**/*.css']));
+
+});
+
+gulp.task('dev', ['concat', 'cssmin']);
+gulp.task('default', ['concat', 'uglify']);
