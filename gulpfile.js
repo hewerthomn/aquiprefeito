@@ -1,6 +1,9 @@
 var gulp = require('gulp'),
 		gutil = require('gulp-util'),
-		concat = require('gulp-concat');
+		concat = require('gulp-concat'),
+		cssmin = require('gulp-cssmin'),
+		rename = require('gulp-rename'),
+		concatCss = require('gulp-concat-css');
 
 gulp.task('default', function() {
 
@@ -35,4 +38,22 @@ gulp.task('concat', function() {
 	])
 	.pipe(concat('app.min.js', {newLine: ';'}))
 	.pipe(gulp.dest('www/build/js/'));
+});
+
+gulp.task('cssconcat', function() {
+	return gulp.src([
+		'www/lib/ionic/css/ionic.css',
+		'www/css/app.css',
+	])
+	.pipe(concatCss('app.css'))
+	.pipe(rename({suffix: '.min'}))
+	.pipe(gulp.dest('www/build/css/'));
+});
+
+gulp.task('cssmin', function() {
+	return gulp.src([
+		'www/build/css/app.min.css'
+	])
+	.pipe(cssmin())
+	.pipe(gulp.dest('www/build/css/'));
 });
