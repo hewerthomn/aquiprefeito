@@ -11,7 +11,16 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 			lonlat: { lon: 0, lat: 0 }
 		};
 		$scope.issue = Aqui.Issue.new();
-		$scope.categories = Aqui.Category.getAll();
+
+		Aqui.Category.getAll()
+			.success(function(categories) {
+				$scope.categories = categories;
+			})
+			.error(function(error) {
+				console.error(error);
+			});
+
+		$scope.sending = false;
 
 		$ionicModal
 			.fromTemplateUrl('app/views/modal/photo.html', {
@@ -77,6 +86,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 		Camera.getPicture(function(imageUri) {
 			$scope.issue.image = imageUri;
   		$scope.openModal();
+  		_apply();
 		}, function(error) {
 			alert(error);
 		});
@@ -123,8 +133,13 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 		}
 		else
 		{
-			Aqui.Issue.save(issue, $scope.city);
-			$scope.closeModal();
+			$scope.sending = true;
+			// Aqui.Issue.save(issue, $scope.city);
+
+			$timeout(function() {
+				$scope.sending = false;
+				$scope.closeModal();
+			}, 3000);
 		}
 	};
 

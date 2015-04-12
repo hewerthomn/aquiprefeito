@@ -5,7 +5,13 @@ function GalleryCtrl($scope, Aqui)
 {
 	function _init()
 	{
-		$scope.issues = Aqui.Issue.getLasts();
+		Aqui.Issue.getLasts()
+			.success(function(issues) {
+				$scope.issues = issues;
+			})
+			.error(function(error){
+				console.error(error);
+			});
 	};
 
 	function _apply()
