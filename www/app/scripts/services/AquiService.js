@@ -56,6 +56,7 @@ function AquiService($http, $cordovaFileTransfer)
 			save: function(issue, city, successCallback, errorCallback, progressCallback)
 			{
 				var url = url_api + 'issue';
+				var trustHosts = true;
 				var data = {
 					city: city.name,
 					comment: issue.comment,
@@ -67,7 +68,7 @@ function AquiService($http, $cordovaFileTransfer)
 				_onDeviceReady(function() {
 
 					return $cordovaFileTransfer
-										.upload(url, issue.image, data)
+										.upload(url, issue.image, data, trustHosts)
 										.then(successCallback, errorCallback, progressCallback);
 				});
 
