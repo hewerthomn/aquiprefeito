@@ -30,7 +30,7 @@ function AquiService($http, $cordovaFileTransfer)
 			new: function(issue)
 			{
 				return {
-					image: 'http://placehold.it/122/100',
+					image: '',
 					comment: '',
 					username: '',
 					category_id: 0,
