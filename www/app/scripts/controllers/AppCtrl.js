@@ -1,7 +1,7 @@
 /*
  * App Controller
  */
-function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Geocoder)
+function AppCtrl($scope, $location, $timeout, $ionicModal, $cordovaToast, Aqui, Camera, Map, Geocoder)
 {
 	/* private methods */
 	function _init()
@@ -92,6 +92,13 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 		});
 	};
 
+	function _showToastError(error)
+	{
+		var msg = 'Ops, algum erro ao reportar problema...\n';
+		msg += 'Error code ' + result.responseCode + "\n" + result.response;
+		return msg;
+	};
+
 	/* scope methods */
 	$scope.goto = function(path)
 	{
@@ -137,15 +144,19 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 
 			Aqui.Issue
 				.save(issue, $scope.city, function(result) {
-					console.log('result', result);
-					alert(result);
+					if(result.responseCode == 200)
+					{
+						$cordovaToast.showShortCenter(result.response);
+					}
+					else
+					{
+						$cordovaToast.showShortCenter(_showToastError(result));
+					}
 
 					$scope.sending = false;
 					$scope.closeModal();
 				}, function(error) {
-					console.error(error);
-					alert('Code ' + error.code + '\nException: ' +  error.exception);
-
+					_showToastError(error);
 					$scope.sending = false;
 					$scope.closeModal();
 				}, function(progress) {
@@ -159,4 +170,4 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', 'Aqui', 'Camera', 'Map', 'Geocoder', AppCtrl]);
+	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', '$cordovaToast', 'Aqui', 'Camera', 'Map', 'Geocoder', AppCtrl]);
