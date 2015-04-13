@@ -134,12 +134,23 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, Aqui, Camera, Map, Ge
 		else
 		{
 			$scope.sending = true;
-			// Aqui.Issue.save(issue, $scope.city);
 
-			$timeout(function() {
-				$scope.sending = false;
-				$scope.closeModal();
-			}, 3000);
+			Aqui.Issue
+				.save(issue, $scope.city, function(result) {
+					console.log('result', result);
+					alert(result);
+
+					$scope.sending = false;
+					$scope.closeModal();
+				}, function(error) {
+					console.error(error);
+					alert('Code ' + error.code + '\nException: ' +  error.exception);
+
+					$scope.sending = false;
+					$scope.closeModal();
+				}, function(progress) {
+					$scope.uploadProgress = parseInt((progress.loaded / progress.total) * 100, 10);
+				});
 		}
 	};
 
