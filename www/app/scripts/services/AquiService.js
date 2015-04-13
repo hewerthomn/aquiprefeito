@@ -55,20 +55,23 @@ function AquiService($http, $cordovaFileTransfer)
 
 			save: function(issue, city, successCallback, errorCallback, progressCallback)
 			{
-				var url = url_api + 'issue';
-				var trustHosts = true;
-				var data = {
-					city: city.name,
-					comment: issue.comment,
-					username: issue.username,
-					category_id: issue.category_id,
-					lonlat: issue.lonlat.lon + " " + issue.lonlat.lat
+				var url = url_api + 'upload';
+				var trustHosts = false;
+				var options = {
+					chunkedMode: false,
+					params: {
+						city: city.name,
+						comment: issue.comment,
+						username: issue.username,
+						category_id: issue.category_id,
+						lonlat: issue.lonlat.lon + " " + issue.lonlat.lat
+					}
 				};
 
 				_onDeviceReady(function() {
 
 					return $cordovaFileTransfer
-										.upload(url, issue.image, data, trustHosts)
+										.upload(url, issue.image, options, trustHosts)
 										.then(successCallback, errorCallback, progressCallback);
 				});
 
