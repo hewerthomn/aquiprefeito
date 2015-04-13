@@ -7,3 +7,6 @@ plugins/
 proxy/
 www/build
 www/lib
+
+# Log Archives
+*.log
