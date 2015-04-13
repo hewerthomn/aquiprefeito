@@ -68,9 +68,9 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 
 					points.push({
 						id: value.id,
-						icon: category.icon,
-						lon: value.lonlat.lon,
-						lat: value.lonlat.lat,
+						icon: category_icon,
+						lon: value.lon,
+						lat: value.lat,
 					});
 				});
 
