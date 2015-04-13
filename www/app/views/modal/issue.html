@@ -11,7 +11,7 @@
 		  </div>
 
 		  <div class="item item-body">
-		    <img class="full-image" ng-src="{{ url + issue.photo }}">
+		    <img class="full-image" ng-src="{{ isse.photo == '' ? url + 'img/issues/lg/' + issue.photo : '' }}">
 		    <p>
 		    	<span class="positive">{{ issue.username }}</span>
 		      {{ issue.comment }}
