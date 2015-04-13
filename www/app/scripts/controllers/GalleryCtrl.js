@@ -5,6 +5,8 @@ function GalleryCtrl($scope, Aqui)
 {
 	function _init()
 	{
+		$scope.url = Aqui.Site.url;
+
 		Aqui.Issue.getLasts()
 			.success(function(issues) {
 				$scope.issues = issues;

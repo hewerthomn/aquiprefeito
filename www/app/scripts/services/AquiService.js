@@ -12,6 +12,11 @@ function AquiService($http, $cordovaFileTransfer)
 
 	return {
 
+		Site:
+		{
+			url: 'http://aquiprefeito.com.br/'
+		},
+
 		Category:
 		{
 			get: function(id)

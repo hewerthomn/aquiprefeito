@@ -15,10 +15,16 @@
 	  </label>
 
     <div class="item item-thumbnail-left" ng-repeat="issue in issues">
-      <img ng-src="{{ issue.photo }}">
-      <h2>{{ issue.category_name }}</h2>
+      <img ng-src="{{ url + issue.photo }}">
+      <h2>
+      	<img ng-src="{{ issue.category_icon }}" style="width:12px">
+      	{{ issue.category_name }}
+      </h2>
       <p>{{ issue.created_at | date }}</p>
-      <p>{{ issue.comment }}</p>
+      <p>
+      	<small ng-if="issue.username != ''" class="positive">{{ issue.username }}<br></small>
+      	{{ issue.comment }}
+      </p>
     </div>
 	</div>
 

@@ -13,6 +13,7 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 
 		$scope.issue = {};
 		$scope.issues = [];
+		$scope.url = Aqui.Site.url;
 
 		Aqui.Category.getAll()
 			.success(function(categories) {
@@ -68,7 +69,7 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 
 					points.push({
 						id: value.id,
-						icon: category_icon,
+						icon: value.category_icon,
 						lon: value.lon,
 						lat: value.lat,
 					});

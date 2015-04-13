@@ -11,8 +11,9 @@
 		  </div>
 
 		  <div class="item item-body">
-		    <img class="full-image" ng-src="{{ issue.photo }}">
+		    <img class="full-image" ng-src="{{ url + issue.photo }}">
 		    <p>
+		    	<span class="positive">{{ issue.username }}</span>
 		      {{ issue.comment }}
 		    </p>
 		    <p>
