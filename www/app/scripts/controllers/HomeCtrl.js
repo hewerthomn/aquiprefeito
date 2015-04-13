@@ -11,7 +11,7 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 			lat: -1027313.6600097648
 		};
 
-		$scope.issue = {};
+		$scope.issue = Aqui.Issue.new();
 		$scope.issues = [];
 		$scope.url = Aqui.Site.url;
 

@@ -35,7 +35,7 @@ function AquiService($http, $cordovaFileTransfer)
 			new: function(issue)
 			{
 				return {
-					image: '',
+					photo: '',
 					comment: '',
 					username: '',
 					category_id: 0,
