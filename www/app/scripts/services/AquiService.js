@@ -66,7 +66,7 @@ function AquiService($http, $cordovaDevice, $cordovaFileTransfer)
 				return $http.get(url_api + 'issue/' + id + '/like', {
 					params: { uuid: uuid }
 				});
-			}
+			},
 
 			save: function(issue, city, successCallback, errorCallback, progressCallback)
 			{
