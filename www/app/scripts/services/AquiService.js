@@ -63,7 +63,7 @@ function AquiService($http, $cordovaDevice, $cordovaFileTransfer)
 
 			checkLike: function(id)
 			{
-				retutn $http.get(url_api + 'issue/' + id + '/like', {
+				return $http.get(url_api + 'issue/' + id + '/like', {
 					params: { uuid: uuid }
 				});
 			}
