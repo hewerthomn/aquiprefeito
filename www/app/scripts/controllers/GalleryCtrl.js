@@ -18,7 +18,7 @@ function GalleryCtrl($scope, $state, Aqui)
 
 	$scope.photo = function(issue)
 	{
-		return (issue != null && issue.photo != '') ? Aqui.Site.url + 'img/issues/md/' + issue.photo : '';
+		return (issue != null && issue.photo != '') ? Aqui.Site.url + 'img/issues/sm/' + issue.photo : '';
 	};
 
 	$scope.select = function(issue_id)
