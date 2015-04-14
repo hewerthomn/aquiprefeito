@@ -13,23 +13,25 @@
 
     <script src="cordova.js"></script>
   </head>
-  <body ng-controller="AppCtrl">
-
+  <body>
     <ion-pane>
-
       <ion-header-bar class="bar-dark">
-        <h1 class="title" ng-click="goto('home')">
+        <h1 class="title" ui-sref="home">
         	<i class="ion-speakerphone energized"></i>
         	<b>Aqui</b>Prefeito!
         </h1>
-        <button class="button button-clear" ng-click="goto('help')"><i class="ion-help-circled"></i></button>
+        <button class="button button-clear" ui-sref="help"><i class="ion-help-circled"></i></button>
       </ion-header-bar>
 
       <ion-tabs class="tabs-dark tabs-icon-only">
       	<ion-tab ui-sref="home" icon-on="ion-home balanced" icon-off="ion-home">
       		<ion-nav-view name="home"></ion-nav-view>
       	</ion-tab>
-        <ion-tab icon-on="ion-camera positive" icon-off="ion-camera" ng-click="actionCamera()"></ion-tab>
+
+        <ion-tab ui-sref="upload" icon-on="ion-camera positive" icon-off="ion-camera">
+        	<ion-nav-view name="upload"></ion-nav-view>
+        </ion-tab>
+
         <ion-tab ui-sref="gallery" icon-on="ion-images assertive" icon-off="ion-images">
         	<ion-nav-view name="gallery"></ion-nav-view>
         </ion-tab>

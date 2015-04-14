@@ -17,6 +17,11 @@ angular.module('app', [
 			controller: 'HomeCtrl',
 			templateUrl: 'app/views/home.html'
 		})
+		.state('upload', {
+			url: '/upload',
+			controller: 'UploadCtrl',
+			templateUrl: 'app/views/upload.html'
+		})
 		.state('issue', {
 			url: '/issue/:id',
 			controller: 'IssueCtrl',
