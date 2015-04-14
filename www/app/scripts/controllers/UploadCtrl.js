@@ -67,9 +67,9 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 		});
 	}
 
-	function _takePhoto()
+	function _takePhoto(issue)
 	{
-		$scope.issue = Aqui.Issue.new();
+		$scope.issue = issue || Aqui.Issue.new();
 
 		_getPosition();
 
@@ -98,6 +98,11 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 			});
 			return icon;
 		}
+	};
+
+	$scope.takePhoto = function(issue)
+	{
+		_takePhoto(issue)
 	};
 
 	$scope.send = function(issue)
