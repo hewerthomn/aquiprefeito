@@ -1,13 +1,17 @@
 /*
  * Issue Controller
  */
-function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, Aqui)
+function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, Aqui)
 {
 	function _init()
 	{
 		$scope.uuid = null;
 		$scope.issue = null;
 		$scope.liked = false;
+
+		$scope.comment = null;
+		$scope.sendingComment = false;
+		$scope.commentBoxVisible = false;
 
 		Aqui.Issue.get($stateParams.id)
 			.success(function(issue) {
@@ -57,6 +61,33 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, Aqui)
 		});
 	};
 
+	$scope.showCommentBox = function()
+	{
+		$scope.commentBoxVisible = true;
+		focus('username');
+	};
+
+	$scope.sendComment = function(comment)
+	{
+		_onDeviceReady(function() {
+			var uuid = $cordovaDevice.getUUID();
+
+			$scope.sendingComment = true;
+
+			Aqui.Issue
+				.comment($scope.issue.id, uuid, comment.username, comment.comment)
+				.success(function(result) {
+					$scope.sendingComment = false;
+					$scope.comment = { username: '', comment: '' };
+					console.log('result', result);
+				})
+				.error(function(error) {
+					console.error(error);
+					$scope.sendingComment = false;
+				});
+		});
+	};
+
 	$scope.goBack = function()
 	{
 		$ionicHistory.goBack();
@@ -67,4 +98,4 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, Aqui)
 
 angular
 	.module('app.controllers')
-	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', '$cordovaDevice', 'Aqui', IssueCtrl]);
+	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', '$cordovaDevice', 'focus', 'Aqui', IssueCtrl]);

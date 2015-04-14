@@ -65,6 +65,16 @@ function AquiService($http, $cordovaFileTransfer)
 				});
 			},
 
+			comment: function(id, uuid, username, comment)
+			{
+				var data = {
+					uuid: uuid,
+					username: username,
+					comment: comment
+				};
+				return $http.post(url_api + 'issue/' + id + '/comment', data);
+			},
+
 			save: function(issue, city, successCallback, errorCallback, progressCallback)
 			{
 				var url = url_api + 'upload';

@@ -38,7 +38,7 @@
 	      <i class="icon ion-thumbsup {{ (liked > 0) ? 'positive' : '' }}"></i>
 	      Like
 	    </a>
-	    <a class="tab-item" href="#">
+	    <a class="tab-item" href="#" ng-click="showCommentBox()">
 	      <i class="icon ion-chatbox"></i>
 	      Comentar
 	    </a>
@@ -47,7 +47,26 @@
 	      Compartilhar
 	    </a>
 	  </div>
-	  <br><br>
 	</div><!--list card-->
+
+  <div class="list list-inset" ng-show="commentBoxVisible">
+  	<h3 class="item">Comentar sobre problema</h3>
+	  <label class="item item-input item-floating-label">
+	    <small class="input-label positive">Nome</small>
+	    <input type="text" id="username" placeholder="Nome" ng-model="comment.username">
+	  </label>
+	  <label class="item item-input item-floating-label">
+	    <small class="input-label positive">Comentário</small>
+	    <textarea rows="4" placeholder="Comentário" ng-model="comment.comment"></textarea>
+	  </label>
+	  <button class="button button-block button-positive" ng-click="sendComment(comment)" ng-hide="sendingComment">
+    	<i class="ion-paper-airplane"></i> Enviar comentário
+    </button>
+    <button class="button button-block button-positive" ng-show="sendingComment" disabled="disabled">
+    	Aguarde...
+    </button>
+	</div>
+
+  <br><br>
 
 </ion-content>
