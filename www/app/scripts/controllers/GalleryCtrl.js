@@ -1,11 +1,11 @@
 /*
  * Gallery Controller
  */
-function GalleryCtrl($scope, Aqui)
+function GalleryCtrl($scope, $state, Aqui)
 {
 	function _init()
 	{
-		$scope.url = Aqui.Site.url;
+		$scope.issues = [];
 
 		Aqui.Issue.getLasts()
 			.success(function(issues) {
@@ -16,9 +16,14 @@ function GalleryCtrl($scope, Aqui)
 			});
 	};
 
-	function _apply()
+	$scope.photo = function(issue)
 	{
-		if(!$scope.$$phase) $scope.$apply();
+		return (issue != null && issue.photo != '') ? Aqui.Site.url + 'img/issues/md/' + issue.photo : '';
+	};
+
+	$scope.select = function(issue_id)
+	{
+		$state.go('issue', { id: issue_id }, { reload: true });
 	};
 
 	_init();
@@ -26,4 +31,4 @@ function GalleryCtrl($scope, Aqui)
 
 angular
 	.module('app.controllers')
-	.controller('GalleryCtrl', ['$scope', 'Aqui', GalleryCtrl]);
+	.controller('GalleryCtrl', ['$scope', '$state', 'Aqui', GalleryCtrl]);

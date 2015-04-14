@@ -1,7 +1,7 @@
 /*
  * App Controller
  */
-function AppCtrl($scope, $location, $timeout, $ionicModal, $cordovaToast, Aqui, Camera, Map, Geocoder)
+function AppCtrl($scope, $state, $ionicModal, $cordovaToast, Aqui, Camera, Map, Geocoder)
 {
 	/* private methods */
 	function _init()
@@ -102,7 +102,7 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, $cordovaToast, Aqui, 
 	/* scope methods */
 	$scope.goto = function(path)
 	{
-		$location.path(path);
+		$state.go(path);
 	};
 
 	$scope.openModal = function()
@@ -155,6 +155,9 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, $cordovaToast, Aqui, 
 
 					$scope.sending = false;
 					$scope.closeModal();
+
+					$state.go('home', null, { reload: true });
+
 				}, function(error) {
 					_showToastError(error);
 					$scope.sending = false;
@@ -170,4 +173,4 @@ function AppCtrl($scope, $location, $timeout, $ionicModal, $cordovaToast, Aqui, 
 
 angular
 	.module('app.controllers')
-	.controller('AppCtrl', ['$scope', '$location', '$timeout', '$ionicModal', '$cordovaToast', 'Aqui', 'Camera', 'Map', 'Geocoder', AppCtrl]);
+	.controller('AppCtrl', ['$scope', '$state', '$ionicModal', '$cordovaToast', 'Aqui', 'Camera', 'Map', 'Geocoder', AppCtrl]);

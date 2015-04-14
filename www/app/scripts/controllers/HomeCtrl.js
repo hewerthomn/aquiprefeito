@@ -1,19 +1,16 @@
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
+function HomeCtrl($scope, $window, $state, Aqui, Map)
 {
 	function _init()
 	{
 		$scope.zoom = 4;
+		$scope.issues = [];
 		$scope.startLonlat = {
 			lon: -5801876.194150391,
 			lat: -1027313.6600097648
 		};
-
-		$scope.issue = Aqui.Issue.new();
-		$scope.issues = [];
-		$scope.url = Aqui.Site.url;
 
 		Aqui.Category.getAll()
 			.success(function(categories) {
@@ -35,26 +32,12 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 
 		_loadIssues();
 
-		$ionicModal
-			.fromTemplateUrl('app/views/modal/issue.html', {
-  			scope: $scope,
-  			animation: 'slide-in-up'
-  		})
-  		.then(function(modal) {
-  			$scope.modalIssue = modal;
-  			// $scope.modalIssue.show();
-  		});
-
 		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
 	};
 
 	function _onSelectPoint(feature)
 	{
-		Aqui.Issue.get(feature.data.id)
-			.success(function(issue) {
-				$scope.issue = issue;
-				$scope.modalIssue.show();
-			});
+		$state.go('issue', { id: feature.data.id }, { reload: true });
 	};
 
 	function _loadIssues()
@@ -62,27 +45,30 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 		Aqui.Issue.getLasts()
 			.success(function(issues) {
 				$scope.issues = issues;
-
-				var points = [];
-				angular.forEach($scope.issues, function(value, key) {
-					var category = Aqui.Category.get(value.category_id);
-
-					points.push({
-						id: value.id,
-						icon: value.category_icon,
-						lon: value.lon,
-						lat: value.lat,
-					});
-				});
-
-				var options = { transformTo: 'EPSG:4326' };
-
-				Map.addPoints(points, options);
+				_addPoints();
 			})
 			.error(function(error) {
 				console.error(error);
 			});
-	}
+	};
+
+	function _addPoints(issues)
+	{
+		var points = [];
+
+		angular.forEach($scope.issues, function(value, key) {
+			var category = Aqui.Category.get(value.category_id);
+
+			points.push({
+				id: value.id,
+				icon: value.category_icon,
+				lon: value.lon,
+				lat: value.lat,
+			});
+		});
+
+		Map.addPoints(points, { transformTo: 'EPSG:4326' });
+	};
 
 	$scope.getPosition = function()
 	{
@@ -98,4 +84,4 @@ function HomeCtrl($scope, $window, $ionicModal, Aqui, Map)
 
 angular
 	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$window', '$ionicModal', 'Aqui', 'Map', HomeCtrl]);
+	.controller('HomeCtrl', ['$scope', '$window', '$state', 'Aqui', 'Map', HomeCtrl]);

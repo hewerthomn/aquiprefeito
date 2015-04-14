@@ -1,5 +1,6 @@
 angular.module('app', [
 	'ionic',
+	'ui.router',
 	'ngCordova',
 	'focusIt',
 
@@ -15,6 +16,11 @@ angular.module('app', [
 			url: '/',
 			controller: 'HomeCtrl',
 			templateUrl: 'app/views/home.html'
+		})
+		.state('issue', {
+			url: '/issue/:id',
+			controller: 'IssueCtrl',
+			templateUrl: 'app/views/issue.html'
 		})
 		.state('gallery', {
 			url: '/gallery',
