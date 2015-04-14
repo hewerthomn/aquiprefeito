@@ -111,6 +111,10 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 		{
 			alert('Selecione a categoria do problema');
 		}
+		else if(issue.image == '' && $scope.image != 'img/camera.png')
+		{
+			alert('Tire a foto do problema!');
+		}
 		else
 		{
 			$scope.sending = true;
