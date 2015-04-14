@@ -1,7 +1,7 @@
 /*
  * Issue Controller
  */
-function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui)
+function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, Aqui)
 {
 	function _init()
 	{
@@ -17,10 +17,24 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui)
 				console.error(error);
 			});
 
-		Aqui.Issue.checkLike($stateParams.id)
-			.success(function(liked) {
-				$scope.liked = liked;
-			});
+		_onDeviceReady(function() {
+			var uuid = $cordovaDevice.getUUID();
+			Aqui.Issue.checkLike($stateParams.id, uuid)
+				.success(function(liked) {
+					$scope.liked = liked;
+					_apply();
+				});
+		});
+	};
+
+	function _apply()
+	{
+		if(!$scope.$$phase) $scope.$apply();
+	};
+
+	function _onDeviceReady(callback)
+	{
+		document.addEventListener('deviceready', callback, false);
 	};
 
 	$scope.photo = function(issue)
@@ -30,8 +44,17 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui)
 
 	$scope.like = function()
 	{
-		$scope.liked = true;
-		Aqui.Issue.like($scope.issue.id);
+		_onDeviceReady(function() {
+			var uuid = $cordovaDevice.getUUID();
+
+			Aqui.Issue.like($scope.issue.id, uuid)
+				.success(function() {
+					$scope.liked = true;
+				})
+				.error(function() {
+					$scope.liked = false;
+				});
+		});
 	};
 
 	$scope.goBack = function()
@@ -44,4 +67,4 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui)
 
 angular
 	.module('app.controllers')
-	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', 'Aqui', IssueCtrl]);
+	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', '$cordovaDevice', 'Aqui', IssueCtrl]);
