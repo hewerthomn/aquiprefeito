@@ -1,13 +1,14 @@
 /**
  * Aqui Service
  */
-function AquiService($http, $cordovaFileTransfer)
+function AquiService($http, $cordovaDevice, $cordovaFileTransfer)
 {
 	function _onDeviceReady(callback)
 	{
 		document.addEventListener('deviceready', callback, false);
 	}
 
+	var uuid = $cordovaDevice.getUUID();
 	var url_api = 'http://aquiprefeito.com.br/api/';
 
 	return {
@@ -53,6 +54,20 @@ function AquiService($http, $cordovaFileTransfer)
 				return $http.get(url_api + 'issue');
 			},
 
+			like: function(id)
+			{
+				$http.post(url_api + 'issue/' + id + '/like', {
+					params: { uuid: uuid }
+				});
+			},
+
+			checkLike: function(id)
+			{
+				retutn $http.get(url_api + 'issue/' + id + '/like', {
+					params: { uuid: uuid }
+				});
+			}
+
 			save: function(issue, city, successCallback, errorCallback, progressCallback)
 			{
 				var url = url_api + 'upload';
@@ -82,4 +97,4 @@ function AquiService($http, $cordovaFileTransfer)
 
 angular
 	.module('app.services')
-	.service('Aqui', ['$http', '$cordovaFileTransfer',  AquiService]);
+	.service('Aqui', ['$http', '$cordovaDevice','$cordovaFileTransfer',  AquiService]);
