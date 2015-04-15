@@ -16,6 +16,15 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, A
 		Aqui.Issue.get($stateParams.id)
 			.success(function(issue) {
 				$scope.issue = issue;
+				$scope.issue.comments = [{
+					avatar: 'http://api.adorable.io/avatars/80/abott@adorable.png',
+					username: 'Aboot Adorable',
+					comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, perspiciatis?'
+				}, {
+					avatar: 'http://api.adorable.io/avatars/80/joee@adorable.io.png',
+					username: 'Joe Adorable',
+					comment: 'Illum dolore voluptatum consectetur? Hic expedita accusantium mollitia est adipisci recusandae corporis asperiores, similique earum.'
+				}];
 			})
 			.error(function(error){
 				console.error(error);
@@ -77,9 +86,16 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, A
 			Aqui.Issue
 				.comment($scope.issue.id, uuid, comment.username, comment.comment)
 				.success(function(result) {
-					$scope.sendingComment = false;
-					$scope.comment = { username: '', comment: '' };
 					console.log('result', result);
+
+					$scope.issue.comments.push({
+						username: comment.username,
+						comment: comment.comment
+					});
+
+					$scope.comment = { username: '', comment: '' };
+					$scope.sendingComment = false;
+					$scope.commentBoxVisible = false;
 				})
 				.error(function(error) {
 					console.error(error);
