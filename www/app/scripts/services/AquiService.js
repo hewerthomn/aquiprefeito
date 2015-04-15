@@ -16,8 +16,6 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 	var url_site = 'http://aquiprefeito.com.br/';
 	var url_api  = url_site + 'api/';
 
-	$localStorage.$reset();
-
 	$localStorage.$default({
 		city: {
 			name: '...',
