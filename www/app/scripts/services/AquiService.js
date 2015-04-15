@@ -57,14 +57,6 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 			}
 		},
 
-		Device:
-		{
-			get: function()
-			{
-				return $localStorage.device;
-			}
-		},
-
 		Site:
 		{
 			url: url_site
