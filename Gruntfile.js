@@ -13,16 +13,16 @@ module.exports = function(grunt) {
 				dest: 'www/build/js/app.min.js',
 				src: [
 
-					'www/lib/angular/angular.js',
-					'www/lib/angular-animate/angular-animate.js',
-					'www/lib/angular-sanitize/angular-sanitize.js',
-					'www/lib/angular-touch/angular-touch.js',
-					'www/lib/angular-focus-it/angular-focus-it.js',
-					'www/lib/ngstorage/ngStorage.js',
-					'www/lib/angular-ui-router/release/angular-ui-router.js',
-					'www/lib/ionic/js/ionic.js',
-					'www/lib/ionic/js/ionic-angular.js',
-					'www/lib/ngCordova/dist/ng-cordova.js',
+					'www/lib/angular/angular.min.js',
+					'www/lib/angular-animate/angular-animate.min.js',
+					'www/lib/angular-focus-it/angular-focus-it.min.js',
+					'www/lib/angular-sanitize/angular-sanitize.min.js',
+					'www/lib/angular-touch/angular-touch.min.js',
+					'www/lib/ngstorage/ngStorage.min.js',
+					'www/lib/angular-ui-router/release/angular-ui-router.min.js',
+					'www/lib/ionic/js/ionic.min.js',
+					'www/lib/ionic/js/ionic-angular.min.js',
+					'www/lib/ngCordova/dist/ng-cordova.min.js',
 
 					'www/app/scripts/directives/main.js',
 
