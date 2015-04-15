@@ -1,7 +1,7 @@
 /**
  * Aqui Service
  */
-function AquiService($http, $cordovaFileTransfer)
+function AquiService($http, $localStorage $cordovaFileTransfer)
 {
 	function _onDeviceReady(callback)
 	{
@@ -11,6 +11,16 @@ function AquiService($http, $cordovaFileTransfer)
 	var url_api = '/api/';
 
 	return {
+
+		Device:
+		{
+			get: function()
+			{
+				_onDeviceReady(function() {
+					return $cordovaDevice.getDevice
+				});
+			}
+		},
 
 		Site:
 		{
@@ -104,4 +114,4 @@ function AquiService($http, $cordovaFileTransfer)
 
 angular
 	.module('app.services')
-	.service('Aqui', ['$http','$cordovaFileTransfer',  AquiService]);
+	.service('Aqui', ['$http', '$localStorage', '$cordovaFileTransfer',  AquiService]);

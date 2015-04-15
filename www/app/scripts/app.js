@@ -1,6 +1,7 @@
 angular.module('app', [
 	'ionic',
 	'ui.router',
+	'ngStorage',
 	'ngCordova',
 	'focusIt',
 

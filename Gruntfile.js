@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 					'www/lib/angular-sanitize/angular-sanitize.js',
 					'www/lib/angular-touch/angular-touch.js',
 					'www/lib/angular-focus-it/angular-focus-it.js',
+					'www/lib/ngstorage/ngStorage.js',
 					'www/lib/angular-ui-router/release/angular-ui-router.js',
 					'www/lib/ionic/js/ionic.js',
 					'www/lib/ionic/js/ionic-angular.js',
