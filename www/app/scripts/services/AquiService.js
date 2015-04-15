@@ -1,30 +1,75 @@
 /**
  * Aqui Service
  */
-function AquiService($http, $localStorage $cordovaFileTransfer)
+function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaFileTransfer, Map, Geocoder)
 {
+	function _apply()
+	{
+		if(!$rootScope.$$phase) $rootScope.$apply();
+	};
+
 	function _onDeviceReady(callback)
 	{
 		document.addEventListener('deviceready', callback, false);
 	}
 
-	var url_api = '/api/';
+	var url_site = 'http://aquiprefeito.com.br/';
+	var url_api  = url_site + 'api/';
+
+	$localStorage.$reset();
+
+	$localStorage.$default({
+		city: {
+			name: '...',
+			lonlat: {
+				lon: -5801876.194150391,
+				lat: -1027313.6600097648
+			}
+		}
+	});
 
 	return {
+
+		init: function()
+		{
+			_onDeviceReady(function(){
+
+				$localStorage.device = $cordovaDevice.getDevice();
+
+				Map.getPosition(function(lonlat) {
+					Geocoder.getPlaceInfo(lonlat)
+						.success(function(response) {
+							if(response.hasOwnProperty('results'))
+							{
+								$localStorage.city = {
+									lonlat: lonlat,
+									name: response.results[0].address_components[4].long_name
+								};
+							}
+						});
+				});
+			});
+		},
+
+		Storage:
+		{
+			get: function()
+			{
+				return $localStorage;
+			}
+		},
 
 		Device:
 		{
 			get: function()
 			{
-				_onDeviceReady(function() {
-					return $cordovaDevice.getDevice
-				});
+				return $localStorage.device;
 			}
 		},
 
 		Site:
 		{
-			url: '/site/'
+			url: url_site
 		},
 
 		Category:
@@ -114,4 +159,4 @@ function AquiService($http, $localStorage $cordovaFileTransfer)
 
 angular
 	.module('app.services')
-	.service('Aqui', ['$http', '$localStorage', '$cordovaFileTransfer',  AquiService]);
+	.service('Aqui', ['$rootScope', '$http', '$localStorage', '$cordovaDevice', '$cordovaFileTransfer', 'Map', 'Geocoder',  AquiService]);

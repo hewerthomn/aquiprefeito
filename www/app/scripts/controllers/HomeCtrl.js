@@ -1,19 +1,15 @@
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $window, $state, Aqui, Map, Geocoder)
+function HomeCtrl($scope, $state, Aqui, Map)
 {
 	function _init()
 	{
-		$scope.zoom = 4;
+		Aqui.init();
+
+		$scope.$storage = Aqui.Storage.get();
+
 		$scope.issues = [];
-		$scope.city = {
-			name: '...',
-			lonlat: {
-				lon: -5801876.194150391,
-				lat: -1027313.6600097648
-			}
-		};
 
 		Aqui.Category.getAll()
 			.success(function(categories) {
@@ -26,17 +22,22 @@ function HomeCtrl($scope, $window, $state, Aqui, Map, Geocoder)
 		Map.init({
 			id: 'map',
 			offset: 90,
-			startZoom: $scope.zoom,
-			startLonlat: $scope.city.lonlat,
+			startZoom: 4,
+			startLonlat: $scope.$storage.city.lonlat,
 			onSelectPoint: _onSelectPoint
 		});
 
-		$scope.getPosition();
-
-		_getCity();
+		_getPosition();
 		_loadIssues();
+	};
 
-		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
+	function _getPosition()
+	{
+		Map.getPosition(function(lonlat) {
+			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
+		}, function(error) {
+			alert(error);
+		});
 	};
 
 	function _onSelectPoint(feature)
@@ -74,41 +75,9 @@ function HomeCtrl($scope, $window, $state, Aqui, Map, Geocoder)
 		Map.addPoints(points, { transformTo: 'EPSG:4326' });
 	};
 
-	function _getCity()
-	{
-		Map.getPosition(function(lonlat) {
-			_getCityInfo(lonlat);
-		}, function(error) {
-			alert(error);
-			console.log(error);
-		});
-	};
-
-	function _getCityInfo(lonlat)
-	{
-		$scope.city.lonlat = lonlat;
-
-		Geocoder
-			.getPlaceInfo(lonlat)
-			.success(function(response) {
-				if(response.hasOwnProperty('results'))
-				{
-					$scope.city.name = response.results[0].address_components[4].long_name;
-				}
-			})
-			.error(function(error){
-				console.error(error);
-				alert(error);
-			});
-	};
-
 	$scope.getPosition = function()
 	{
-		Map.getPosition(function(lonlat) {
-			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
-		}, function(error) {
-			alert(error);
-		});
+		_getPosition();
 	};
 
 	_init();
@@ -116,4 +85,4 @@ function HomeCtrl($scope, $window, $state, Aqui, Map, Geocoder)
 
 angular
 	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$window', '$state', 'Aqui', 'Map', 'Geocoder', HomeCtrl]);
+	.controller('HomeCtrl', ['$scope', '$state', 'Aqui', 'Map', HomeCtrl]);
