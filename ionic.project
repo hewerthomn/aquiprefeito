@@ -1,4 +1,14 @@
 {
   "name": "aquiprefeito",
-  "app_id": "7342be06"
+  "app_id": "7342be06",
+  "proxies": [
+  	{
+      "path": "/site/",
+      "proxyUrl": "http://aquiprefeito.com.br/"
+    },
+    {
+      "path": "/api/",
+      "proxyUrl": "http://aquiprefeito.com.br/api/"
+    }
+  ]
 }

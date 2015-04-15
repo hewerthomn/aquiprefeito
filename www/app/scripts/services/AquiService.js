@@ -8,13 +8,13 @@ function AquiService($http, $cordovaFileTransfer)
 		document.addEventListener('deviceready', callback, false);
 	}
 
-	var url_api = 'http://aquiprefeito.com.br/api/';
+	var url_api = '/api/';
 
 	return {
 
 		Site:
 		{
-			url: 'http://aquiprefeito.com.br/'
+			url: '/site/'
 		},
 
 		Category:
