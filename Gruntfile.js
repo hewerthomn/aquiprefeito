@@ -81,7 +81,8 @@ module.exports = function(grunt) {
 				files: ['Gruntfile.js', 'www/app/scripts/**/*.js', 'www/css/**/*.css'],
 				tasks: ['concat:app', 'cssmin'],
 				options: {
-					atBegin: true
+					atBegin: true,
+					liveReload: true
 				}
 			}
 		}
