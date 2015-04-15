@@ -1,15 +1,11 @@
 /*
  * Upload Controller
  */
-function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, Map, Geocoder)
+function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, Map)
 {
 	function _init()
 	{
-		$scope.city = {
-			name: '...',
-			lonlat: { lon: 0, lat: 0 }
-		};
-		$scope.issue = null;
+		$scope.issue = Aqui.Issue.new();
 		$scope.sending = false;
 
 		Aqui.Category.getAll()
@@ -20,42 +16,14 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 				console.error(error);
 			});
 
-		_getCity();
-
-		_takePhoto();
+		$timeout(function() {
+			_takePhoto();
+		}, 1000);
 	};
 
 	function _apply()
 	{
 		if(!$scope.$$phase) $scope.$apply();
-	};
-
-	function _getCity()
-	{
-		Map.getPosition(function(lonlat) {
-			_getCityInfo(lonlat);
-		}, function(error) {
-			alert(error);
-			console.log(error);
-		});
-	};
-
-	function _getCityInfo(lonlat)
-	{
-		$scope.city.lonlat = lonlat;
-
-		Geocoder
-			.getPlaceInfo(lonlat)
-			.success(function(response) {
-				if(response.hasOwnProperty('results'))
-				{
-					$scope.city.name = response.results[0].address_components[4].long_name;
-				}
-			})
-			.error(function(error){
-				console.error(error);
-				alert(error);
-			});
 	};
 
 	function _getPosition()
@@ -71,10 +39,8 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 	{
 		$scope.issue = issue || Aqui.Issue.new();
 
-		_getPosition();
-
 		Camera.getPicture(function(imageUri) {
-			$scope.issue.image = imageUri;
+			$scope.issue.photo = imageUri;
 			_apply();
 		}, function(error) {
 			console.error(error);
@@ -84,7 +50,7 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 	function _showToastError(error)
 	{
 		var msg = 'Ops, algum erro ao reportar problema...\n';
-		msg += 'Error code ' + result.responseCode + "\n" + result.response;
+		if(error) msg += 'Error code: ' + error.responseCode + "\n" + error.response;
 		return msg;
 	};
 
@@ -102,6 +68,7 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 
 	$scope.takePhoto = function(issue)
 	{
+		_getPosition();
 		_takePhoto(issue)
 	};
 
@@ -111,18 +78,18 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 		{
 			alert('Selecione a categoria do problema');
 		}
-		else if(issue.image == '' && $scope.image != 'img/camera.png')
+		else if(issue.photo == '' && $scope.photo != 'img/camera.png')
 		{
-			alert('Tire a foto do problema!');
+			alert('Toque na câmera para tirar a foto do problema');
 		}
 		else
 		{
 			$scope.sending = true;
+			$scope.uploadProgress = 0;
 
 			Aqui.Issue
-				.save(issue, $scope.city, function(result) {
+				.save(issue, function(result) {
 					$scope.sending = false;
-
 					if(result.responseCode == 200)
 					{
 						$cordovaToast.showShortCenter(result.response);
@@ -135,10 +102,9 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 					$state.go('gallery', {}, { reload: true });
 
 				}, function(error) {
-
-					_showToastError(error);
 					$scope.sending = false;
-					$scope.closeModal();
+					console.log(error);
+					_showToastError(error);
 
 				}, function(progress) {
 					$scope.uploadProgress = parseInt((progress.loaded / progress.total) * 100, 10);
@@ -151,4 +117,4 @@ function UploadCtrl($scope, $state, $stateParams, $cordovaToast, Aqui, Camera, M
 
 angular
 	.module('app.controllers')
-	.controller('UploadCtrl', ['$scope', '$state', '$stateParams', '$cordovaToast', 'Aqui', 'Camera', 'Map', 'Geocoder', UploadCtrl]);
+	.controller('UploadCtrl', ['$scope', '$state', '$timeout', '$cordovaToast', 'Aqui', 'Camera', 'Map', UploadCtrl]);
