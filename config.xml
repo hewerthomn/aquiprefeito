@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.aqui875920" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="br.com.aquiprefeito.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>AquiPrefeito!</name>
     <description>
 		AquiPrefeito!
@@ -23,5 +23,21 @@
     </feature>
     <feature name="Device">
         <param name="id" value="org.apache.cordova.device" />
+    </feature>
+    <engine name="android" version="3.7.1" />
+    <feature name="Geolocation">
+        <param name="id" value="org.apache.cordova.geolocation" />
+    </feature>
+    <feature name="Camera">
+        <param name="id" value="org.apache.cordova.camera" />
+    </feature>
+    <feature name="Console">
+        <param name="id" value="org.apache.cordova.console" />
+    </feature>
+    <feature name="File Transfer">
+        <param name="id" value="org.apache.cordova.file-transfer" />
+    </feature>
+    <feature name="Keyboard">
+        <param name="id" value="com.ionic.keyboard" />
     </feature>
 </widget>
