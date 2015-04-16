@@ -30,22 +30,21 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 
 		init: function()
 		{
+			Map.getPosition(function(lonlat) {
+				Geocoder.getPlaceInfo(lonlat)
+					.success(function(response) {
+						if(response.hasOwnProperty('results'))
+						{
+							$localStorage.city = {
+								lonlat: lonlat,
+								name: response.results[0].address_components[4].long_name
+							};
+						}
+					});
+			});
+
 			_onDeviceReady(function(){
-
 				$localStorage.device = $cordovaDevice.getDevice();
-
-				Map.getPosition(function(lonlat) {
-					Geocoder.getPlaceInfo(lonlat)
-						.success(function(response) {
-							if(response.hasOwnProperty('results'))
-							{
-								$localStorage.city = {
-									lonlat: lonlat,
-									name: response.results[0].address_components[4].long_name
-								};
-							}
-						});
-				});
 			});
 		},
 
