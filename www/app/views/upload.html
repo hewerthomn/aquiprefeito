@@ -2,7 +2,7 @@
 	<div class="bar bar-subheader">
 	  <h2 class="title">
 	  	<img ng-src="{{ categoryIcon(issue.category_id) }}" style="">
-	  	Reportar problemas
+	  	Reportar problema
 	  </h2>
 	</div>
 
@@ -16,10 +16,10 @@
     </div>
 
 	  <label class="item item-input item-select">
-	  	<div class="input-label">
+	  	<div class="input-label positive">
 	      Categoria
 	    </div>
-	    <select ng-model="issue.category_id">
+	    <select id="category_id" ng-model="issue.category_id">
 	    	<option ng-repeat="category in categories" value="{{ category.id }}">{{ category.name }}</option>
 	    </select>
 	  </label>
@@ -27,7 +27,7 @@
   	<div class="row">
   		<div class="col">
       	<div class="item item-thumbnail-left" ng-click="takePhoto(issue)">
-		      <img ng-src="{{ issue.image }}" src="img/camera.png">
+		      <img ng-src="{{ issue.photo }}" src="img/camera.png">
 		    </div>
   		</div>
   		<div class="col col-75">

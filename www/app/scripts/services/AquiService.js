@@ -120,14 +120,14 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 				return $http.post(url_api + 'issue/' + id + '/comment', data);
 			},
 
-			save: function(issue, city, successCallback, errorCallback, progressCallback)
+			save: function(issue, successCallback, errorCallback, progressCallback)
 			{
 				var url = url_api + 'upload';
 				var trustHosts = false;
 				var options = {
 					chunkedMode: false,
 					params: {
-						city: city.name,
+						city: $localStorage.city.name,
 						comment: issue.comment,
 						username: issue.username,
 						category_id: issue.category_id,
@@ -138,7 +138,7 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 				_onDeviceReady(function() {
 
 					return $cordovaFileTransfer
-										.upload(url, issue.image, options, trustHosts)
+										.upload(url, issue.photo, options, trustHosts)
 										.then(successCallback, errorCallback, progressCallback);
 				});
 
