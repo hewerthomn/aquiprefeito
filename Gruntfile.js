@@ -54,14 +54,20 @@ module.exports = function(grunt) {
 
 		copy: {
 			fonts: {
-				files: [
-					{
-						expand: true,
-						flatten: true,
-						src: ['www/lib/ionic/fonts/**.*'],
-						dest: 'www/build/fonts'
-					}
-				]
+				files: [{
+					expand: true,
+					flatten: true,
+					src: ['www/lib/ionic/fonts/**.*'],
+					dest: 'www/build/fonts'
+				}]
+			},
+			font: {
+				files: [{
+					expand: true,
+					flatten: true,
+					src: ['www/font/**.*'],
+					dest: 'www/build/font'
+				}]
 			}
 		},
 
@@ -70,6 +76,7 @@ module.exports = function(grunt) {
 				files: {
 					'www/build/css/app.min.css': [
 						'www/lib/ionic/css/ionic.min.css',
+						'www/css/aquiprefeito.css',
 						'www/css/app.css',
 					]
 				}
@@ -89,7 +96,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('dev', ['concat:app', 'cssmin']);
-	grunt.registerTask('default', ['concat:app', 'cssmin', 'copy:fonts']);
+	grunt.registerTask('default', ['concat:app', 'cssmin', 'copy']);
 
 	require('jit-grunt')(grunt);
 };

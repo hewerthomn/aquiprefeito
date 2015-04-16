@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
+<defs>
+<font id="aquiprefeito" horiz-adv-x="1000" >
+<font-face font-family="aquiprefeito" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="facebook" unicode="&#xe800;" d="m857 82q0-66-47-113t-114-48h-107v340h114l16 125h-130v80q0 30 16 46t53 16l74 1v115q-53 5-100 5-76 0-122-45t-46-126v-92h-125v-125h125v-340h-303q-67 0-114 48t-47 113v536q0 66 47 113t114 48h535q67 0 114-48t47-113v-536z" horiz-adv-x="857.1" />
+<glyph glyph-name="aquiprefeito" unicode="&#xe801;" d="m251 420c9 0 16 9 16 18s-7 16-16 16l-100 0c-9 0-18-7-18-16s9-18 18-18l100 0z m0-72c9 0 16 9 16 17s-7 17-16 17l-100 0c-9 0-18-8-18-17s9-17 18-17l100 0z m210-14c119 0 211-42 290-121l0 376c-78-82-171-126-290-126l0-129z m497 220l-33 34 137 136 34-32z m25-175l0 48 230 0 0-48-230 0z m-58-171l33 34 138-138-34-32z m-128 516c20 0 36-15 36-34l0-577c0-19-16-34-36-34s-35 15-35 34c-59 72-162 165-317 165l-64 0 140-236-85-62c-21-11-44 3-56 18l-174 280-94 0s-87 47-87 122 87 118 87 118l333 0c155 0 258 96 317 172 0 19 15 34 35 34z" horiz-adv-x="1213" />
+</font>
+</defs>
+</svg>
