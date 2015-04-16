@@ -17,7 +17,7 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, Map)
 			});
 
 		$timeout(function() {
-			_takePhoto();
+			$scope.takePhoto();
 		}, 1000);
 	};
 
@@ -92,6 +92,7 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, Map)
 					$scope.sending = false;
 					if(result.responseCode == 200)
 					{
+						$scope.issue = null;
 						$cordovaToast.showShortCenter(result.response);
 					}
 					else
