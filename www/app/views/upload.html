@@ -15,6 +15,19 @@
     	<i class="ion-information-circled"></i> Selecione a categoria do problema
     </div>
 
+    <div class="item">
+    	<button class="button button-small button-facebook">
+			  <i class="icon-facebook"></i>
+			  {{ facebookLogged ? 'Logado' : 'Logar' }} com Facebook
+			</button>
+    </div>
+
+    <a ng-show="facebookLogged" class="item item-avatar" href="#">
+      <img src="{{ userfacebook.avatar }}">
+      <h2 class="positive">{{ userfacebook.name }}</h2>
+      <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
+    </a>
+
 	  <label class="item item-input item-select">
 	  	<div class="input-label positive">
 	      Categoria
@@ -38,10 +51,10 @@
   		</div>
   	</div>
 
-  	<label class="item item-input item-floating-label">
+  	<!--label class="item item-input item-floating-label">
 	    <small class="input-label positive">Comentário</small>
 	    <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
-	  </label>
+	  </label-->
 	</div><!--list card-->
 
 	<div class="padding">
