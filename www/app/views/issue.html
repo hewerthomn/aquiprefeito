@@ -13,7 +13,7 @@
 	  	<div class="header item item-avatar">
 		    <img ng-src="{{ issue.category_icon }}">
 		    <h2>{{ issue.category_name }}</h2>
-		    <p>{{ issue.created_at | date }}</p>
+		    <p>{{ issue.created_at * 1000 | date:'fullDate' }}</p>
 		    <img ng-src="{{ issue.status_icon }}" class="status-icon">
 				<button class="button button-small button-clear button-close-issue" ng-click="goBack()"><i class="ion-close"></i></button>
 		  </div>
