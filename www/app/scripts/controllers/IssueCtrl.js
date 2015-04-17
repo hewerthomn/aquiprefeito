@@ -1,13 +1,13 @@
 /*
  * Issue Controller
  */
-function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, Aqui, FB)
+function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Aqui, FB)
 {
 	function _init()
 	{
 		$scope.issue = null;
 		$scope.liked = false;
-		$scope.comments = null;
+		$scope.comments = [];
 
 		$scope.logged = false;
 		$scope.userfacebook = null;
@@ -19,6 +19,9 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 		Aqui.Issue.get($stateParams.id)
 			.success(function(issue) {
 				$scope.issue = issue;
+
+				_checkLike();
+				_getComments();
 			})
 			.error(function(error){
 				console.error(error);
@@ -85,7 +88,16 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 					$scope.liked = like;
 				});
 		}
-	}
+	};
+
+	function _getComments()
+	{
+		Aqui.Issue
+			.getComments($scope.issue.id)
+			.success(function(comments) {
+				$scope.comments = comments;
+			});
+	};
 
 	function _sendComment(text)
 	{
@@ -99,7 +111,14 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 		Aqui.Issue
 			.comment($scope.issue.id, newComment)
 			.success(function(result) {
-				$scope.issue.comments.push(newComment);
+
+				$scope.comments.unshift({
+					comment: newComment.text,
+					username: $scope.userfacebook.name,
+					facebook_id: $scope.userfacebook.id,
+				});
+
+				$cordovaToast.showShortCenter(result);
 
 				$scope.newComment = null;
 				$scope.sendingComment = false;
@@ -181,4 +200,4 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 
 angular
 	.module('app.controllers')
-	.controller('IssueCtrl', ['$scope', '$timeout', '$stateParams', '$ionicHistory', '$ionicScrollDelegate', 'Aqui', 'FB', IssueCtrl]);
+	.controller('IssueCtrl', ['$scope', '$timeout', '$stateParams', '$ionicHistory', '$ionicScrollDelegate', '$cordovaToast', 'Aqui', 'FB', IssueCtrl]);

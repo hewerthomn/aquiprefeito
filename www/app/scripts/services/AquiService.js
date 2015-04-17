@@ -121,6 +121,11 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 				});
 			},
 
+			getComments: function(id)
+			{
+				return $http.get(url_api + 'issue/' + id + '/comment');
+			},
+
 			comment: function(id, comment)
 			{
 				var data = {

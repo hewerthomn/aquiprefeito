@@ -35,8 +35,8 @@
 		      <a href="#" class="subdued" ng-if="issue.likes > 0">
 		      	<ng-pluralize count="issue.likes" when="{'one': '1 Curtiu', 'other': '{} Curtidas'}"></ng-pluralize>
 		      </a>
-		      <a href="#" class="subdued" ng-if="issue.comments.length > 0">
-		      	<ng-pluralize count="issue.comments.length" when="{'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
+		      <a href="#" class="subdued" ng-if="comments.length > 0">
+		      	<ng-pluralize count="comments.length" when="{'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
 		      </a>
 		    </p>
 		  </div>
