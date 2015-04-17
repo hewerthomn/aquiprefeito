@@ -33,7 +33,7 @@
 
 		    <p>
 		      <a href="#" class="subdued" ng-if="issue.likes > 0">
-		      	<ng-pluralize count="issue.likes" when="{'one': '1 Like', 'other': '{} Likes'}"></ng-pluralize>
+		      	<ng-pluralize count="issue.likes" when="{'one': '1 Curtiu', 'other': '{} Curtidas'}"></ng-pluralize>
 		      </a>
 		      <a href="#" class="subdued" ng-if="issue.comments.length > 0">
 		      	<ng-pluralize count="issue.comments.length" when="{'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
@@ -43,11 +43,11 @@
 			<!--/body-->
 
 		  <div class="item tabs tabs-secondary tabs-icon-left">
-		    <a class="tab-item" ng-click="like()">
-		      <i class="icon ion-thumbsup {{ (liked > 0) ? 'positive' : '' }}"></i> {{ (liked > 0) ? 'Dislike' : 'Like' }}
+		    <a class="tab-item {{ (liked > 0) ? 'positive' : '' }}" ng-click="like()">
+		      <i class="icon ion-thumbsup"></i> {{ (liked > 0) ? 'Descurtir' : 'Curtir' }}
 		    </a>
-		    <a class="tab-item" href="#" ng-click="toggleCommentBox()">
-		      <i class="icon ion-chatbox {{ commentBoxVisible ? 'positive' : '' }}"></i> Comentar
+		    <a class="tab-item {{ commentBoxVisible ? 'positive' : '' }}" href="#" ng-click="toggleCommentBox()">
+		      <i class="icon ion-chatbox"></i> Comentar
 		    </a>
 		    <a class="tab-item" href="#">
 		      <i class="icon ion-share"></i> Compartilhar

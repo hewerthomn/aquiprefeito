@@ -74,12 +74,12 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 			});
 	};
 
-	function _sendComment(comment)
+	function _sendComment(text)
 	{
 		$scope.sendingComment = true;
 
 		var newComment = {
-			text: comment,
+			text: text,
 			userfacebook: $scope.userfacebook
 		};
 
@@ -120,10 +120,13 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 
 	$scope.like = function()
 	{
+		$scope.liked = !$scope.liked;
+
 		Aqui.Issue
-			.like($scope.issue.id, $scope.userfacebook)
+			.like($scope.issue.id, $scope.userfacebook.id)
 			.success(function(like) {
 				$scope.liked = like;
+				$scope.issue.likes = (like > 0) ? ($scope.issue.likes +1) : ($scope.issue.likes -1);
 			});
 	};
 

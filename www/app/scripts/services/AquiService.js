@@ -106,18 +106,18 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 				});
 			},
 
-			like: function(id, userfacebook)
+			like: function(id, facebook_id)
 			{
 				var data = {
-					facebook_id: userfacebook.id
+					facebook_id: facebook_id
 				};
 				return $http.post(url_api + 'issue/' + id + '/like', data);
 			},
 
-			checkLike: function(id, userfacebook)
+			checkLike: function(id, facebook_id)
 			{
 				return $http.get(url_api + 'issue/' + id + '/like', {
-					params: { facebook_id: userfacebook.id }
+					params: { facebook_id: facebook_id }
 				});
 			},
 
