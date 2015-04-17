@@ -128,7 +128,9 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 					params: {
 						city: $localStorage.city.name,
 						comment: issue.comment,
-						username: issue.username,
+						email: issue.userfacebook.email,
+						username: issue.userfacebook.name,
+						facebook_id: issue.userfacebook.id,
 						category_id: issue.category_id,
 						lonlat: issue.lonlat.lon + " " + issue.lonlat.lat
 					}
