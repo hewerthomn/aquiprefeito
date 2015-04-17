@@ -9,16 +9,22 @@
 	<br><br>
 
 	<div class="list card">
-    <div class="item item-thumbnail-left" ng-repeat="issue in issues" ng-click="select(issue.id);">
+		<div ng-show="issues == null" class="padding text-center">
+			<ion-spinner></ion-spinner> Carregando...
+		</div>
+
+		<div class="item item-thumbnail-left" ng-repeat="issue in issues" ng-click="select(issue.id);">
       <img ng-src="{{ photo(issue) }}">
       <h2>
       	<img ng-src="{{ issue.category_icon }}" style="width:12px">
       	{{ issue.category_name }}
+      	<img ng-src="{{ issue.status_icon }}" style="width:12px">
       </h2>
-      <p>{{ issue.created_at | date }}</p>
+      <p>{{ issue.created_at * 1000 | date }}</p>
       <p>
-      	<small ng-if="issue.username != ''" class="positive">{{ issue.username }}<br></small>
-      	{{ issue.comment }}
+      	<span ng-if="issue.username != ''" class="positive">{{ issue.username }}<br></span>
+      	<ng-pluralize count="issue.likes" when="{'0': '', 'one': '1 Like', 'other': '{} Likes'}"></ng-pluralize>
+      	<ng-pluralize count="issue.comments" when="{'0': '', 'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
       </p>
     </div>
 	</div>

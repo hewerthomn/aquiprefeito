@@ -5,11 +5,13 @@ function GalleryCtrl($scope, $state, Aqui)
 {
 	function _init()
 	{
-		$scope.issues = [];
+		$scope.issues = null;
+		$scope.last_id = 0;
 
 		Aqui.Issue.getLasts()
 			.success(function(issues) {
 				$scope.issues = issues;
+				$scope.last_id = (issues.length > 0) ? issues[issues.length - 1].id : 0;
 			})
 			.error(function(error){
 				console.error(error);
