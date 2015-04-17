@@ -23,7 +23,7 @@
       <p>{{ issue.created_at * 1000 | date }}</p>
       <p>
       	<span ng-if="issue.username != ''" class="positive">{{ issue.username }}<br></span>
-      	<ng-pluralize count="issue.likes" when="{'0': '', 'one': '1 Like', 'other': '{} Likes'}"></ng-pluralize>
+      	<ng-pluralize count="issue.likes" when="{'0': '', 'one': '1 Curtiu', 'other': '{} Curtiram'}"></ng-pluralize>
       	<ng-pluralize count="issue.comments" when="{'0': '', 'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
       </p>
     </div>
