@@ -28,7 +28,7 @@ function HomeCtrl($scope, $state, Aqui, Map)
 		});
 
 		_getPosition();
-		_loadIssues();
+		_getPoints();
 	};
 
 	function _getPosition()
@@ -40,39 +40,20 @@ function HomeCtrl($scope, $state, Aqui, Map)
 		});
 	};
 
-	function _onSelectPoint(feature)
+	function _getPoints()
 	{
-		$state.go('issue', { id: feature.data.id }, { reload: true });
-	};
-
-	function _loadIssues()
-	{
-		Aqui.Issue.getLasts()
-			.success(function(issues) {
-				$scope.issues = issues;
-				_addPoints();
+		Aqui.Issue.getPoints()
+			.success(function(points) {
+				Map.addPoints(points, { transformTo: 'EPSG:4326' });
 			})
 			.error(function(error) {
 				console.error(error);
 			});
 	};
 
-	function _addPoints(issues)
+	function _onSelectPoint(feature)
 	{
-		var points = [];
-
-		angular.forEach($scope.issues, function(value, key) {
-			var category = Aqui.Category.get(value.category_id);
-
-			points.push({
-				id: value.id,
-				icon: value.category_icon,
-				lon: value.lon,
-				lat: value.lat,
-			});
-		});
-
-		Map.addPoints(points, { transformTo: 'EPSG:4326' });
+		$state.go('issue', { id: feature.data.id }, { reload: true });
 	};
 
 	$scope.getPosition = function()
