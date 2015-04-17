@@ -1,43 +1,43 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="br.com.aquiprefeito.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>AquiPrefeito!</name>
-    <description>
+  <name>AquiPrefeito!</name>
+  <description>
 		AquiPrefeito!
 	</description>
-    <author email="hewerthomn@gmail.com" href="http://hewertho.mn">
+  <author email="hewerthomn@gmail.com" href="http://hewertho.mn">
 		Éverton Inocêncio
 	</author>
-    <content src="index.html" />
-    <access origin="*" />
-    <preference name="webviewbounce" value="false" />
-    <preference name="UIWebViewBounce" value="false" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="BackupWebStorage" value="none" />
-    <preference name="CameraUsesGeolocation" value="true" />
-    <feature name="StatusBar">
-        <param name="ios-package" onload="true" value="CDVStatusBar" />
-    </feature>
-    <feature name="Toast">
-        <param name="id" value="nl.x-services.plugins.toast" />
-        <param name="url" value="https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git" />
-    </feature>
-    <feature name="Device">
-        <param name="id" value="org.apache.cordova.device" />
-    </feature>
-    <engine name="android" version="3.7.1" />
-    <feature name="Geolocation">
-        <param name="id" value="org.apache.cordova.geolocation" />
-    </feature>
-    <feature name="Camera">
-        <param name="id" value="org.apache.cordova.camera" />
-    </feature>
-    <feature name="Console">
-        <param name="id" value="org.apache.cordova.console" />
-    </feature>
-    <feature name="File Transfer">
-        <param name="id" value="org.apache.cordova.file-transfer" />
-    </feature>
-    <feature name="Keyboard">
-        <param name="id" value="com.ionic.keyboard" />
-    </feature>
+  <content src="index.html"/>
+  <access origin="*"/>
+  <preference name="webviewbounce" value="false"/>
+  <preference name="UIWebViewBounce" value="false"/>
+  <preference name="DisallowOverscroll" value="true"/>
+  <preference name="BackupWebStorage" value="none"/>
+  <preference name="CameraUsesGeolocation" value="true"/>
+  <feature name="StatusBar">
+    <param name="ios-package" onload="true" value="CDVStatusBar"/>
+  </feature>
+  <feature name="Toast">
+    <param name="id" value="nl.x-services.plugins.toast"/>
+    <param name="url" value="https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git"/>
+  </feature>
+  <feature name="Device">
+    <param name="id" value="org.apache.cordova.device"/>
+  </feature>
+  <feature name="Geolocation">
+    <param name="id" value="org.apache.cordova.geolocation"/>
+  </feature>
+  <feature name="Camera">
+    <param name="id" value="org.apache.cordova.camera"/>
+  </feature>
+  <feature name="Console">
+    <param name="id" value="org.apache.cordova.console"/>
+  </feature>
+  <feature name="File Transfer">
+    <param name="id" value="org.apache.cordova.file-transfer"/>
+  </feature>
+  <feature name="Keyboard">
+    <param name="id" value="com.ionic.keyboard"/>
+  </feature>
+  <engine name="android" version="3.7.1"/>
 </widget>
