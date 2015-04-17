@@ -47,7 +47,7 @@
 		      <i class="icon ion-thumbsup {{ (liked > 0) ? 'positive' : '' }}"></i> {{ (liked > 0) ? 'Dislike' : 'Like' }}
 		    </a>
 		    <a class="tab-item" href="#" ng-click="toggleCommentBox()">
-		      <i class="icon ion-chatbox"></i> Comentar
+		      <i class="icon ion-chatbox {{ commentBoxVisible ? 'positive' : '' }}"></i> Comentar
 		    </a>
 		    <a class="tab-item" href="#">
 		      <i class="icon ion-share"></i> Compartilhar

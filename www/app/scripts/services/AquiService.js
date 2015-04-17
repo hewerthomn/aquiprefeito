@@ -124,9 +124,10 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 			comment: function(id, comment)
 			{
 				var data = {
+					issue_id: id,
+					comment: comment.text,
 					username: comment.userfacebook.name,
-					facebook_id: comment.userfacebook.id,
-					comment: comment.text
+					facebook_id: comment.userfacebook.id
 				};
 				return $http.post(url_api + 'issue/' + id + '/comment', data);
 			},

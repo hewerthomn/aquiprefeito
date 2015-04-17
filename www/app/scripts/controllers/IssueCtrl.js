@@ -1,7 +1,7 @@
 /*
  * Issue Controller
  */
-function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui, FB)
+function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, Aqui, FB)
 {
 	function _init()
 	{
@@ -79,7 +79,7 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui, FB)
 		$scope.sendingComment = true;
 
 		var newComment = {
-			comment: comment,
+			text: comment,
 			userfacebook: $scope.userfacebook
 		};
 
@@ -130,6 +130,12 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui, FB)
 	$scope.toggleCommentBox = function()
 	{
 		$scope.commentBoxVisible = !($scope.commentBoxVisible);
+		if($scope.commentBoxVisible)
+		{
+			$timeout(function() {
+				$ionicScrollDelegate.scrollTo(0, 700, true);
+			}, 500);
+		};
 	};
 
 	$scope.sendComment = function(comment)
@@ -159,4 +165,4 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui, FB)
 
 angular
 	.module('app.controllers')
-	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', 'Aqui', 'FB', IssueCtrl]);
+	.controller('IssueCtrl', ['$scope', '$timeout', '$stateParams', '$ionicHistory', '$ionicScrollDelegate', 'Aqui', 'FB', IssueCtrl]);
