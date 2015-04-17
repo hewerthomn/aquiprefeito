@@ -78,3 +78,32 @@ a.olControlZoomIn {
 .upload-issue .fb button {
 	float: right !important;
 }
+
+.issue { }
+
+.issue .fb {
+	display: flex !important;
+	align-items: center !important;
+}
+.issue .fb img {
+	border-radius: 15px !important;
+	width: 30px;
+}
+.issue .fb span {
+	font-size: 16px;
+	margin-left: 5px;
+}
+
+.issue .header { }
+.issue .header img {
+	border-radius: 3px !important;
+}
+.issue .header .status-icon {
+	width: 12px;
+}
+
+.issue .header .button-close-issue {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}

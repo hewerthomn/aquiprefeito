@@ -1,43 +1,30 @@
 /*
  * Issue Controller
  */
-function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, Aqui)
+function IssueCtrl($scope, $stateParams, $ionicHistory, Aqui, FB)
 {
 	function _init()
 	{
-		$scope.uuid = null;
 		$scope.issue = null;
 		$scope.liked = false;
+		$scope.comments = null;
 
-		$scope.comment = null;
+		$scope.logged = false;
+		$scope.userfacebook = null;
+
+		$scope.newComment = null;
 		$scope.sendingComment = false;
 		$scope.commentBoxVisible = false;
 
 		Aqui.Issue.get($stateParams.id)
 			.success(function(issue) {
 				$scope.issue = issue;
-				$scope.issue.comments = [{
-					avatar: 'http://api.adorable.io/avatars/80/abott@adorable.png',
-					username: 'Aboot Adorable',
-					comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, perspiciatis?'
-				}, {
-					avatar: 'http://api.adorable.io/avatars/80/joee@adorable.io.png',
-					username: 'Joe Adorable',
-					comment: 'Illum dolore voluptatum consectetur? Hic expedita accusantium mollitia est adipisci recusandae corporis asperiores, similique earum.'
-				}];
 			})
 			.error(function(error){
 				console.error(error);
 			});
 
-		_onDeviceReady(function() {
-			var uuid = $cordovaDevice.getUUID();
-			Aqui.Issue.checkLike($stateParams.id, uuid)
-				.success(function(liked) {
-					$scope.liked = liked;
-					_apply();
-				});
-		});
+		_checkLogin();
 	};
 
 	function _apply()
@@ -45,9 +32,70 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, A
 		if(!$scope.$$phase) $scope.$apply();
 	};
 
-	function _onDeviceReady(callback)
+	function _checkLogin()
 	{
-		document.addEventListener('deviceready', callback, false);
+		FB.status()
+			.then(function(responseStatus) {
+				if(responseStatus.status == "connected")
+				{
+					_getUserFacebook();
+				}
+				else /* not connect on facebook */
+				{
+	    		_logout();
+				}
+			});
+	};
+
+	function _login()
+	{
+		FB.login()
+			.then(function(responseLogin) {
+				_getUserFacebook();
+			});
+	};
+
+	function _logout()
+	{
+		FB.logout();
+		$scope.logged = false;
+		_apply();
+	};
+
+	function _getUserFacebook()
+	{
+		FB.me()
+			.then(function(responseMe) {
+				$scope.logged = true;
+				$scope.userfacebook = responseMe;
+				$scope.userfacebook.avatar = FB.avatar(responseMe.id);
+			}, function(errorMe) {
+				_logout();
+			});
+	};
+
+	function _sendComment(comment)
+	{
+		$scope.sendingComment = true;
+
+		var newComment = {
+			comment: comment,
+			userfacebook: $scope.userfacebook
+		};
+
+		Aqui.Issue
+			.comment($scope.issue.id, newComment)
+			.success(function(result) {
+				$scope.issue.comments.push(newComment);
+
+				$scope.newComment = null;
+				$scope.sendingComment = false;
+				$scope.commentBoxVisible = false;
+			})
+			.error(function(error) {
+				console.error(error);
+				$scope.sendingComment = false;
+			});
 	};
 
 	$scope.photo = function(issue)
@@ -55,53 +103,50 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, A
 		return (issue != null && issue.photo != '') ? Aqui.Site.url + 'img/issues/lg/' + issue.photo : '';
 	};
 
-	$scope.like = function()
+	$scope.login = function()
 	{
-		_onDeviceReady(function() {
-			var uuid = $cordovaDevice.getUUID();
-
-			Aqui.Issue.like($scope.issue.id, uuid)
-				.success(function() {
-					$scope.liked = true;
-				})
-				.error(function() {
-					$scope.liked = false;
-				});
-		});
+		_login();
 	};
 
-	$scope.showCommentBox = function()
+	$scope.logout = function()
 	{
-		$scope.commentBoxVisible = true;
-		focus('username');
+		_logout();
+	};
+
+	$scope.avatar = function(facebook_id)
+	{
+		return FB.avatar(facebook_id);
+	};
+
+	$scope.like = function()
+	{
+		Aqui.Issue
+			.like($scope.issue.id, $scope.userfacebook)
+			.success(function(like) {
+				$scope.liked = like;
+			});
+	};
+
+	$scope.toggleCommentBox = function()
+	{
+		$scope.commentBoxVisible = !($scope.commentBoxVisible);
 	};
 
 	$scope.sendComment = function(comment)
 	{
-		_onDeviceReady(function() {
-			var uuid = $cordovaDevice.getUUID();
+		if($scope.userfacebook == null)
+		{
+			alert('Entre com a conta do Facebook');
+			return;
+		}
 
-			$scope.sendingComment = true;
+		if(!comment || comment == '')
+		{
+			alert('Escreva o comentário');
+			return;
+		}
 
-			Aqui.Issue
-				.comment($scope.issue.id, uuid, comment.username, comment.comment)
-				.success(function(result) {
-					console.log('result', result);
-
-					$scope.issue.comments.push({
-						username: comment.username,
-						comment: comment.comment
-					});
-
-					$scope.comment = { username: '', comment: '' };
-					$scope.sendingComment = false;
-					$scope.commentBoxVisible = false;
-				})
-				.error(function(error) {
-					console.error(error);
-					$scope.sendingComment = false;
-				});
-		});
+		_sendComment(comment);
 	};
 
 	$scope.goBack = function()
@@ -114,4 +159,4 @@ function IssueCtrl($scope, $stateParams, $ionicHistory, $cordovaDevice, focus, A
 
 angular
 	.module('app.controllers')
-	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', '$cordovaDevice', 'focus', 'Aqui', IssueCtrl]);
+	.controller('IssueCtrl', ['$scope', '$stateParams', '$ionicHistory', 'Aqui', 'FB', IssueCtrl]);

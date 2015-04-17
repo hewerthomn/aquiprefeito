@@ -106,24 +106,27 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 				});
 			},
 
-			like: function(id, uuid)
+			like: function(id, userfacebook)
 			{
-				return $http.post(url_api + 'issue/' + id + '/like', { uuid: uuid });
+				var data = {
+					facebook_id: userfacebook.id
+				};
+				return $http.post(url_api + 'issue/' + id + '/like', data);
 			},
 
-			checkLike: function(id, uuid)
+			checkLike: function(id, userfacebook)
 			{
 				return $http.get(url_api + 'issue/' + id + '/like', {
-					params: { uuid: uuid }
+					params: { facebook_id: userfacebook.id }
 				});
 			},
 
-			comment: function(id, uuid, username, comment)
+			comment: function(id, comment)
 			{
 				var data = {
-					uuid: uuid,
-					username: username,
-					comment: comment
+					username: comment.userfacebook.name,
+					facebook_id: comment.userfacebook.id,
+					comment: comment.text
 				};
 				return $http.post(url_api + 'issue/' + id + '/comment', data);
 			},
