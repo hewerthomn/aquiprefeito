@@ -1,7 +1,7 @@
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $state, Aqui, Map)
+function HomeCtrl($scope, $window, $state, Aqui, Map)
 {
 	function _init()
 	{
@@ -68,4 +68,4 @@ function HomeCtrl($scope, $state, Aqui, Map)
 
 angular
 	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$state', 'Aqui', 'Map', HomeCtrl]);
+	.controller('HomeCtrl', ['$scope', '$window', '$state', 'Aqui', 'Map', HomeCtrl]);
