@@ -98,8 +98,11 @@ a.olControlZoomIn {
 .issue .header img {
 	border-radius: 3px !important;
 }
-.issue .header .status-icon {
-	width: 12px;
+.issue .body .status-icon {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 45px;
 }
 
 .issue .header .button-close-issue {
