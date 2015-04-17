@@ -1,33 +1,27 @@
-<ion-content has-subheader="true">
+<ion-content has-subheader="true" class="upload-issue">
 	<div class="bar bar-subheader">
 	  <h2 class="title">
-	  	<img ng-src="{{ categoryIcon(issue.category_id) }}" style="">
-	  	Reportar problema
+	  	Reportar problema <img ng-src="{{ icon(issue.category_id) }}">
 	  </h2>
 	</div>
 
 	<br><br>
 	<br><br>
 
-  <div class="list card">
+  <div ng-hide="facebookLogged" class="padding">
+  	<br>
+  	<button ng-click="login()" class="button button-block button-facebook">
+		  <i class="icon-facebook"></i> Entrar com Facebook
+		</button>
+  </div>
 
-    <div ng-show="issue.category_id == 0" class="padding positive">
-    	<i class="ion-information-circled"></i> Selecione a categoria do problema
-    </div>
+  <div ng-show="facebookLogged" class="list card fb padding">
+  	<img ng-src="{{ userfacebook.avatar }}">
+    <span class="positive">{{ userfacebook.name }}</span>
+    <button ng-click="logout()" title="Sair do Facebook" class="button button-small button-clear button-assertive">x</button>
+   </div>
 
-    <div class="item">
-    	<button class="button button-small button-facebook">
-			  <i class="icon-facebook"></i>
-			  {{ facebookLogged ? 'Logado' : 'Logar' }} com Facebook
-			</button>
-    </div>
-
-    <a ng-show="facebookLogged" class="item item-avatar" href="#">
-      <img src="{{ userfacebook.avatar }}">
-      <h2 class="positive">{{ userfacebook.name }}</h2>
-      <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
-    </a>
-
+   <div class="list card">
 	  <label class="item item-input item-select">
 	  	<div class="input-label positive">
 	      Categoria
@@ -36,7 +30,6 @@
 	    	<option ng-repeat="category in categories" value="{{ category.id }}">{{ category.name }}</option>
 	    </select>
 	  </label>
-
   	<div class="row">
   		<div class="col">
       	<div class="item item-thumbnail-left" ng-click="takePhoto(issue)">
@@ -45,24 +38,26 @@
   		</div>
   		<div class="col col-75">
   			<label class="item item-input item-floating-label">
-			    <small class="input-label positive">Nome</small>
-			    <input type="text" placeholder="Nome (opcional)" ng-model="issue.username">
+			    <small class="input-label positive">Comentário</small>
+			    <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
 			  </label>
   		</div>
   	</div>
 
-  	<!--label class="item item-input item-floating-label">
-	    <small class="input-label positive">Comentário</small>
-	    <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
-	  </label-->
+  	<div ng-show="facebookLogged" class="item item-checkbox">
+	     <label class="checkbox">
+	       <input type="checkbox" ng-model="issue.share_facebook">
+	     </label>
+	     Compartilhar no Facebook
+	  </div>
 	</div><!--list card-->
 
 	<div class="padding">
 		<button class="button button-block button-positive" ng-click="send(issue)" ng-hide="sending">
-    	<i class="ion-paper-airplane"></i> Enviar
+    	<i class="ion-paper-airplane"></i> Enviar problema
     </button>
     <button class="button button-block button-positive" ng-show="sending" disabled="disabled">
-    	Enviando... {{ uploadProgress }}%
+    	Enviando... <b>{{ uploadProgress }}%</b>
     </button>
 	</div>
 

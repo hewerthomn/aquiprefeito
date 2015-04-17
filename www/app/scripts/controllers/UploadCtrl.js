@@ -13,16 +13,11 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 		Aqui.Category.getAll()
 			.success(function(categories) {
 				$scope.categories = categories;
-			})
-			.error(function(error) {
-				console.error(error);
 			});
 
+		_checkLogin();
 
-		$timeout(function() {
-			// $scope.takePhoto();
-			_facebook();
-		}, 1000);
+		// $timeout(function() { $scope.takePhoto(); }, 1000);
 	};
 
 	function _apply()
@@ -30,32 +25,46 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 		if(!$scope.$$phase) $scope.$apply();
 	};
 
-	function _facebook()
+	function _checkLogin()
 	{
 		FB.status()
 			.then(function(responseStatus) {
-				/* connected on facebook */
-				if(responseStatus.status == "connected") {
+				if(responseStatus.status == "connected")
+				{
 	    		$scope.facebookLogged = true;
-
-					FB.me()
-						.then(function(responseMe) {
-							console.log('me', responseMe);
-							$scope.userfacebook = responseMe;
-							$scope.userfacebook.avatar = FB.avatar(responseMe);
-
-							_apply();
-						});
-
-				} else {
-				/* not connect on facebook */
-	    		$scope.facebookLogged = false;
-	    		FB.logout();
-					FB.login()
-						.then(function(responseLogin) {
-							console.log('responseLogin', responseLogin);
-						});
+					_getUserFacebook();
 				}
+				else /* not connect on facebook */
+				{
+	    		_logout();
+				}
+			});
+	};
+
+	function _login()
+	{
+		FB.login()
+			.then(function(responseLogin) {
+				_getUserFacebook();
+			});
+	};
+
+	function _logout()
+	{
+		FB.logout();
+
+		$scope.userfacebook = null;
+		$scope.facebookLogged = false;
+	};
+
+	function _getUserFacebook()
+	{
+		FB.me()
+			.then(function(responseMe) {
+				$scope.userfacebook = responseMe;
+				$scope.userfacebook.avatar = FB.avatar(responseMe);
+				$scope.facebookLogged = true;
+				_apply();
 			});
 	};
 
@@ -87,7 +96,35 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 		return msg;
 	};
 
-	$scope.categoryIcon = function(category_id)
+	function _send(issue)
+	{
+		$scope.sending = true;
+		$scope.uploadProgress = 0;
+		issue.userfacebook = $scope.userfacebook;
+
+		Aqui.Issue.save(issue, function(result) {
+			$scope.sending = false;
+			if(result.responseCode == 200)
+			{
+				$scope.issue = null;
+				$cordovaToast.showShortCenter(result.response);
+			}
+			else
+			{
+				$cordovaToast.showShortCenter(_showToastError(result));
+			}
+
+			$state.go('gallery', {}, { reload: true });
+		}, function(error) {
+			$scope.sending = false;
+			_showToastError(error);
+
+		}, function(progress) {
+			$scope.uploadProgress = parseInt((progress.loaded / progress.total) * 100, 10);
+		});
+	};
+
+	$scope.icon = function(category_id)
 	{
 		if(category_id > 0)
 		{
@@ -99,6 +136,16 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 		}
 	};
 
+	$scope.login = function()
+	{
+		_login();
+	};
+
+	$scope.logout = function()
+	{
+		_logout();
+	};
+
 	$scope.takePhoto = function(issue)
 	{
 		_getPosition();
@@ -107,42 +154,21 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 
 	$scope.send = function(issue)
 	{
-		if(issue.category_id == 0)
+		if(!$scope.userfacebook)
+		{
+			alert('Entre com a conta do Facebook');
+		}
+		else if(issue.category_id == 0)
 		{
 			alert('Selecione a categoria do problema');
 		}
 		else if(issue.photo == '' && $scope.photo != 'img/camera.png')
 		{
-			alert('Toque na câmera para tirar a foto do problema');
+			alert('Toque na câmera para tirar foto');
 		}
 		else
 		{
-			$scope.sending = true;
-			$scope.uploadProgress = 0;
-
-			Aqui.Issue
-				.save(issue, function(result) {
-					$scope.sending = false;
-					if(result.responseCode == 200)
-					{
-						$scope.issue = null;
-						$cordovaToast.showShortCenter(result.response);
-					}
-					else
-					{
-						$cordovaToast.showShortCenter(_showToastError(result));
-					}
-
-					$state.go('gallery', {}, { reload: true });
-
-				}, function(error) {
-					$scope.sending = false;
-					console.log(error);
-					_showToastError(error);
-
-				}, function(progress) {
-					$scope.uploadProgress = parseInt((progress.loaded / progress.total) * 100, 10);
-				});
+			_send(issue);
 		}
 	};
 

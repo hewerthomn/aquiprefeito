@@ -27,7 +27,7 @@ function FBService($cordovaFacebook)
 
 	this.avatar = function(me)
 	{
-		return 'https://graph.facebook.com/' + me.id + '/picture?type=large';
+		return 'https://graph.facebook.com/' + me.id + '/picture';
 	};
 };
 

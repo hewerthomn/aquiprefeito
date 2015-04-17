@@ -44,3 +44,33 @@ a.olControlZoomIn {
 	color: #FFF;
 	background-color: #3B5998;
 }
+
+.upload-issue {
+
+}
+
+.upload-issue .title {
+	text-align: left;
+}
+.upload-issue .title > img {
+	float: right;
+	margin-top: 8px;
+}
+
+.upload-issue .fb {
+	display: flex;
+	align-items: center;
+}
+
+.upload-issue .fb img {
+	border-radius: 15px !important;
+	width: 30px;
+}
+
+.upload-issue .fb span {
+	font-size: 18px;
+	margin-left: 5px;
+}
+.upload-issue .fb button {
+	float: right !important;
+}
