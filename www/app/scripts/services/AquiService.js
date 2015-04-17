@@ -101,7 +101,9 @@ function AquiService($rootScope, $http, $localStorage, $cordovaDevice, $cordovaF
 
 			getLasts: function()
 			{
-				return $http.get(url_api + 'issue');
+				return $http.get(url_api + 'issue', {
+					params: { city_name: $localStorage.city.name }
+				});
 			},
 
 			like: function(id, uuid)
