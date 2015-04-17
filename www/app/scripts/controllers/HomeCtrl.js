@@ -29,6 +29,8 @@ function HomeCtrl($scope, $state, Aqui, Map)
 
 		_getPosition();
 		_getPoints();
+
+		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
 	};
 
 	function _getPosition()
