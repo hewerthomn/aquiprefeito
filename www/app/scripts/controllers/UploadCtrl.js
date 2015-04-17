@@ -16,8 +16,6 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 			});
 
 		_checkLogin();
-
-		// $timeout(function() { $scope.takePhoto(); }, 1000);
 	};
 
 	function _apply()
@@ -62,7 +60,7 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 		FB.me()
 			.then(function(responseMe) {
 				$scope.userfacebook = responseMe;
-				$scope.userfacebook.avatar = FB.avatar(responseMe);
+				$scope.userfacebook.avatar = FB.avatar(responseMe.id);
 				$scope.facebookLogged = true;
 				_apply();
 			});

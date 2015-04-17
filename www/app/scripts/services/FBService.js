@@ -25,9 +25,9 @@ function FBService($cordovaFacebook)
 		return $cordovaFacebook.api('me', ['public_profile', 'email']);
 	};
 
-	this.avatar = function(me)
+	this.avatar = function(id)
 	{
-		return 'https://graph.facebook.com/' + me.id + '/picture';
+		return 'https://graph.facebook.com/' + id + '/picture';
 	};
 };
 
