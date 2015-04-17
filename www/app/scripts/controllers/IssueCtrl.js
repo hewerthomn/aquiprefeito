@@ -69,10 +69,23 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 				$scope.logged = true;
 				$scope.userfacebook = responseMe;
 				$scope.userfacebook.avatar = FB.avatar(responseMe.id);
+				_checkLike();
 			}, function(errorMe) {
 				_logout();
 			});
 	};
+
+	function _checkLike()
+	{
+		if($scope.userfacebook)
+		{
+			Aqui.Issue
+				.checkLike($scope.issue.id, $scope.userfacebook.id)
+				.success(function(like) {
+					$scope.liked = like;
+				});
+		}
+	}
 
 	function _sendComment(text)
 	{
