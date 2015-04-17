@@ -135,6 +135,7 @@ function MapService($cordovaGeolocation)
           dragPanOptions: { enableKinetic: true }
         }),
         selectPoint: new OpenLayers.Control.SelectFeature([self._layers.issues], {
+        	toggle: true,
         	autoActivate: true,
         	onSelect: self.onSelectPoint
         })
