@@ -14,6 +14,7 @@ module.exports = function(grunt) {
 				src: [
 
 					'www/lib/angular/angular.min.js',
+					'www/lib/angular-i18n/angular-locale_pt-br.js',
 					'www/lib/angular-animate/angular-animate.min.js',
 					'www/lib/angular-focus-it/angular-focus-it.min.js',
 					'www/lib/angular-sanitize/angular-sanitize.min.js',
