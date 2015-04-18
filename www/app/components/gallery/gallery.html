@@ -13,6 +13,18 @@
 			<ion-spinner></ion-spinner> Carregando...
 		</div>
 
+		<div ng-show="(issues != null && issues.length == 0)" class="padding text-center">
+			<br>
+			<h4 class="positive">
+				Nenhum problema para exibir. <br>
+				Seja o primeiro a enviar!
+			</h4>
+			<br>
+			<a ui-sref="upload" class="button button-outline button-positive">
+				<i class="ion-camera"></i> Tire uma foto e envie para nós
+			</a>
+		</div>
+
 		<div class="item item-thumbnail-left" ng-repeat="issue in issues" ng-click="select(issue.id);">
       <img ng-src="{{ photo(issue) }}">
       <h2>
