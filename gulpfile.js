@@ -1,39 +1,44 @@
 var gulp = require('gulp'),
-		gutil = require('gulp-util'),
+		batch = require('gulp-batch'),
 		concat = require('gulp-concat'),
 		cssmin = require('gulp-cssmin'),
 		rename = require('gulp-rename'),
 		concatCss = require('gulp-concat-css'),
-		uglify = require('gulp-uglify'),
 		copy = require('gulp-copy'),
 		watch = require('gulp-watch');
 
-gulp.task('concat', function() {
+gulp.task('jsconcat', function() {
 	return gulp.src([
-		'www/lib/angular/angular.js',
-		'www/lib/angular-animate/angular-animate.js',
-		'www/lib/angular-sanitize/angular-sanitize.js',
-		'www/lib/angular-touch/angular-touch.js',
-		'www/lib/angular-focus-it/angular-focus-it.js',
-		'www/lib/angular-ui-router/release/angular-ui-router.js',
-		'www/lib/ionic/js/ionic.js',
-		'www/lib/ionic/js/ionic-angular.js',
-		'www/lib/ngCordova/dist/ng-cordova.js',
+		'www/lib/angular/angular.min.js',
+		'www/lib/angular-i18n/angular-locale_pt-br.js',
+		'www/lib/angular-animate/angular-animate.min.js',
+		'www/lib/angular-focus-it/angular-focus-it.min.js',
+		'www/lib/angular-sanitize/angular-sanitize.min.js',
+		'www/lib/angular-touch/angular-touch.min.js',
+		'www/lib/ngstorage/ngStorage.min.js',
+		'www/lib/angular-ui-router/release/angular-ui-router.min.js',
+		'www/lib/ionic/js/ionic.min.js',
+		'www/lib/ionic/js/ionic-angular.min.js',
+		'www/lib/ngCordova/dist/ng-cordova.min.js',
 
-		'www/app/scripts/directives/main.js',
+		'www/app/app.js',
+		'www/app/config.js',
+		'www/app/constants.js',
+		'www/app/routes.js',
+		'www/app/run.js',
 
-		'www/app/scripts/controllers/main.js',
-		'www/app/scripts/controllers/AppCtrl.js',
-		'www/app/scripts/controllers/HomeCtrl.js',
-		'www/app/scripts/controllers/GalleryCtrl.js',
+		'www/app/components/home/HomeController.js',
+		'www/app/components/issue/IssueController.js',
+		'www/app/components/gallery/GalleryController.js',
+		'www/app/components/upload/UploadController.js',
 
-		'www/app/scripts/services/main.js',
-		'www/app/scripts/services/AquiService.js',
-		'www/app/scripts/services/MapService.js',
-		'www/app/scripts/services/CameraService.js',
-		'www/app/scripts/services/GeocoderService.js',
-
-		'www/app/scripts/app.js'
+		'www/app/services/AquiService.js',
+		'www/app/services/CameraService.js',
+		'www/app/services/CategoryService.js',
+		'www/app/services/FBService.js',
+		'www/app/services/GeocoderService.js',
+		'www/app/services/IssueService.js',
+		'www/app/services/MapService.js'
 	])
 	.pipe(concat('app.min.js', {newLine: ';'}))
 	.pipe(gulp.dest('www/build/js/'));
@@ -42,6 +47,7 @@ gulp.task('concat', function() {
 gulp.task('cssconcat', function() {
 	return gulp.src([
 		'www/lib/ionic/css/ionic.css',
+		'www/css/aquiprefeito.css',
 		'www/css/app.css',
 	])
 	.pipe(concatCss('app.css'))
@@ -57,28 +63,26 @@ gulp.task('cssmin', function() {
 	.pipe(gulp.dest('www/build/css/'));
 });
 
-gulp.task('uglify', function() {
-	return gulp.src('www/build/js/app.min.js')
-	.pipe(uglify({mangle: false}))
-	.pipe(gulp.dest('www/build/js/'));
-});
-
 gulp.task('copyfonts', function() {
 	return gulp.src([
-		['www/lib/ionic/fonts/**.*']
+		'www/lib/ionic/fonts/**.*'
 	])
 	.pipe(gulp.dest('www/build/fonts'));
 });
-
-gulp.task('watch', ['concat', 'cssmin'], function() {
+gulp.task('copyfont', function() {
 	return gulp.src([
-		'gulpfile.js',
-		'www/app/scripts/**/*.js',
-		'www/css/**/*.css'
+		'www/font/**.*'
 	])
-	.pipe(watch(['gulpfile.js','www/app/scripts/**/*.js', 'www/css/**/*.css']));
-
+	.pipe(gulp.dest('www/build/font'));
 });
 
-gulp.task('dev', ['concat', 'cssmin']);
-gulp.task('default', ['concat', 'uglify']);
+gulp.task('watch', ['jsconcat', 'cssconcat'], function() {
+	var files = ['gulpfile*','www/app/**/*.js', 'www/css/**/*.css'];
+	watch(files, batch(function() {
+		gulp.start('dev');
+		gulp.start('watch');
+	}));
+});
+
+gulp.task('dev', ['jsconcat', 'cssconcat']);
+gulp.task('default', ['jsconcat', 'cssconcat', 'cssmin', 'copyfonts', 'copyfont']);

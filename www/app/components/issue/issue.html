@@ -81,12 +81,14 @@
 			    <textarea rows="4" placeholder="Comentário" ng-model="newComment.text"></textarea>
 			  </label>
 
-			  <button class="button button-block button-positive" ng-click="sendComment(newComment.text)" ng-hide="sendingComment">
-		    	<i class="ion-paper-airplane"></i> Enviar comentário
-		    </button>
-		    <button class="button button-block button-positive" ng-show="sendingComment" disabled="disabled">
-		    	Aguarde...
-		    </button>
+			  <div ng-show="newComment.text.length > 0">
+				  <button class="button button-block button-positive" ng-click="sendComment(newComment.text)" ng-hide="sendingComment">
+			    	<i class="ion-paper-airplane"></i> Enviar comentário
+			    </button>
+			    <button class="button button-block button-positive" ng-show="sendingComment" disabled="disabled">
+			    	Aguarde...
+			    </button>
+			  </div>
 		  </div>
 		</div>
 		<!--/comment-box -->

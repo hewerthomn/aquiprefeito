@@ -1,10 +1,10 @@
+'use strict';
 /**
  * Map Service
  *
  */
 function MapService($cordovaGeolocation)
 {
-
 	return {
 
 		init: function(opts)
@@ -342,14 +342,17 @@ function MapService($cordovaGeolocation)
 					height = window.innerHeight,
 					element = self._map.div.id;
 
-			height -=  self._offset | 0;
-			element = document.getElementById(element);
-			element.style.height = height + 'px';
-			self._map.updateSize();
+			if(element)
+			{
+				height -=  self._offset | 0;
+				element = document.getElementById(element);
+				element.style.height = height + 'px';
+				self._map.updateSize();
+			}
 		}
 	};
 }
 
 angular
-	.module('app.services')
-	.service('Map', ['$cordovaGeolocation', MapService]);
+	.module('app')
+	.service('Map', MapService);

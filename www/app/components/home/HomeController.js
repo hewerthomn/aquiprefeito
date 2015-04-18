@@ -1,22 +1,19 @@
+'use strict';
 /*
  * Home Controller
  */
-function HomeCtrl($scope, $window, $state, Aqui, Map)
+function HomeController($scope, $window, $state, Aqui, Category, Issue, Map)
 {
 	function _init()
 	{
 		Aqui.init();
-
-		$scope.$storage = Aqui.Storage.get();
+		$scope.$storage = Aqui.storage();
 
 		$scope.issues = [];
 
-		Aqui.Category.getAll()
+		Category.getAll()
 			.success(function(categories) {
 				$scope.categories = categories;
-			})
-			.error(function(error) {
-				console.error(error);
 			});
 
 		Map.init({
@@ -37,20 +34,15 @@ function HomeCtrl($scope, $window, $state, Aqui, Map)
 	{
 		Map.getPosition(function(lonlat) {
 			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
-		}, function(error) {
-			alert(error);
 		});
 	};
 
 	function _getPoints()
 	{
-		Aqui.Issue.getPoints()
+		Issue.getPoints()
 			.success(function(points) {
 				Map.addPoints(points, { transformTo: 'EPSG:4326' });
 			})
-			.error(function(error) {
-				console.error(error);
-			});
 	};
 
 	function _onSelectPoint(feature)
@@ -67,5 +59,5 @@ function HomeCtrl($scope, $window, $state, Aqui, Map)
 };
 
 angular
-	.module('app.controllers')
-	.controller('HomeCtrl', ['$scope', '$window', '$state', 'Aqui', 'Map', HomeCtrl]);
+	.module('app')
+	.controller('HomeController', HomeController);

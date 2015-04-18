@@ -1,3 +1,4 @@
+'use strict';
 /**
  * FB Service
  */
@@ -32,5 +33,5 @@ function FBService($cordovaFacebook)
 };
 
 angular
-	.module('app.services')
-	.service('FB', ['$cordovaFacebook', FBService]);
+	.module('app')
+	.service('FB', FBService);

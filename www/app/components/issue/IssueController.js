@@ -1,7 +1,8 @@
+'use strict';
 /*
  * Issue Controller
  */
-function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Aqui, FB)
+function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Issue, FB, URL)
 {
 	function _init()
 	{
@@ -16,7 +17,7 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 		$scope.sendingComment = false;
 		$scope.commentBoxVisible = false;
 
-		Aqui.Issue.get($stateParams.id)
+		Issue.get($stateParams.id)
 			.success(function(issue) {
 				$scope.issue = issue;
 
@@ -82,8 +83,7 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 	{
 		if($scope.userfacebook)
 		{
-			Aqui.Issue
-				.checkLike($scope.issue.id, $scope.userfacebook.id)
+			Issue.checkLike($stateParams.id, $scope.userfacebook.id)
 				.success(function(like) {
 					$scope.liked = like;
 				});
@@ -92,8 +92,7 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 
 	function _getComments()
 	{
-		Aqui.Issue
-			.getComments($scope.issue.id)
+		Issue.getComments($stateParams.id)
 			.success(function(comments) {
 				$scope.comments = comments;
 			});
@@ -108,8 +107,7 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 			userfacebook: $scope.userfacebook
 		};
 
-		Aqui.Issue
-			.comment($scope.issue.id, newComment)
+		Issue.comment($scope.issue.id, newComment)
 			.success(function(result) {
 
 				$scope.comments.unshift({
@@ -132,7 +130,7 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 
 	$scope.photo = function(issue)
 	{
-		return (issue != null && issue.photo != '') ? Aqui.Site.url + 'img/issues/lg/' + issue.photo : '';
+		return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/lg/' + issue.photo : '';
 	};
 
 	$scope.login = function()
@@ -152,14 +150,20 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 
 	$scope.like = function()
 	{
-		$scope.liked = !$scope.liked;
+		if($scope.userfacebook == null)
+		{
+			_login();
+		}
+		else
+		{
+			$scope.liked = !$scope.liked;
 
-		Aqui.Issue
-			.like($scope.issue.id, $scope.userfacebook.id)
-			.success(function(like) {
-				$scope.liked = like;
-				$scope.issue.likes = (like > 0) ? ($scope.issue.likes +1) : ($scope.issue.likes -1);
-			});
+			Issue.like($scope.issue.id, $scope.userfacebook.id)
+				.success(function(like) {
+					$scope.liked = like;
+					$scope.issue.likes = (like > 0) ? ($scope.issue.likes +1) : ($scope.issue.likes -1);
+				});
+		}
 	};
 
 	$scope.toggleCommentBox = function()
@@ -199,5 +203,5 @@ function IssueCtrl($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDe
 };
 
 angular
-	.module('app.controllers')
-	.controller('IssueCtrl', ['$scope', '$timeout', '$stateParams', '$ionicHistory', '$ionicScrollDelegate', '$cordovaToast', 'Aqui', 'FB', IssueCtrl]);
+	.module('app')
+	.controller('IssueController', IssueController);

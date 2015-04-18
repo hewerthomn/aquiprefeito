@@ -1,16 +1,17 @@
+'use strict';
 /*
  * Upload Controller
  */
-function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, Map)
+function UploadController($scope, $state, $cordovaToast, Category, Camera, Issue, FB, Map)
 {
 	function _init()
 	{
-		$scope.issue = Aqui.Issue.new();
+		$scope.issue = Issue.new();
 		$scope.sending = false;
 		$scope.userfacebook = null;
 		$scope.facebookLogged = false;
 
-		Aqui.Category.getAll()
+		Category.getAll()
 			.success(function(categories) {
 				$scope.categories = categories;
 			});
@@ -77,13 +78,11 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 
 	function _takePhoto(issue)
 	{
-		$scope.issue = issue || Aqui.Issue.new();
+		$scope.issue = issue || Issue.new();
 
 		Camera.getPicture(function(imageUri) {
 			$scope.issue.photo = imageUri;
 			_apply();
-		}, function(error) {
-			console.error(error);
 		});
 	};
 
@@ -100,7 +99,7 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 		$scope.uploadProgress = 0;
 		issue.userfacebook = $scope.userfacebook;
 
-		Aqui.Issue.save(issue, function(result) {
+		Issue.save(issue, function(result) {
 			$scope.sending = false;
 			if(result.responseCode == 200)
 			{
@@ -174,5 +173,5 @@ function UploadCtrl($scope, $state, $timeout, $cordovaToast, Aqui, Camera, FB, M
 };
 
 angular
-	.module('app.controllers')
-	.controller('UploadCtrl', ['$scope', '$state', '$timeout', '$cordovaToast', 'Aqui', 'Camera', 'FB', 'Map', UploadCtrl]);
+	.module('app')
+	.controller('UploadController', UploadController);
