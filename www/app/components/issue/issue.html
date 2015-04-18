@@ -61,27 +61,15 @@
 	  		<i class="ion-chatbox"></i> Comentar problema
 	  	</h3>
 
-		  <div ng-hide="logged">
-		  	<div class="item">
-			  	<button ng-click="login()" class="button button-block button-facebook">
-					  <i class="icon-facebook"></i> Entrar com Facebook
-					</button>
-		  	</div>
-		  </div>
+	  	<div fb-user class="item"></div>
 
-		  <div ng-show="logged">
-		  	<div class="item fb">
-			  	<img ng-src="{{ userfacebook.avatar }}">
-			    <span class="positive">{{ userfacebook.name }}</span>
-			    <button ng-click="logout()" title="Sair do Facebook" class="button button-small button-clear button-assertive">x</button>
-		  	</div>
-
+		  <div ng-show="$storage.isLoggedIn">
 			  <label class="item item-input item-floating-label">
 			    <small class="input-label positive">Comentário</small>
 			    <textarea rows="4" placeholder="Comentário" ng-model="newComment.text"></textarea>
 			  </label>
 
-			  <div ng-show="newComment.text.length > 0">
+			  <div ng-show="$storage.isLoggedIn && newComment.text.length > 0">
 				  <button class="button button-block button-positive" ng-click="sendComment(newComment.text)" ng-hide="sendingComment">
 			    	<i class="ion-paper-airplane"></i> Enviar comentário
 			    </button>

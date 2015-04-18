@@ -2,69 +2,26 @@
 /*
  * Upload Controller
  */
-function UploadController($scope, $state, $cordovaToast, Category, Camera, Issue, FB, Map)
+function UploadController($scope, $state, $cordovaToast, Aqui, Category, Camera, Issue, Map)
 {
 	function _init()
 	{
+		Aqui.init();
+
 		$scope.issue = Issue.new();
 		$scope.sending = false;
-		$scope.userfacebook = null;
-		$scope.facebookLogged = false;
+
+		$scope.$storage = Aqui.storage();
 
 		Category.getAll()
 			.success(function(categories) {
 				$scope.categories = categories;
 			});
-
-		_checkLogin();
 	};
 
 	function _apply()
 	{
 		if(!$scope.$$phase) $scope.$apply();
-	};
-
-	function _checkLogin()
-	{
-		FB.status()
-			.then(function(responseStatus) {
-				if(responseStatus.status == "connected")
-				{
-	    		$scope.facebookLogged = true;
-					_getUserFacebook();
-				}
-				else /* not connect on facebook */
-				{
-	    		_logout();
-				}
-			});
-	};
-
-	function _login()
-	{
-		FB.login()
-			.then(function(responseLogin) {
-				_getUserFacebook();
-			});
-	};
-
-	function _logout()
-	{
-		FB.logout();
-
-		$scope.userfacebook = null;
-		$scope.facebookLogged = false;
-	};
-
-	function _getUserFacebook()
-	{
-		FB.me()
-			.then(function(responseMe) {
-				$scope.userfacebook = responseMe;
-				$scope.userfacebook.avatar = FB.avatar(responseMe.id);
-				$scope.facebookLogged = true;
-				_apply();
-			});
 	};
 
 	function _getPosition()
@@ -97,7 +54,6 @@ function UploadController($scope, $state, $cordovaToast, Category, Camera, Issue
 	{
 		$scope.sending = true;
 		$scope.uploadProgress = 0;
-		issue.userfacebook = $scope.userfacebook;
 
 		Issue.save(issue, function(result) {
 			$scope.sending = false;
@@ -133,16 +89,6 @@ function UploadController($scope, $state, $cordovaToast, Category, Camera, Issue
 		}
 	};
 
-	$scope.login = function()
-	{
-		_login();
-	};
-
-	$scope.logout = function()
-	{
-		_logout();
-	};
-
 	$scope.takePhoto = function(issue)
 	{
 		_getPosition();
@@ -151,7 +97,7 @@ function UploadController($scope, $state, $cordovaToast, Category, Camera, Issue
 
 	$scope.send = function(issue)
 	{
-		if(!$scope.userfacebook)
+		if(!$scope.$storage.user)
 		{
 			alert('Entre com a conta do Facebook');
 		}

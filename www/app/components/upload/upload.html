@@ -8,20 +8,7 @@
 	<br><br>
 	<br><br>
 
-  <div ng-hide="facebookLogged" class="padding">
-  	<br>
-  	<button ng-click="login()" class="button button-block button-facebook">
-		  <i class="icon-facebook"></i> Entrar com Facebook
-		</button>
-  </div>
-
-  <div ng-show="facebookLogged" class="list card fb padding">
-  	<img ng-src="{{ userfacebook.avatar }}">
-    <span class="positive">{{ userfacebook.name }}</span>
-    <button ng-click="logout()" title="Sair do Facebook" class="button button-small button-clear button-assertive">x</button>
-   </div>
-
-   <div class="list card">
+  <div class="list card">
 	  <label class="item item-input item-select">
 	  	<div class="input-label positive">
 	      Categoria
@@ -43,14 +30,19 @@
 			  </label>
   		</div>
   	</div>
+	</div><!--list card-->
 
-  	<div ng-show="facebookLogged" class="item item-checkbox">
+	<div class="list card">
+
+		<div fb-user class="item"></div>
+
+		<div ng-show="$storage.isLoggedIn" class="item item-checkbox">
 	     <label class="checkbox">
 	       <input type="checkbox" ng-model="issue.share_facebook">
 	     </label>
 	     Compartilhar no Facebook
 	  </div>
-	</div><!--list card-->
+	</div>
 
 	<div class="padding" ng-show="issue.photo != ''">
 		<button class="button button-block button-positive" ng-click="send(issue)" ng-hide="sending">

@@ -2,28 +2,77 @@
 /**
  * FB Service
  */
-function FBService($cordovaFacebook)
+function FBService($localStorage, $cordovaFacebook, Util)
 {
 	var self = this;
 
-	this.status = function()
+	function _login()
 	{
-		return $cordovaFacebook.getLoginStatus();
+		document.addEventListener('deviceready', function()
+		{
+			$cordovaFacebook
+				.login(['public_profile', 'email'])
+				.then(function(response) {
+					$localStorage.isLoggedIn = true;
+					_me();
+				}, function(err) {
+					Util.error(err);
+				});
+
+		}, false);
+	};
+
+	function _me()
+	{
+		$cordovaFacebook
+			.api('me', ['public_profile', 'email'])
+			.then(function(me) {
+				$localStorage.user = me;
+				$localStorage.user.avatar = self.avatar(me.id);
+			}, function(err) {
+				$localStorage.user = null;
+				Util.err(err);
+			});
+	};
+
+	function _logout()
+	{
+		$cordovaFacebook.logout();
+
+		$localStorage.user = null;
+		$localStorage.isLoggedIn = false;
+	};
+
+	this.init = function()
+	{
+		document.addEventListener('deviceready', function()
+		{
+			$cordovaFacebook
+				.getLoginStatus()
+				.then(function(response) {
+					if(response.status === "connected")
+					{
+						_me();
+					}
+					else
+					{
+						_logout();
+					}
+				}, function(err) {
+					$localStorage.isLoggedIn = false;
+					Util.err(err);
+				})
+		}, false);
 	};
 
 	this.login = function()
 	{
-		return $cordovaFacebook.login(['public_profile', 'email']);
+		_login();
 	};
 
 	this.logout = function()
 	{
-		return $cordovaFacebook.logout();
-	};
-
-	this.me = function()
-	{
-		return $cordovaFacebook.api('me', ['public_profile', 'email']);
+		_logout();
 	};
 
 	this.avatar = function(id)

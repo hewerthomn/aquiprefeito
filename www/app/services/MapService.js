@@ -9,6 +9,12 @@ function MapService($cordovaGeolocation)
 
 		init: function(opts)
 		{
+			if(google == undefined)
+			{
+				alert('ERRO: API do Google Maps não foi carregada. Verifique sua conexão de Internet.');
+				return;
+			}
+
 			this.setup(opts);
 
 			this.setCenterMap();

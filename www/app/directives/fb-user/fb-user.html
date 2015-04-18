@@ -1,0 +1,17 @@
+<div ng-hide="$storage.isLoggedIn">
+	<button ng-click="login()" class="button button-block button-facebook">
+		<i class="icon-facebook"></i> Entrar com Facebook
+	</button>
+</div>
+
+<div ng-show="($storage.isLoggedIn && $storage.user === null)">
+	<ion-spinner></ion-spinner> Aguarde, carregando...
+</div>
+
+<div ng-show="($storage.user && $storage.isLoggedIn)">
+	<div class="fb">
+		<img ng-src="{{ $storage.user.avatar }}">
+		<span class="positive">{{ $storage.user.name }}</span>
+		<button ng-click="logout()" class="button button-small button-clear button-assertive">x</button>
+	</div>
+</div>

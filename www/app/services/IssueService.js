@@ -34,18 +34,18 @@ function IssueService($http, $localStorage, $cordovaFileTransfer, URL)
 		});
 	};
 
-	this.like = function(id, facebook_id)
+	this.like = function(id)
 	{
 		var data = {
-			facebook_id: facebook_id
+			facebook_id: $localStorage.user.id
 		};
 		return $http.post(URL.API + 'issue/' + id + '/like', data);
 	};
 
-	this.checkLike = function(id, facebook_id)
+	this.checkLike = function(id)
 	{
 		return $http.get(URL.API + 'issue/' + id + '/like', {
-			params: { facebook_id: facebook_id }
+			params: { facebook_id: $localStorage.user.id }
 		});
 	};
 
@@ -54,13 +54,13 @@ function IssueService($http, $localStorage, $cordovaFileTransfer, URL)
 		return $http.get(URL.API + 'issue/' + id + '/comment');
 	};
 
-	this.comment = function(id, comment)
+	this.comment = function(id, text)
 	{
 		var data = {
 			issue_id: id,
-			comment: comment.text,
-			username: comment.userfacebook.name,
-			facebook_id: comment.userfacebook.id
+			comment: text,
+			username: $localStorage.user.name,
+			facebook_id: $localStorage.user.id
 		};
 		return $http.post(URL.API + 'issue/' + id + '/comment', data);
 	},
@@ -73,10 +73,10 @@ function IssueService($http, $localStorage, $cordovaFileTransfer, URL)
 			chunkedMode: false,
 			params: {
 				city: $localStorage.city.name,
+				email: $localStorage.user.email,
+				username: $localStorage.user.name,
+				facebook_id: $localStorage.user.id,
 				comment: issue.comment,
-				email: issue.userfacebook.email,
-				username: issue.userfacebook.name,
-				facebook_id: issue.userfacebook.id,
 				category_id: issue.category_id,
 				lonlat: issue.lonlat.lon + " " + issue.lonlat.lat
 			}

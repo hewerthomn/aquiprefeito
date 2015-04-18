@@ -2,11 +2,13 @@
 /**
  * Aqui Service
  */
-function AquiService($localStorage, $cordovaDevice, Map, Geocoder)
+function AquiService($localStorage, $cordovaDevice, Map, FB, Geocoder)
 {
 	this.init = function()
 	{
 		$localStorage.$default({
+			user: null,
+			isLoggedIn: false,
 			city: {
 				name: '...',
 				lonlat: {
@@ -34,6 +36,8 @@ function AquiService($localStorage, $cordovaDevice, Map, Geocoder)
 
 		document.addEventListener('deviceready', function()
 		{
+			FB.init();
+
 			$localStorage.device = $cordovaDevice.getDevice();
 		}, false);
 	};

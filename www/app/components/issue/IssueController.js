@@ -2,7 +2,7 @@
 /*
  * Issue Controller
  */
-function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Issue, FB, URL)
+function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Aqui, Issue, FB, URL)
 {
 	function _init()
 	{
@@ -10,12 +10,9 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 		$scope.liked = false;
 		$scope.comments = [];
 
-		$scope.logged = false;
-		$scope.userfacebook = null;
+		$scope.$storage = Aqui.storage();
 
-		$scope.newComment = null;
-		$scope.sendingComment = false;
-		$scope.commentBoxVisible = false;
+		_clearComment();
 
 		Issue.get($stateParams.id)
 			.success(function(issue) {
@@ -27,8 +24,6 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 			.error(function(error){
 				console.error(error);
 			});
-
-		_checkLogin();
 	};
 
 	function _apply()
@@ -36,54 +31,11 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 		if(!$scope.$$phase) $scope.$apply();
 	};
 
-	function _checkLogin()
-	{
-		FB.status()
-			.then(function(responseStatus) {
-				if(responseStatus.status == "connected")
-				{
-					_getUserFacebook();
-				}
-				else /* not connect on facebook */
-				{
-	    		_logout();
-				}
-			});
-	};
-
-	function _login()
-	{
-		FB.login()
-			.then(function(responseLogin) {
-				_getUserFacebook();
-			});
-	};
-
-	function _logout()
-	{
-		FB.logout();
-		$scope.logged = false;
-		_apply();
-	};
-
-	function _getUserFacebook()
-	{
-		FB.me()
-			.then(function(responseMe) {
-				$scope.logged = true;
-				$scope.userfacebook = responseMe;
-				$scope.userfacebook.avatar = FB.avatar(responseMe.id);
-				_checkLike();
-			}, function(errorMe) {
-				_logout();
-			});
-	};
-
 	function _checkLike()
 	{
-		if($scope.userfacebook)
+		if($scope.$storage.isLoggedIn)
 		{
-			Issue.checkLike($stateParams.id, $scope.userfacebook.id)
+			Issue.checkLike($stateParams.id)
 				.success(function(like) {
 					$scope.liked = like;
 				});
@@ -104,23 +56,21 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 
 		var newComment = {
 			text: text,
-			userfacebook: $scope.userfacebook
+			user: $scope.$storage.user
 		};
 
-		Issue.comment($scope.issue.id, newComment)
+		Issue.comment($scope.issue.id, text)
 			.success(function(result) {
 
 				$scope.comments.unshift({
 					comment: newComment.text,
-					username: $scope.userfacebook.name,
-					facebook_id: $scope.userfacebook.id,
+					username: newComment.user.name,
+					facebook_id: newComment.user.id
 				});
 
-				$cordovaToast.showShortCenter(result);
+				_clearComment();
 
-				$scope.newComment = null;
-				$scope.sendingComment = false;
-				$scope.commentBoxVisible = false;
+				$cordovaToast.showShortCenter(result);
 			})
 			.error(function(error) {
 				console.error(error);
@@ -128,19 +78,17 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 			});
 	};
 
+	function _clearComment()
+	{
+		$scope.newComment = { text: '' };
+		$scope.sendingComment = false;
+		$scope.commentBoxVisible = false;
+		_apply();
+	};
+
 	$scope.photo = function(issue)
 	{
 		return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/lg/' + issue.photo : '';
-	};
-
-	$scope.login = function()
-	{
-		_login();
-	};
-
-	$scope.logout = function()
-	{
-		_logout();
 	};
 
 	$scope.avatar = function(facebook_id)
@@ -150,15 +98,11 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 
 	$scope.like = function()
 	{
-		if($scope.userfacebook == null)
-		{
-			_login();
-		}
-		else
+		if($scope.$storage.isLoggedIn)
 		{
 			$scope.liked = !$scope.liked;
 
-			Issue.like($scope.issue.id, $scope.userfacebook.id)
+			Issue.like($scope.issue.id)
 				.success(function(like) {
 					$scope.liked = like;
 					$scope.issue.likes = (like > 0) ? ($scope.issue.likes +1) : ($scope.issue.likes -1);
@@ -179,7 +123,7 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 
 	$scope.sendComment = function(comment)
 	{
-		if($scope.userfacebook == null)
+		if(!$scope.$storage.isLoggedIn)
 		{
 			alert('Entre com a conta do Facebook');
 			return;

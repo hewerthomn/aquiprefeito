@@ -33,13 +33,16 @@ module.exports = function(grunt) {
 					'www/app/components/gallery/GalleryController.js',
 					'www/app/components/upload/UploadController.js',
 
+					'www/app/directives/fb-user/fb-user.js',
+
 					'www/app/services/AquiService.js',
 					'www/app/services/CameraService.js',
 					'www/app/services/CategoryService.js',
 					'www/app/services/FBService.js',
 					'www/app/services/GeocoderService.js',
 					'www/app/services/IssueService.js',
-					'www/app/services/MapService.js'
+					'www/app/services/MapService.js',
+					'www/app/services/UtilService.js'
 				]
 			}
 		},
