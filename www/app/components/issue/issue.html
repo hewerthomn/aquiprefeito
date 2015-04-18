@@ -92,6 +92,7 @@
 		      <img ng-src="{{ avatar(c.facebook_id) }}">
 		      <span class="positive">{{ c.username }}</span>
 		      <p>{{ c.comment }}</p>
+		      <p><small>{{ c.created_at * 1000 | date:'fullDate' }}</small></p>
 		    </div>
 			</div>
 		</div>
