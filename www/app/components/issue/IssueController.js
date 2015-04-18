@@ -65,7 +65,8 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 				$scope.comments.unshift({
 					comment: newComment.text,
 					username: newComment.user.name,
-					facebook_id: newComment.user.id
+					facebook_id: newComment.user.id,
+					created_at: Date.now() / 1000
 				});
 
 				_clearComment();
