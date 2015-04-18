@@ -27,6 +27,8 @@ function AquiService($localStorage, $cordovaDevice, Map, Geocoder)
 						};
 						$localStorage.city = city;
 					}
+				}, function(err) {
+					alert(JSON.stringify(err));
 				});
 		});
 

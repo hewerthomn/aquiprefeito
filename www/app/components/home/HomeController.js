@@ -34,6 +34,8 @@ function HomeController($scope, $window, $state, Aqui, Category, Issue, Map)
 	{
 		Map.getPosition(function(lonlat) {
 			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
+		}, function(err) {
+			alert(JSON.stringify(err));
 		});
 	};
 
