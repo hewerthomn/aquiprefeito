@@ -2,7 +2,7 @@
 /**
  * FB Service
  */
-function FBService($localStorage, $cordovaFacebook, Util)
+function FBService($localStorage, $cordovaFacebook, Util, URL)
 {
 	var self = this;
 
@@ -78,6 +78,16 @@ function FBService($localStorage, $cordovaFacebook, Util)
 	this.avatar = function(id)
 	{
 		return 'https://graph.facebook.com/' + id + '/picture';
+	};
+
+	this.share = function(issue)
+	{
+		var options = {
+			method: 'feed',
+			link: URL.SITE + issue.id,
+			caption: 'Problema de ' + issue.category_name + ' em ' + $localStorage.city.name
+		};
+		return $cordovaFacebook.showDialog(options);
 	};
 };
 

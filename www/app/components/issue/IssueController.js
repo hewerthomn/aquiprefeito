@@ -122,6 +122,20 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 		};
 	};
 
+	$scope.share = function()
+	{
+		FB.share($scope.issue)
+			.then(function(result) {
+				$cordovaToast.showShortCenter('Problema compartilhado com sucesso!')
+			}, function(err) {
+				if(err.errorCode != "4201")
+				{
+					console.error(err);
+					$cordovaToast.showShortCenter('Ops, não foi possível compartilhar...');
+				}
+			});
+	};
+
 	$scope.sendComment = function(comment)
 	{
 		if(!$scope.$storage.isLoggedIn)
