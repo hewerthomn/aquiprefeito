@@ -8,6 +8,8 @@
 	<br><br>
 	<br><br>
 
+	<ion-refresher pulling-text="Puxe para atualizar..." on-refresh="refresh()"></ion-refresher>
+
 	<div class="list card">
 		<div ng-show="issues == null" class="padding text-center">
 			<ion-spinner></ion-spinner> Carregando...

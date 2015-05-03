@@ -8,9 +8,15 @@ function GalleryController($scope, $state, Issue, URL)
 	{
 		$scope.issues = null;
 
+		_getLasts();
+	};
+
+	function _getLasts()
+	{
 		Issue.getLasts()
 			.success(function(issues) {
 				$scope.issues = issues;
+				$scope.$broadcast('scroll.refreshComplete');
 			});
 	};
 
@@ -22,6 +28,11 @@ function GalleryController($scope, $state, Issue, URL)
 	$scope.select = function(issue_id)
 	{
 		$state.go('issue', { id: issue_id }, { reload: true });
+	};
+
+	$scope.refresh = function()
+	{
+		_getLasts();
 	};
 
 	_init();
