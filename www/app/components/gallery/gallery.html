@@ -1,46 +1,46 @@
-<ion-content has-subheader="true">
-	<div class="bar bar-subheader">
-	  <h2 class="title">
-	  	Últimos problemas reportados
-	  </h2>
-	</div>
+<ion-view view-title="Últimas fotos recebidas">
+	<ion-header-bar class="bar-stable bar-subheader">
+		<h1 class="title">
+			Últimas fotos recebidas
+		</h1>
+	</ion-header-bar>
 
-	<br><br>
-	<br><br>
+	<ion-content has-subheader="true">
 
-	<ion-refresher pulling-text="Puxe para atualizar..." on-refresh="refresh()"></ion-refresher>
+		<ion-refresher pulling-text="Puxe e solte para atualizar" on-refresh="refresh()"></ion-refresher>
 
-	<div class="list card">
-		<div ng-show="issues == null" class="padding text-center">
-			<ion-spinner></ion-spinner> Carregando...
+		<div class="list card">
+			<div ng-show="issues == null" class="padding text-center">
+				<ion-spinner></ion-spinner> Carregando...
+			</div>
+
+			<div ng-show="(issues != null && issues.length == 0)" class="padding text-center">
+				<br>
+				<h4 class="positive">
+					Nenhum problema para exibir. <br>
+					Seja o primeiro a enviar!
+				</h4>
+				<br>
+				<a ui-sref="upload" class="button button-outline button-positive">
+					<i class="ion-camera"></i> Tire uma foto e envie para nós
+				</a>
+			</div>
+
+			<div class="item item-thumbnail-left" ng-repeat="issue in issues" ng-click="select(issue.id);">
+	      <img ng-src="{{ photo(issue) }}">
+	      <h2>
+	      	<img ng-src="{{ issue.category_icon }}" style="width:12px">
+	      	{{ issue.category_name }}
+	      	<img ng-src="{{ issue.status_icon }}" style="width:12px">
+	      </h2>
+	      <p>{{ issue.created_at * 1000 | date }}</p>
+	      <p>
+	      	<span ng-if="issue.username != ''" class="positive">{{ issue.username }}<br></span>
+	      	<ng-pluralize count="issue.likes" when="{'0': '', 'one': '1 Curtiu', 'other': '{} Curtiram'}"></ng-pluralize>
+	      	<ng-pluralize count="issue.comments" when="{'0': '', 'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
+	      </p>
+	    </div>
 		</div>
 
-		<div ng-show="(issues != null && issues.length == 0)" class="padding text-center">
-			<br>
-			<h4 class="positive">
-				Nenhum problema para exibir. <br>
-				Seja o primeiro a enviar!
-			</h4>
-			<br>
-			<a ui-sref="upload" class="button button-outline button-positive">
-				<i class="ion-camera"></i> Tire uma foto e envie para nós
-			</a>
-		</div>
-
-		<div class="item item-thumbnail-left" ng-repeat="issue in issues" ng-click="select(issue.id);">
-      <img ng-src="{{ photo(issue) }}">
-      <h2>
-      	<img ng-src="{{ issue.category_icon }}" style="width:12px">
-      	{{ issue.category_name }}
-      	<img ng-src="{{ issue.status_icon }}" style="width:12px">
-      </h2>
-      <p>{{ issue.created_at * 1000 | date }}</p>
-      <p>
-      	<span ng-if="issue.username != ''" class="positive">{{ issue.username }}<br></span>
-      	<ng-pluralize count="issue.likes" when="{'0': '', 'one': '1 Curtiu', 'other': '{} Curtiram'}"></ng-pluralize>
-      	<ng-pluralize count="issue.comments" when="{'0': '', 'one': '1 Comentário', 'other': '{} Comentários'}"></ng-pluralize>
-      </p>
-    </div>
-	</div>
-
-</ion-content>
+	</ion-content>
+</ion-view>

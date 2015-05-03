@@ -1,56 +1,56 @@
-<ion-content has-subheader="true" class="upload-issue">
-	<div class="bar bar-subheader">
-	  <h2 class="title">
-	  	Reportar problema <img ng-src="{{ icon(issue.category_id) }}">
-	  </h2>
-	</div>
+<ion-view view-title="Reportar problema" class="upload-issue">
+	<ion-header-bar class="bar-stable bar-subheader">
+		<h3 class="title">
+  		Reportar problema
+  		<img class="icon-category" ng-src="{{ icon(issue.category_id) }}">
+		</h3>
+	</ion-header-bar>
 
-	<br><br>
-	<br><br>
-
-  <div class="list card">
-	  <label class="item item-input item-select">
-	  	<div class="input-label positive">
-	      Categoria
-	    </div>
-	    <select id="category_id" ng-model="issue.category_id">
-	    	<option ng-repeat="category in categories" value="{{ category.id }}">{{ category.name }}</option>
-	    </select>
-	  </label>
-  	<div class="row">
-  		<div class="col">
-      	<div class="item item-thumbnail-left" ng-click="takePhoto(issue)">
-		      <img ng-src="{{ issue.photo }}" src="img/camera.png">
+	<ion-content has-subheader="true">
+		<div class="list card">
+		  <label class="item item-input item-select">
+		  	<div class="input-label positive">
+		      Categoria
 		    </div>
-  		</div>
-  		<div class="col col-75">
-  			<label class="item item-input item-floating-label">
-			    <small class="input-label positive">Comentário</small>
-			    <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
-			  </label>
-  		</div>
-  	</div>
-	</div><!--list card-->
+		    <select id="category_id" ng-model="issue.category_id">
+		    	<option ng-repeat="category in categories" value="{{ category.id }}">{{ category.name }}</option>
+		    </select>
+		  </label>
+	  	<div class="row">
+	  		<div class="col">
+	      	<div class="item item-thumbnail-left" ng-click="takePhoto(issue)">
+			      <img ng-src="{{ issue.photo }}" src="img/camera.png">
+			    </div>
+	  		</div>
+	  		<div class="col col-75">
+	  			<label class="item item-input item-floating-label">
+				    <small class="input-label positive">Comentário</small>
+				    <textarea rows="4" placeholder="Comentário (opcional)" ng-model="issue.comment"></textarea>
+				  </label>
+	  		</div>
+	  	</div>
+		</div><!--list card-->
 
-	<div class="list card">
+		<div class="list card">
 
-		<div fb-user class="item"></div>
+			<div fb-user class="item"></div>
 
-		<div ng-show="$storage.isLoggedIn" class="item item-checkbox">
-	     <label class="checkbox">
-	       <input type="checkbox" ng-model="issue.share_facebook">
-	     </label>
-	     Compartilhar no Facebook
-	  </div>
-	</div>
+			<div ng-show="$storage.isLoggedIn" class="item item-checkbox">
+		     <label class="checkbox">
+		       <input type="checkbox" ng-model="issue.share_facebook">
+		     </label>
+		     Compartilhar no Facebook
+		  </div>
+		</div>
 
-	<div class="padding" ng-show="issue.photo != ''">
-		<button class="button button-block button-positive" ng-click="send(issue)" ng-hide="sending">
-    	<i class="ion-paper-airplane"></i> Enviar problema
-    </button>
-    <button class="button button-block button-positive" ng-show="sending" disabled="disabled">
-    	Enviando... <b>{{ uploadProgress }}%</b>
-    </button>
-	</div>
+		<div class="padding" ng-show="issue.photo != ''">
+			<button class="button button-block button-positive" ng-click="send(issue)" ng-hide="sending">
+	    	<i class="ion-paper-airplane"></i> Enviar problema
+	    </button>
+	    <button class="button button-block button-positive" ng-show="sending" disabled="disabled">
+	    	Enviando... <b>{{ uploadProgress }}%</b>
+	    </button>
+		</div>
 
-</ion-content>
+	</ion-content>
+</ion-view>

@@ -52,10 +52,7 @@ a.olControlZoomIn {
 
 }
 
-.upload-issue .title {
-	text-align: left;
-}
-.upload-issue .title > img {
+.upload-issue .icon-category {
 	float: right;
 	margin-top: 8px;
 }

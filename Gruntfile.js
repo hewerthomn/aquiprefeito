@@ -28,6 +28,7 @@ module.exports = function(grunt) {
 					'www/app/routes.js',
 					'www/app/run.js',
 
+					'www/app/components/tabs/TabsController.js',
 					'www/app/components/home/HomeController.js',
 					'www/app/components/issue/IssueController.js',
 					'www/app/components/gallery/GalleryController.js',
