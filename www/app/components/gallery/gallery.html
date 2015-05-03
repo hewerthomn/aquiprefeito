@@ -23,7 +23,7 @@
 		</div>
 		<!--/Empty issues -->
 
-			<ion-list class="card" ng-repeat="issue in issues" ng-click="select(issue.id);">
+			<div class="list card" ng-repeat="issue in issues" ng-click="select(issue.id);">
 				<div class="item item-avatar">
 	      	<img ng-src="{{ issue.category_icon }}">
 	      	<h2>
@@ -45,7 +45,7 @@
 		      </p>
 				</div>
 
-	    </ion-list>
+	    </div>
 
 	    <ion-infinite-scroll ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
 
