@@ -92,6 +92,10 @@ a.olControlZoomIn {
 
 .issue { }
 
+.issue .item-avatar small {
+	font-size: 10px;
+}
+
 .issue .fb {
 	display: flex !important;
 	align-items: center !important;

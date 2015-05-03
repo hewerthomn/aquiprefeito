@@ -12,7 +12,10 @@
 	  	<!--.header -->
 	  	<div class="header item item-avatar">
 		    <img ng-src="{{ issue.category_icon }}">
-		    <h2>{{ issue.category_name }}</h2>
+		    <h2>
+		    	{{ issue.category_name }}
+		    	<small class="muted">#{{ issue.id }}</small>
+		    </h2>
 		    <p>{{ issue.created_at * 1000 | date:'fullDate' }}</p>
 				<button class="button button-small button-clear button-close-issue" ng-click="goBack()"><i class="ion-close"></i></button>
 		  </div>
@@ -45,7 +48,7 @@
 		  </div>
 			<!--/body-->
 
-		  <div class="item tabs tabs-secondary tabs-icon-left">
+		  <div ng-show="$storage.isLoggedIn" class="item tabs tabs-secondary tabs-icon-left">
 		    <a class="tab-item {{ (liked > 0) ? 'positive' : '' }}" ng-click="like()">
 		      <i class="icon ion-thumbsup"></i> {{ (liked > 0) ? 'Descurtir' : 'Curtir' }}
 		    </a>
@@ -58,15 +61,17 @@
 		  </div>
 		</div><!--list card-->
 
+  	<div fb-user class="item" ng-hide="$storage.isLoggedIn"></div>
+
 		<!--.comment-box -->
 	  <div class="list list-inset" ng-show="commentBoxVisible">
 	  	<h3 class="item">
 	  		<i class="ion-chatbox"></i> Comentar problema
 	  	</h3>
 
-	  	<div fb-user class="item"></div>
+  		<div fb-user class="item" ng-show="$storage.isLoggedIn"></div>
 
-		  <div ng-show="$storage.isLoggedIn">
+		  <div>
 			  <label class="item item-input item-floating-label">
 			    <small class="input-label positive">Comentário</small>
 			    <textarea rows="4" placeholder="Comentário" ng-model="newComment.text"></textarea>
