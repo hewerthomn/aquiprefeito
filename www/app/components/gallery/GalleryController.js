@@ -20,9 +20,9 @@ function GalleryController($scope, $state, Issue, URL)
 			});
 	};
 
-	$scope.photo = function(issue)
+	$scope.photo = function(issue, size)
 	{
-		return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/sm/' + issue.photo : '';
+		return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
 	};
 
 	$scope.select = function(issue_id)
