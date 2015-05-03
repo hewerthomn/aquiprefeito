@@ -27,10 +27,13 @@ function IssueService($http, $localStorage, $cordovaFileTransfer, URL)
 		});
 	};
 
-	this.getLasts = function()
+	this.getIssues = function(params)
 	{
 		return $http.get(URL.API + 'issue', {
-			params: { city_name: $localStorage.city.name }
+			params: {
+				page: params.page,
+				city_name: $localStorage.city.name
+			}
 		});
 	};
 

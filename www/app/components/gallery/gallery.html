@@ -9,12 +9,6 @@
 
 		<ion-refresher pulling-text="Puxe e solte para atualizar" on-refresh="refresh()"></ion-refresher>
 
-		<!-- Loading -->
-		<div ng-show="issues == null" class="card padding text-center">
-			<ion-spinner></ion-spinner> Carregando...
-		</div>
-		<!-- Loading -->
-
 		<!-- Empty issues -->
 		<div ng-show="(issues != null && issues.length == 0)" class="card padding text-center">
 			<br>
@@ -23,13 +17,13 @@
 				Seja o primeiro a enviar!
 			</h4>
 			<br>
-			<a ui-sref="upload" class="button button-outline button-positive">
+			<a ui-sref="tabs.upload" class="button button-outline button-positive">
 				<i class="ion-camera"></i> Tire uma foto e envie para nós
 			</a>
 		</div>
 		<!--/Empty issues -->
 
-			<div class="card" ng-repeat="issue in issues" ng-click="select(issue.id);">
+			<ion-list class="card" ng-repeat="issue in issues" ng-click="select(issue.id);">
 				<div class="item item-avatar">
 	      	<img ng-src="{{ issue.category_icon }}">
 	      	<h2>
@@ -51,7 +45,9 @@
 		      </p>
 				</div>
 
-	    </div>
+	    </ion-list>
+
+	    <ion-infinite-scroll ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
 
 	</ion-content>
 </ion-view>
