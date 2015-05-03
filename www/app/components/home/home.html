@@ -1,8 +1,10 @@
-<ion-content has-subheader="false">
-	<div id="map">
-		<button class="cityname button button-small button-positive button-outline" ng-click="getPosition()">
-			<span ng-bind="$storage.city.name"></span>
-			<i class="ion-location"></i>
-		</button>
-	</div>
-</ion-content>
+<ion-view view-title="Map">
+	<ion-content>
+		<div id="map">
+			<button class="cityname button button-small button-positive button-outline" ng-click="getPosition()">
+				<span ng-bind="$storage.city.name"></span>
+				<i class="ion-location"></i>
+			</button>
+		</div>
+	</ion-content>
+</ion-view>
