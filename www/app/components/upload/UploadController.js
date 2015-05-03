@@ -67,7 +67,7 @@ function UploadController($scope, $state, $cordovaToast, Aqui, Category, Camera,
 				$cordovaToast.showShortCenter(_showToastError(result));
 			}
 
-			$state.go('gallery', {}, { reload: true });
+			$state.go('tabs.gallery', {}, { reload: true });
 		}, function(error) {
 			$scope.sending = false;
 			_showToastError(error);
