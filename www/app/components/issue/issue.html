@@ -23,10 +23,13 @@
 		    <img ng-src="{{ issue.status_icon }}" class="status-icon">
 		    <img class="full-image" ng-src="{{ photo(issue) }}">
 
-		    <div class="fb">
-		    	<img ng-src="{{ avatar(issue.facebook_id) }}">
-		    	<span class="positive">{{ issue.username }}</span>
-		    </div>
+		    <p>
+			    <div class="fb">
+			    	<img ng-src="{{ avatar(issue.facebook_id) }}">
+			    	<span class="positive">{{ issue.username }}</span>
+			    </div>
+		    </p>
+
 		    <p>
 	    		{{ issue.comment }}
 		    </p>
