@@ -76,8 +76,9 @@ module.exports = function(grunt) {
 		},
 
 		concat_css: {
-			files: {
-				'www/build/css/app.min.css': [
+			all: {
+				dest: 'www/build/css/app.min.css',
+				src: [
 					'www/lib/ionic/css/ionic.min.css',
 					'www/css/aquiprefeito.css',
 					'www/css/app.css',
