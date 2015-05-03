@@ -53,6 +53,9 @@ a.olControlZoomIn {
 
 .gallery {
 }
+.gallery .item-avatar img {
+	border-radius: 3px !important;
+}
 .gallery .item-body .icon-status {
 	position: absolute;
 	top: 20px;
