@@ -72,6 +72,14 @@ module.exports = function(grunt) {
 					src: ['www/font/**.*'],
 					dest: 'www/build/font'
 				}]
+			},
+			mapfiles: {
+				files: [{
+					expand: true,
+					flatten: true,
+					src: ['www/lib/**/*.map'],
+					dest: 'www/build/js'
+				}]
 			}
 		},
 
