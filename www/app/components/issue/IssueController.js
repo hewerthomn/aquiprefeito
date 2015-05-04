@@ -2,7 +2,7 @@
 /*
  * Issue Controller
  */
-function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Aqui, Geocoder, Issue, FB, URL)
+function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicModal, $ionicScrollDelegate, $cordovaToast, Aqui, Geocoder, Issue, FB, URL)
 {
 	function _init()
 	{
@@ -13,6 +13,13 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 		$scope.$storage = Aqui.storage();
 
 		_clearComment();
+
+		$ionicModal.fromTemplateUrl('app/partials/modalIssuePhoto.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modalIssuePhoto = modal;
+		});
 
 		Issue.get($stateParams.id)
 			.success(function(issue) {
@@ -99,9 +106,9 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 		_apply();
 	};
 
-	$scope.photo = function(issue)
+	$scope.photo = function(issue, size)
 	{
-		return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/lg/' + issue.photo : '';
+		return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
 	};
 
 	$scope.avatar = function(facebook_id)

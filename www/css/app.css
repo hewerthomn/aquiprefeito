@@ -128,3 +128,7 @@ a.olControlZoomIn {
 	right: 10px;
 	top: 10px;
 }
+
+.modal .title small {
+	font-size: 10px;
+}

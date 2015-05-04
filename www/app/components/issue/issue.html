@@ -26,7 +26,7 @@
 			<!--.body-->
 		  <div class="body item item-body">
 		    <img ng-src="{{ issue.status_icon }}" class="status-icon">
-		    <img class="full-image" ng-src="{{ photo(issue) }}">
+		    <img class="full-image" ng-src="{{ photo(issue, 'lg') }}" ng-click="modalIssuePhoto.show()">
 
 		    <p>
 		    	{{ issue.address }}
