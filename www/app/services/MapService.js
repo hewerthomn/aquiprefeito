@@ -5,328 +5,288 @@
  */
 function MapService($cordovaGeolocation)
 {
-	return {
+	var self = this;
 
-		init: function(opts)
+	this.init = function(opts)
+	{
+		if(google == undefined)
 		{
-			if(google == undefined)
-			{
-				alert('ERRO: API do Google Maps não foi carregada. Verifique sua conexão de Internet.');
-				return;
+			alert('ERRO: API do Google Maps não foi carregada. Verifique sua conexão de Internet.');
+			return;
+		}
+
+		self.setup(opts);
+
+		self.setCenterMap();
+		self.fixMapHeight();
+	};
+
+	/**
+ 	* setup method
+ 	*/
+  this.setup = function(opts)
+  {
+    OpenLayers.Util.applyDefaults(opts, self.defaultOpts);
+
+    self._map = new OpenLayers.Map(opts.id, {
+    	theme: null,
+    	projection: 'EPSG:4326',
+    	displayProjection: 'EPSG:4326'
+    });
+
+    self._startZoom  = opts.startZoom;
+    self._startLonlat = new OpenLayers.LonLat(opts.startLonlat.lon, opts.startLonlat.lat);
+    self._offset = opts.offset | 0;
+
+    self._layers     = [];
+    self._baselayers = [];
+    self._controls   = [];
+
+    self.onSelectPoint = opts.onSelectPoint || self.onSelectPoint;
+
+    self.setupLayers();
+    self.setupControls();
+  };
+
+
+  /**
+   * setBaseLayers method
+   */
+  this.setupLayers = function()
+  {
+    self._baselayers = [
+			new OpenLayers.Layer.Google('Google Maps', {
+				numZoomLevels: 19
+			})
+		];
+
+		var clusterStrategy = new OpenLayers.Strategy.Cluster({
+			distance: 40,
+			threshold: 3
+		});
+
+		var styleIssues = new OpenLayers.Style({
+			label: "${label}",
+			externalGraphic: "${icon}",
+			graphicWidth: "${graphicWidth}",
+			fontSize: '14px',
+			fontColor: '#FFF',
+			fontWeight: 'bold'
+		}, {
+			context: {
+				label: function(feature) {
+					return feature.cluster ? feature.cluster.length : '';
+				},
+				icon: function(feature) {
+					return feature.cluster ? 'img/cluster.png' : feature.data.icon;
+				},
+				graphicWidth: function(feature) {
+					return feature.cluster ? 52 : 28
+				}
 			}
+		});
 
-			this.setup(opts);
-
-			this.setCenterMap();
-			this.fixMapHeight();
-		},
-
-		/**
-   	* setup method
-   	*/
-	  setup: function(opts)
-	  {
-	    var self = this;
-
-	    OpenLayers.Util.applyDefaults(opts, self.defaultOpts);
-
-	    self._map = new OpenLayers.Map(opts.id, {
-	    	theme: null,
-	    	projection: 'EPSG:4326',
-	    	displayProjection: 'EPSG:4326'
-	    });
-
-	    self._startZoom  = opts.startZoom;
-	    self._startLonlat = new OpenLayers.LonLat(opts.startLonlat.lon, opts.startLonlat.lat);
-	    self._offset = opts.offset | 0;
-
-	    self._layers     = [];
-	    self._baselayers = [];
-	    self._controls   = [];
-
-	    self.onSelectPoint = opts.onSelectPoint;
-
-	    self.setupLayers();
-	    self.setupControls();
-	  },
-
-	  /**
-	   * setBaseLayer method
-	   * @param {int} index base layer index
-	   */
-	  setBaseLayer: function(index)
-	  {
-	    this._map.setBaseLayer(this._map.layers[index]);
-	  },
-
-	  /**
-	   * setBaseLayers method
-	   */
-	  setupLayers: function()
-	  {
-	    var self = this;
-
-	    self._baselayer = {
-				GOOGLE_MAP: 0
-			};
-
-			self._baselayers = [
-				new OpenLayers.Layer.Google('Google Maps', {
-					numZoomLevels: 19
+		self._layers = {
+			issues: new OpenLayers.Layer.Vector('Problemas', {
+				strategies: [clusterStrategy],
+				styleMap: new OpenLayers.StyleMap({
+					'default': styleIssues,
+					'select': {
+						cursor: 'pointer'
+					}
 				})
-			];
+			})
+		};
 
-			self._layers = {
-				issues: new OpenLayers.Layer.Vector('Problemas', {
-					styleMap: new OpenLayers.StyleMap({
-						'default': {
-							label: "${label}",
-							labelYOffset: 27,
-							fontSize: '16px',
-							fontWeight: 'bold',
-							externalGraphic: "${icon}",
-							graphicWidth: 28
-						},
-						'select': {
-							cursor: 'pointer'
-						}
-					})
-				})
-			};
-
-			self._map.addLayers(self._baselayers);
-			for(var key in self._layers)
-			{
-				self._map.addLayer(self._layers[key]);
-			}
-	  },
-
-		/**
-		* Retorna a lista de camadas mapa do mapa
-		* @return {Array}
-		*/
-		getBaselayersList: function()
+		self._map.addLayers(self._baselayers);
+		for(var key in self._layers)
 		{
-			var self = this,
-					arr = [];
+			self._map.addLayer(self._layers[key]);
+		}
+  };
 
-			for (var key in self._baselayers)
-			{
-				arr.push(self._baselayers[key].name);
-			};
-			return arr;
-		},
+  /**
+   * setControls method
+   */
+  this.setupControls = function()
+  {
+    self._controls = {
+      zoom: new OpenLayers.Control.Zoom(),
+      nav: new OpenLayers.Control.Navigation({
+        documentDrag: true,
+        dragPanOptions: { enableKinetic: true }
+      }),
+      selectPoint: new OpenLayers.Control.SelectFeature([self._layers.issues], {
+      	toggle: true,
+      	autoActivate: true,
+      	onSelect: self.onSelectFeature
+      })
+    };
 
-	  /**
-		* Altera a baselayer atual a partir do indice de baselayers
-		* @param {int} index
-		* @return void
-		*/
-		setBaseLayer: function(index)
-		{
-			this._map.setBaseLayer(this._map.layers[index]);
-		},
+    for(var key in this._controls)
+    {
+      this._map.addControl(this._controls[key]);
+    }
+  },
 
-	  /**
-	   * setControls method
-	   */
-	  setupControls: function()
-	  {
-	    var self = this;
-
-	    self._controls = {
-	      zoom: new OpenLayers.Control.Zoom(),
-	      nav: new OpenLayers.Control.Navigation({
-          documentDrag: true,
-          dragPanOptions: { enableKinetic: true }
-        }),
-        selectPoint: new OpenLayers.Control.SelectFeature([self._layers.issues], {
-        	toggle: true,
-        	autoActivate: true,
-        	onSelect: self.onSelectPoint
-        })
-	    };
-
-	    for(var key in this._controls)
-	    {
-	      this._map.addControl(this._controls[key]);
-	    }
-	  },
-
-	  /**
+  /**
 	   * setCenterMap method
 	   * @param {OpenLayers.LonLat} point
 	   * @param {int} zoom
 	   */
-	  setCenterMap: function(point, zoom, opts)
-	  {
-	  	var self = this,
-	  			opts = opts || {},
-	  			defaultOpts = {
-	  			};
+  this.setCenterMap = function(point, zoom, opts)
+  {
+  	var opts = opts || {};
+  	var defaultOpts = {};
 
-	  	if(point && !point.hasOwnProperty('CLASS_NAME') && point.CLASS_NAME !== 'OpenLayers.LonLat')
-	  	{
-	  		point = new OpenLayers.LonLat(point.lon, point.lat);
-	  	}
+  	if(point && !point.hasOwnProperty('CLASS_NAME') && point.CLASS_NAME !== 'OpenLayers.LonLat')
+  	{
+  		point = new OpenLayers.LonLat(point.lon, point.lat);
+  	}
 
-	  	if(opts.hasOwnProperty('transformTo'))
-	  	{
-	  		point = point.transform(opts.transformTo, self._map.getProjection());
-	  	}
+  	if(opts.hasOwnProperty('transformTo'))
+  	{
+  		point = point.transform(opts.transformTo, self._map.getProjection());
+  	}
 
-	    self._map.setCenter(point || self._startLonlat, zoom || self._startZoom);
-	  },
+    self._map.setCenter(point || self._startLonlat, zoom || self._startZoom);
+  };
 
-	  setZoom: function(zoom)
-	  {
-	  	this._map.setCenter(null, zoom);
-	  },
+	/**
+	* Desenha um ponto no mapa
+	* @param {Object} ponto simplificado
+	* @param {Function} callback function
+	*/
+	this.addPoints = function(points, opts, callback)
+	{
+		var opts = opts || {}
+		var arrPontos = [];
+		var defaultOpts = {
+			layer: 'issues',
+			clearBefore: true,
+		};
 
-		/**
-		* Desenha um ponto no mapa
-		* @param {Object} ponto simplificado
-		* @param {Function} callback function
-		*/
-		addPoints: function(points, opts, callback)
+		OpenLayers.Util.applyDefaults(opts, defaultOpts);
+
+		for(var key in points)
 		{
-			var self = this,
-					opts = opts || {},
-					defaultOpts = {
-						layer: 'issues',
-						clearBefore: true,
-					},
-					arrPontos    = [];
+			var label = points[key].hasOwnProperty('label') ? points[key].label : '';
+			var pointOpts = {
+				label: label,
+				icon:  points[key].icon
+			};
 
-			OpenLayers.Util.applyDefaults(opts, defaultOpts);
-
-			for(var key in points)
+			var point = new OpenLayers.Geometry.Point(points[key].lon, points[key].lat);
+			if (opts.hasOwnProperty('transformTo'))
 			{
-				var label = points[key].hasOwnProperty('label') ? points[key].label : '';
-				var pointOpts = {
-					label: label,
-					icon:  points[key].icon
-				};
+				point = point.transform(opts.transformTo, self._map.getProjection());
+			};
 
-				var point = new OpenLayers.Geometry.Point(points[key].lon, points[key].lat);
-				if (opts.hasOwnProperty('transformTo'))
-				{
-					point = point.transform(opts.transformTo, self._map.getProjection());
-				};
+			var feature = new OpenLayers.Feature.Vector(point, pointOpts);
+			feature.data = points[key];
 
-				var feature = new OpenLayers.Feature.Vector(point, pointOpts);
-				feature.data = points[key];
+			arrPontos.push(feature);
+		}
 
-				arrPontos.push(feature);
-			}
-
-			if(opts.clearBefore)
-			{
-				self._layers[opts.layer].destroyFeatures();
-			}
-
-			self._layers[opts.layer].addFeatures(arrPontos);
-
-			if(typeof(callback) == 'function')
-			{
-				callback();
-			}
-		},
-
-		/**
-		* Desenha um ponto no mapa
-		* @param {Object} ponto simplificado
-		* @param {Object} opcoes
-		* @param {Function} callback function
-		*/
-		addPoint: function(point, opts, callback)
+		if(opts.clearBefore)
 		{
-			var self = this;
-			self.addPoints([point], opts, callback);
-		},
+			self._layers[opts.layer].destroyFeatures();
+		}
 
-		/**
-		* onSelectFeature
-		* @private
-		*/
-		onSelectFeature: function(feature)
+		self._layers[opts.layer].addFeatures(arrPontos);
+
+		if(typeof(callback) == 'function') callback();
+	};
+
+	/**
+	* Desenha um ponto no mapa
+	* @param {Object} ponto simplificado
+	* @param {Object} opcoes
+	* @param {Function} callback function
+	*/
+	this.addPoint = function(point, opts, callback)
+	{
+		self.addPoints([point], opts, callback);
+	};
+
+	/**
+	* onSelectFeature
+	* @private
+	*/
+	this.onSelectFeature = function(feature)
+	{
+		if(feature.cluster)
 		{
-			var self = this;
-			console.log('feature', feature);
+			var zoom = self.getZoom() + 1;
+			var lonlat = {
+				lon: feature.geometry.x,
+				lat: feature.geometry.y
+			};
 
-			if(feature.geometry.id.indexOf("Point") > -1)
-			{
-				var lonlat = { lon: feature.data.lon, lat: feature.data.lat };
-				self.onSelectPointFeature(lonlat);
-			}
-		},
+			self.setCenterMap(lonlat, zoom);
+			return;
+		}
 
-		/**
-		* onSelectPointFeature
-		* @private
-		*/
-		onSelectPointFeature: function(feature)
-		{
-			return { lon: feature.data.lon, lat: feature.data.lat };
-		},
+		self.onSelectPoint(feature.data);
+	};
 
-		onSelectPoint: function(callback)
-		{
-			var self = this;
-			if(!callback) return;
-			self.onSelectPointFeature = callback;
-		},
+	this.onSelectPoint = function(callback)
+	{
+		if(!callback) return;
+		self.onSelectPointFeature = callback;
+	};
 
-	  getPosition: function(successCallback, errorCallback, alwaysCallback)
-	  {
-	  	var self = this;
-	  	var positionOptions = {
-	  		timeout: 10000,
-	  		enableHighAccuracy: true
-	  	};
+  this.getPosition =  function(successCallback, errorCallback, alwaysCallback)
+  {
+  	var positionOptions = {
+  		timeout: 10000,
+  		enableHighAccuracy: true
+  	};
 
-	  	$cordovaGeolocation
-	  		.getCurrentPosition(positionOptions)
-	  		.then(function(position) {
-	  			var lonlat = { lon: position.coords.longitude, lat: position.coords.latitude };
-	  			successCallback(lonlat);
-	  			if(typeof alwaysCallback === 'function') alwaysCallback();
-	  		}, function(error) {
-	  			errorCallback(error);
-	  			alert(JSON.stringify(error));
-	  			if(typeof alwaysCallback === 'function') alwaysCallback();
-	  		});
-	  },
+  	$cordovaGeolocation
+  		.getCurrentPosition(positionOptions)
+  		.then(function(position) {
+  			var lonlat = { lon: position.coords.longitude, lat: position.coords.latitude };
+  			successCallback(lonlat);
+  			if(typeof alwaysCallback === 'function') alwaysCallback();
+  		}, function(error) {
+  			errorCallback(error);
+  			alert(JSON.stringify(error));
+  			if(typeof alwaysCallback === 'function') alwaysCallback();
+  		});
+  };
 
-	  getCenter: function()
-	  {
-	  	var self = this;
-	  	var center = self._map.getCenter();
+  this.getCenter = function()
+  {
+  	var center = self._map.getCenter();
 
-	  	return {
-	  		lon: center.lon,
-	  		lat: center.lat
-	  	};
-	  },
+  	return {
+  		lon: center.lon,
+  		lat: center.lat
+  	};
+  };
 
-		getActualZoom: function(callback)
-		{
-			var self = this;
-			self._map.events.register('zoomend', self._map, function(e) {
-        var zoom = self._map.getZoom();
-        callback(zoom);
-      });
-		},
+  this.getZoom = function()
+  {
+  	return self._map.getZoom();
+  };
 
-	  clearLayer: function(layer)
-	  {
-	  	if(this._layers.hasOwnProperty(layer))
-	  	{
-	  		this._layers[layer].removeFeatures(this._layers[layer].features);
-	  	}
-	  },
+	this.getActualZoom = function(callback)
+	{
+		self._map.events.register('zoomend', self._map, function(e) {
+      callback(zoom);
+    });
+	};
 
-		/**
+  this.clearLayer = function(layer)
+  {
+  	if(self._layers.hasOwnProperty(layer))
+  	{
+  		self._layers[layer].removeFeatures(self._layers[layer].features);
+  	}
+  };
+
+	/**
 		 * Transform latlon hash from projection to anoter
 		 *
 		 * @param hash lonlat with lon and lat
@@ -335,26 +295,25 @@ function MapService($cordovaGeolocation)
 		 *
 		 * @return hash hash with lon and lat properties
 		 */
-		transform: function(lonlat, from, to)
-		{
-			var dest = new OpenLayers.LonLat(lonlat.lon, lonlat.lat);
-			dest = dest.transform(from, to);
-			return { lon: dest.lon, lat: dest.lat };
-		},
+	this.transform = function(lonlat, from, to)
+	{
+		var dest = new OpenLayers.LonLat(lonlat.lon, lonlat.lat);
+		dest = dest.transform(from, to);
 
-		fixMapHeight: function(offset)
-		{
-			var self   = this,
-					height = window.innerHeight,
-					element = self._map.div.id;
+		return { lon: dest.lon, lat: dest.lat };
+	};
 
-			if(element)
-			{
-				height -=  self._offset | 0;
-				element = document.getElementById(element);
-				element.style.height = height + 'px';
-				self._map.updateSize();
-			}
+	this.fixMapHeight = function(offset)
+	{
+		var height 	= window.innerHeight;
+		var element = self._map.div.id;
+
+		if(self._map.div)
+		{
+			element = document.getElementById(element);
+			height -= self._offset || 0;
+			element.style.height = height + 'px';
+			self._map.updateSize();
 		}
 	};
 }
