@@ -2,7 +2,7 @@
 /*
  * Issue Controller
  */
-function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Aqui, Issue, FB, URL)
+function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicScrollDelegate, $cordovaToast, Aqui, Geocoder, Issue, FB, URL)
 {
 	function _init()
 	{
@@ -20,6 +20,7 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 
 				_checkLike();
 				_getComments();
+				_getAddress();
 			})
 			.error(function(error){
 				console.error(error);
@@ -47,6 +48,17 @@ function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicSc
 		Issue.getComments($stateParams.id)
 			.success(function(comments) {
 				$scope.comments = comments;
+			});
+	};
+
+	function _getAddress()
+	{
+		Geocoder.getPlaceInfo({ lon: $scope.issue.lon, lat: $scope.issue.lat })
+			.success(function(response) {
+				if(response.status === 'OK')
+				{
+					$scope.issue.address = response.results[0].formatted_address;
+				}
 			});
 	};
 
