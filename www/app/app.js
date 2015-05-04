@@ -7,6 +7,7 @@ angular.module('app', [
 	'ui.router',
 	'ngLocale',
 	'ngStorage',
+	'ngTouch',
 	'ngCordova',
 	'focusIt',
 	'angularMoment'
