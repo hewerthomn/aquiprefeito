@@ -31,7 +31,7 @@
 	      		<small class="muted">#{{ issue.id }}</small>
 	      	</h2>
 	      	<p>
-	      		{{ issue.created_at * 1000 | date }}
+	      		<span am-time-ago="issue.created_at"></span>
 	      	</p>
 				</div>
 

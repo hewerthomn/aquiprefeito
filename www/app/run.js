@@ -1,7 +1,7 @@
 /**
  * Run Config
  */
-function runConfig($ionicPlatform) {
+function runConfig($ionicPlatform, amMoment) {
 
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -13,6 +13,8 @@ function runConfig($ionicPlatform) {
 			StatusBar.styleDefault();
 		}
 	});
+
+	amMoment.changeLocale('pt-br');
 };
 
 angular

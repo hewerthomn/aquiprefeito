@@ -8,5 +8,6 @@ angular.module('app', [
 	'ngLocale',
 	'ngStorage',
 	'ngCordova',
-	'focusIt'
+	'focusIt',
+	'angularMoment'
 ]);
