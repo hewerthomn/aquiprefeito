@@ -1,0 +1,21 @@
+<ion-modal-view class="modal">
+	<ion-header-bar>
+		<h1 class="title">
+			<img ng-src="{{ issue.category_icon }}">
+			{{ issue.category_name }}
+			<small class="muted">#{{ issue.id }}</small>
+		</h1>
+		<button ng-click="modalIssuePhoto.hide()" class="button button-small button-clear"><i class="ion-close"></i></button>
+	</ion-header-bar>
+
+	<ion-content class="padding" direction="xy">
+		<img ng-src="{{ photo(issue, 'big') }}">
+		<p>
+			<small>{{ issue.address }}</small>
+		</p>
+
+		<button ng-click="modalIssuePhoto.hide()" class="button button-block button-small button-outline button-stable">
+			<i class="ion-close"></i> Fechar
+		</button>
+	</ion-content>
+</ion-modal-view>
