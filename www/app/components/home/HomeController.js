@@ -47,9 +47,12 @@ function HomeController($scope, $window, $state, Aqui, Category, Issue, Map)
 			})
 	};
 
-	function _onSelectPoint(feature)
+	function _onSelectPoint(point)
 	{
-		$state.go('issue', { id: feature.data.id }, { reload: true });
+		if(point.hasOwnProperty('id'))
+		{
+			$state.go('issue', { id: point.id }, { reload: true });
+		}
 	};
 
 	$scope.getPosition = function()
