@@ -1,68 +1,73 @@
-'use strict';
-/*
- * Home Controller
- */
-function HomeController($scope, $window, $state, Aqui, Category, Issue, Map)
-{
-	function _init()
+(function(angular, undefined) {
+	'use strict';
+
+	/*
+	 * Home Controller
+	 */
+	angular
+		.module('app')
+		.controller('HomeController', HomeController);
+
+	function HomeController($scope, $window, $state, Aqui, Category, Issue, Map)
 	{
-		Aqui.init();
-		$scope.$storage = Aqui.storage();
+		function _init()
+		{
+			Aqui.init();
+			$scope.$storage = Aqui.storage();
 
-		$scope.issues = [];
+			$scope.issues = [];
 
-		Category.getAll()
-			.success(function(categories) {
-				$scope.categories = categories;
+			Category.getAll()
+				.success(function(categories) {
+					$scope.categories = categories;
+				});
+
+			Map.init({
+				id: 'map',
+				offset: 90,
+				startZoom: 4,
+				startLonlat: $scope.$storage.city.lonlat,
+				onSelectPoint: _onSelectPoint
 			});
 
-		Map.init({
-			id: 'map',
-			offset: 90,
-			startZoom: 4,
-			startLonlat: $scope.$storage.city.lonlat,
-			onSelectPoint: _onSelectPoint
-		});
+			_getPosition();
+			_getPoints();
 
-		_getPosition();
-		_getPoints();
+			angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
+		};
 
-		angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
-	};
-
-	function _getPosition()
-	{
-		Map.getPosition(function(lonlat) {
-			Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
-		}, function(err) {
-			alert(JSON.stringify(err));
-		});
-	};
-
-	function _getPoints()
-	{
-		Issue.getPoints()
-			.success(function(points) {
-				Map.addPoints(points, { transformTo: 'EPSG:4326' });
-			})
-	};
-
-	function _onSelectPoint(point)
-	{
-		if(point.hasOwnProperty('id'))
+		function _getPosition()
 		{
-			$state.go('issue', { id: point.id }, { reload: true });
-		}
-	};
+			Map.getPosition(function(lonlat) {
+				Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
+			}, function(err) {
+				alert(JSON.stringify(err));
+			});
+		};
 
-	$scope.getPosition = function()
-	{
-		_getPosition();
-	};
+		function _getPoints()
+		{
+			Issue.getPoints()
+				.success(function(points) {
+					Map.addPoints(points, { transformTo: 'EPSG:4326' });
+				})
+		};
 
-	_init();
-};
+		function _onSelectPoint(point)
+		{
+			if(point.hasOwnProperty('id'))
+			{
+				$state.go('issue', { id: point.id }, { reload: true });
+			}
+		};
 
-angular
-	.module('app')
-	.controller('HomeController', HomeController);
+		$scope.getPosition = function()
+		{
+			_getPosition();
+		};
+
+		_init();
+	}
+
+
+})(window.angular);

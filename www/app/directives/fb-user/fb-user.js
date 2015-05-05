@@ -1,30 +1,34 @@
-'use strict';
-/**
- * FB User Directive
- */
-function fbUser($localStorage, FB)
-{
-	return {
-		restrict: 'AE',
-		link: function(scope, element, attrs, controllers) {
+(function(angular, undefined) {
+	'use strict';
 
-			scope.$storage = $localStorage;
+	/**
+	 * FB User Directive
+	 */
+	angular
+		.module('app')
+		.directive('fbUser', fbUser);
 
-			scope.login = function()
-			{
-				FB.login();
-			};
+	function fbUser($localStorage, FB)
+	{
+		return {
+			restrict: 'AE',
+			link: function(scope, element, attrs, controllers) {
 
-			scope.logout = function()
-			{
-				scope.$storage.user = null;
-				FB.logout();
-			};
-		},
-		templateUrl: 'app/directives/fb-user/fb-user.html',
-	};
-};
+				scope.$storage = $localStorage;
 
-angular
-	.module('app')
-	.directive('fbUser', fbUser);
+				scope.login = function()
+				{
+					FB.login();
+				};
+
+				scope.logout = function()
+				{
+					scope.$storage.user = null;
+					FB.logout();
+				};
+			},
+			templateUrl: 'app/directives/fb-user/fb-user.html',
+		};
+	}
+
+})(window.angular);

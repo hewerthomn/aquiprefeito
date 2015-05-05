@@ -1,30 +1,34 @@
-'use strict';
-/**
- * Geocoder Service
- */
-function GeocoderService($http)
-{
-  this.searchPlace = function(query)
-	{
-		return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-			params: {
-				address: query,
-				sensor: false
-			}
-		});
-	};
+(function(angular, undefined) {
+	'use strict';
 
-	this.getPlaceInfo = function(lonlat)
-	{
-		return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-			params: {
-				latlng: lonlat.lat + ',' + lonlat.lon,
-				sensor: false
-			}
-		});
-	};
-};
+	/**
+	 * Geocoder Service
+	 */
+	angular
+		.module('app')
+		.service('Geocoder', GeocoderService);
 
-angular
-	.module('app')
-	.service('Geocoder', GeocoderService);
+	function GeocoderService($http)
+	{
+	  this.searchPlace = function(query)
+		{
+			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+				params: {
+					address: query,
+					sensor: false
+				}
+			});
+		};
+
+		this.getPlaceInfo = function(lonlat)
+		{
+			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+				params: {
+					latlng: lonlat.lat + ',' + lonlat.lon,
+					sensor: false
+				}
+			});
+		};
+	}
+
+})(window.angular);

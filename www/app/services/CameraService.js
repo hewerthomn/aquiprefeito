@@ -1,25 +1,29 @@
-'use strict';
-/**
- * Camera Service
- */
-function CameraService($cordovaCamera)
-{
-	this.getPicture = function(successCallback, errorCallback)
+(function(angular, undefined) {
+	'use strict';
+
+	/**
+	 * Camera Service
+	 */
+	angular
+		.module('app')
+		.service('Camera', CameraService);
+
+	function CameraService($cordovaCamera)
 	{
-		document.addEventListener('deviceready', function()
+		this.getPicture = function(successCallback, errorCallback)
 		{
-			var options = {
-	      destinationType: Camera.DestinationType.FILE_URI,
-	      sourceType: Camera.PictureSourceType.CAMERA
-	    };
+			document.addEventListener('deviceready', function()
+			{
+				var options = {
+		      destinationType: Camera.DestinationType.FILE_URI,
+		      sourceType: Camera.PictureSourceType.CAMERA
+		    };
 
-	    $cordovaCamera
-	    	.getPicture(options)
-	    	.then(successCallback, errorCallback);
-		}, false);
-	};
-};
+		    $cordovaCamera
+		    	.getPicture(options)
+		    	.then(successCallback, errorCallback);
+			}, false);
+		};
+	}
 
-angular
-	.module('app')
-	.service('Camera', CameraService);
+})(window.angular);

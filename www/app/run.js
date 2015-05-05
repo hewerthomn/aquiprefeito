@@ -1,22 +1,27 @@
-/**
- * Run Config
- */
-function runConfig($ionicPlatform, amMoment) {
+(function(angular, undefined) {
+	'use strict';
 
-	$ionicPlatform.ready(function() {
-		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-		// for form inputs)
-		if(window.cordova && window.cordova.plugins.Keyboard) {
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-		}
-		if(window.StatusBar) {
-			StatusBar.styleDefault();
-		}
-	});
+	/**
+	 * Run Config
+	 */
+	angular
+		.module('app')
+		.run(runConfig);
 
-	amMoment.changeLocale('pt-br');
-};
+	function runConfig($ionicPlatform, amMoment) {
 
-angular
-	.module('app')
-	.run(runConfig);
+		$ionicPlatform.ready(function() {
+			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+			// for form inputs)
+			if(window.cordova && window.cordova.plugins.Keyboard) {
+				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			}
+			if(window.StatusBar) {
+				StatusBar.styleDefault();
+			}
+		});
+
+		amMoment.changeLocale('pt-br');
+	}
+
+})(window.angular);

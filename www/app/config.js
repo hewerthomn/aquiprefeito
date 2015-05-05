@@ -1,13 +1,15 @@
-'use strict';
-/**
- * App Config
- */
-function appConfig($ionicConfigProvider) {
+(function(angular, undefined) {
+	'use strict';
 
-	$ionicConfigProvider.tabs.position('bottom');
+	/**
+	 * App Config
+	 */
+	angular
+		.module('app')
+		.config(appConfig);
 
-};
+	function appConfig($ionicConfigProvider) {
 
-angular
-	.module('app')
-	.config(appConfig);
+		$ionicConfigProvider.tabs.position('bottom');
+	}
+})(window.angular);

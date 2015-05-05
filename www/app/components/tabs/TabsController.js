@@ -1,21 +1,24 @@
-'use strict';
-/**
- * Tabs Controller
- */
-function TabsController ($scope)
-{
-	function _init()
+(function(angular, undefined) {
+	'use strict';
+
+	/**
+	 * Tabs Controller
+	 */
+	angular
+		.module('app')
+		.controller('TabsController', TabsController);
+
+	function TabsController ($scope)
 	{
-		$scope.galleryNotifications = 1;
+		function _init()
+		{
+			$scope.galleryNotifications = 1;
 
-		/**
-		 * TODO: function com timeout que verifica se tem notificacao nova a partir de id de ultima issue
-		 */
+			/**
+			 * TODO: function com timeout que verifica se tem notificacao nova a partir de id de ultima issue
+			 */
+		}
+
+		_init();
 	};
-
-	_init();
-};
-
-angular
-	.module('app')
-	.controller('TabsController', TabsController);
+})(window.angular);
