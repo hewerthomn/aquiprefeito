@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-jshint": "^0.11.2",
     "gulp": "^3.8.11",
     "gulp-batch": "^1.0.5",
     "gulp-concat": "^2.5.2",
