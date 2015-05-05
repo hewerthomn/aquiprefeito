@@ -38,6 +38,7 @@ function UploadController($scope, $state, $cordovaToast, Aqui, Category, Camera,
 		$scope.issue = issue || Issue.new();
 
 		Camera.getPicture(function(imageUri) {
+			_getPosition();
 			$scope.issue.photo = imageUri;
 			_apply();
 		});
@@ -91,7 +92,6 @@ function UploadController($scope, $state, $cordovaToast, Aqui, Category, Camera,
 
 	$scope.takePhoto = function(issue)
 	{
-		_getPosition();
 		_takePhoto(issue)
 	};
 
