@@ -22,9 +22,9 @@
 			Issue.getIssues({ page: $scope.page })
 				.success(function(issues) {
 
-					$scope.issues = ($scope.issues == null) ? [] : $scope.issues;
+					$scope.issues = ($scope.issues === null) ? [] : $scope.issues;
 
-					if(issues.length == 0) {
+					if(issues.length === 0) {
 						$scope.moreDataCanBeLoaded = false;
 						return;
 					}
@@ -38,7 +38,8 @@
 
 		$scope.photo = function(issue, size)
 		{
-			return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
+			/* TODO: Mover método photo para service Issue */
+			return (issue !== null && issue.photo !== '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
 		};
 
 		$scope.select = function(issue_id)
@@ -58,7 +59,7 @@
 		{
 			$scope.page++;
 
-			_getIssues()
+			_getIssues();
 		};
 
 		_init();

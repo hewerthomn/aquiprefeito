@@ -26,7 +26,7 @@
 					});
 
 			}, false);
-		};
+		}
 
 		function _me()
 		{
@@ -39,7 +39,7 @@
 					$localStorage.user = null;
 					Util.err(err);
 				});
-		};
+		}
 
 		function _logout()
 		{
@@ -47,7 +47,7 @@
 
 			$localStorage.user = null;
 			$localStorage.isLoggedIn = false;
-		};
+		}
 
 		this.init = function()
 		{
@@ -67,7 +67,7 @@
 					}, function(err) {
 						$localStorage.isLoggedIn = false;
 						Util.err(err);
-					})
+					});
 			}, false);
 		};
 

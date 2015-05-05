@@ -34,7 +34,7 @@
 			_getPoints();
 
 			angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
-		};
+		}
 
 		function _getPosition()
 		{
@@ -43,15 +43,15 @@
 			}, function(err) {
 				alert(JSON.stringify(err));
 			});
-		};
+		}
 
 		function _getPoints()
 		{
 			Issue.getPoints()
 				.success(function(points) {
 					Map.addPoints(points, { transformTo: 'EPSG:4326' });
-				})
-		};
+				});
+		}
 
 		function _onSelectPoint(point)
 		{
@@ -59,7 +59,7 @@
 			{
 				$state.go('issue', { id: point.id }, { reload: true });
 			}
-		};
+		}
 
 		$scope.getPosition = function()
 		{
@@ -68,6 +68,5 @@
 
 		_init();
 	}
-
 
 })(window.angular);

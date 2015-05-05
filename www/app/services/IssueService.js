@@ -72,7 +72,7 @@
 				facebook_id: $localStorage.user.id
 			};
 			return $http.post(URL.API + 'issue/' + id + '/comment', data);
-		},
+		};
 
 		this.save = function(issue, successCallback, errorCallback, progressCallback)
 		{

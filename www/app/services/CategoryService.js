@@ -18,7 +18,7 @@
 		this.getAll = function()
 		{
 			return $http.get(URL.API + 'category');
-		}
+		};
 	}
 
 })(window.angular);

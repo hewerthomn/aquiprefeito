@@ -23,12 +23,12 @@
 				.success(function(categories) {
 					$scope.categories = categories;
 				});
-		};
+		}
 
 		function _apply()
 		{
 			if(!$scope.$$phase) $scope.$apply();
-		};
+		}
 
 		function _getPosition()
 		{
@@ -48,14 +48,14 @@
 				$scope.issue.photo = imageUri;
 				_apply();
 			});
-		};
+		}
 
 		function _showToastError(error)
 		{
 			var msg = 'Ops, algum erro ao reportar problema...\n';
 			if(error) msg += 'Error code: ' + error.responseCode + "\n" + error.response;
 			return msg;
-		};
+		}
 
 		function _send(issue)
 		{
@@ -82,7 +82,7 @@
 			}, function(progress) {
 				$scope.uploadProgress = parseInt((progress.loaded / progress.total) * 100, 10);
 			});
-		};
+		}
 
 		$scope.icon = function(category_id)
 		{
@@ -98,7 +98,7 @@
 
 		$scope.takePhoto = function(issue)
 		{
-			_takePhoto(issue)
+			_takePhoto(issue);
 		};
 
 		$scope.send = function(issue)
@@ -107,11 +107,11 @@
 			{
 				alert('Entre com a conta do Facebook');
 			}
-			else if(issue.category_id == 0)
+			else if(issue.category_id === 0)
 			{
 				alert('Selecione a categoria do problema');
 			}
-			else if(issue.photo == '' && $scope.photo != 'img/camera.png')
+			else if(issue.photo === '' && $scope.photo !== 'img/camera.png')
 			{
 				alert('Toque na câmera para tirar foto');
 			}

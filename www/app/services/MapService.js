@@ -133,13 +133,13 @@
 	    {
 	      this._map.addControl(this._controls[key]);
 	    }
-	  },
+	  };
 
 	  /**
-		   * setCenterMap method
-		   * @param {OpenLayers.LonLat} point
-		   * @param {int} zoom
-		   */
+	   * setCenterMap method
+	   * @param {OpenLayers.LonLat} point
+	   * @param {int} zoom
+	   */
 	  this.setCenterMap = function(point, zoom, opts)
 	  {
 	  	opts = opts || {};
@@ -165,7 +165,7 @@
 		*/
 		this.addPoints = function(points, opts, callback)
 		{
-			var opts = opts || {}
+			opts = opts || {};
 			var arrPontos = [];
 			var defaultOpts = {
 				layer: 'issues',
@@ -186,7 +186,7 @@
 				if (opts.hasOwnProperty('transformTo'))
 				{
 					point = point.transform(opts.transformTo, self._map.getProjection());
-				};
+				}
 
 				var feature = new OpenLayers.Feature.Vector(point, pointOpts);
 				feature.data = points[key];

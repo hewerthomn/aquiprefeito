@@ -38,12 +38,12 @@
 				.error(function(error){
 					console.error(error);
 				});
-		};
+		}
 
 		function _apply()
 		{
 			if(!$scope.$$phase) $scope.$apply();
-		};
+		}
 
 		function _checkLike()
 		{
@@ -54,7 +54,7 @@
 						$scope.liked = like;
 					});
 			}
-		};
+		}
 
 		function _getComments()
 		{
@@ -62,7 +62,7 @@
 				.success(function(comments) {
 					$scope.comments = comments;
 				});
-		};
+		}
 
 		function _getAddress()
 		{
@@ -73,7 +73,7 @@
 						$scope.issue.address = response.results[0].formatted_address;
 					}
 				});
-		};
+		}
 
 		function _sendComment(text)
 		{
@@ -102,7 +102,7 @@
 					console.error(error);
 					$scope.sendingComment = false;
 				});
-		};
+		}
 
 		function _clearComment()
 		{
@@ -110,11 +110,11 @@
 			$scope.sendingComment = false;
 			$scope.commentBoxVisible = false;
 			_apply();
-		};
+		}
 
 		$scope.photo = function(issue, size)
 		{
-			return (issue != null && issue.photo != '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
+			return (issue !== null && issue.photo !== '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
 		};
 
 		$scope.avatar = function(facebook_id)
@@ -144,14 +144,14 @@
 				$timeout(function() {
 					$ionicScrollDelegate.scrollTo(0, 700, true);
 				}, 500);
-			};
+			}
 		};
 
 		$scope.share = function()
 		{
 			FB.share($scope.issue)
 				.then(function(result) {
-					$cordovaToast.showShortCenter('Problema compartilhado com sucesso!')
+					$cordovaToast.showShortCenter('Problema compartilhado com sucesso!');
 				}, function(err) {
 					if(err.errorCode != "4201")
 					{
@@ -169,7 +169,7 @@
 				return;
 			}
 
-			if(!comment || comment == '')
+			if(!comment || comment === '')
 			{
 				alert('Escreva o comentário');
 				return;

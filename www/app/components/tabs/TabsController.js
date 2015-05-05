@@ -20,5 +20,6 @@
 		}
 
 		_init();
-	};
+	}
+
 })(window.angular);
