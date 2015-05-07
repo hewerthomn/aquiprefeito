@@ -10,6 +10,7 @@
 
 	function appConfig($ionicConfigProvider) {
 
+		$ionicConfigProvider.tabs.style('standard');
 		$ionicConfigProvider.tabs.position('bottom');
 	}
 })(window.angular);
