@@ -1,6 +1,17 @@
 #map {
 	position: relative;
 }
+.brand {
+	color: #79787A;
+}
+.brand b {
+	color: #79787A;
+	font-weight: bold;
+}
+.app-brand {
+	padding: 1px;
+	width: 20px;
+}
 .cityname {
 	position: absolute;
 	top: 5px;
