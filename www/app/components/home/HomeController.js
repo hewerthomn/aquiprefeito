@@ -20,6 +20,8 @@
 			Category.getAll()
 				.success(function(categories) {
 					$scope.categories = categories;
+				}, function(err) {
+					alert(JSON.stringify(err));
 				});
 
 			Map.init({
@@ -50,6 +52,8 @@
 			Issue.getPoints()
 				.success(function(points) {
 					Map.addPoints(points, { transformTo: 'EPSG:4326' });
+				}, function(err) {
+					alert(JSON.stringify(err));
 				});
 		}
 
