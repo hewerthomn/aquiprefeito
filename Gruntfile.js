@@ -122,8 +122,19 @@
 						liveReload: true
 					}
 				}
+			},
+
+			notify_hooks: {
+				options: {
+					enabled: true,
+					success: true,
+					max_jshint_notifications: 5
+				}
 			}
 		});
+
+		grunt.loadNpmTasks('grunt-notify');
+		grunt.task.run('notify_hooks');
 
 		grunt.registerTask('dev', ['concat:app', 'concat_css']);
 		grunt.registerTask('default', ['concat:app', 'concat_css', 'cssmin', 'copy']);
