@@ -8,10 +8,9 @@
 		.module('app')
 		.controller('IssueController', IssueController);
 
-	function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicModal, $ionicScrollDelegate, $cordovaToast, Aqui, Geocoder, Issue, FB, URL)
-	{
-		function _init()
-		{
+	function IssueController($scope, $timeout, $stateParams, $ionicHistory, $ionicModal, $ionicScrollDelegate, $cordovaToast, Aqui, Geocoder, Issue, FB, URL) {
+
+		function _init() {
 			$scope.issue = null;
 			$scope.liked = false;
 			$scope.comments = [];
@@ -40,43 +39,43 @@
 				});
 		}
 
-		function _apply()
-		{
+		function _apply() {
 			if(!$scope.$$phase) $scope.$apply();
 		}
 
-		function _checkLike()
-		{
-			if($scope.$storage.isLoggedIn)
-			{
+		function _checkLike() {
+			if($scope.$storage.isLoggedIn) {
 				Issue.checkLike($stateParams.id)
 					.success(function(like) {
 						$scope.liked = like;
+					})
+					.error(function(err) {
+						alert(JSON.stringify(err));
 					});
 			}
 		}
 
-		function _getComments()
-		{
+		function _getComments() {
 			Issue.getComments($stateParams.id)
 				.success(function(comments) {
 					$scope.comments = comments;
 				});
 		}
 
-		function _getAddress()
-		{
-			Geocoder.getPlaceInfo({ lon: $scope.issue.lon, lat: $scope.issue.lat })
+		function _getAddress() {
+			var lonlat = { lon: $scope.issue.lon, lat: $scope.issue.lat };
+			Geocoder.getPlaceInfo(lonlat)
 				.success(function(response) {
-					if(response.status === 'OK')
-					{
+					if(response.status === 'OK') {
 						$scope.issue.address = response.results[0].formatted_address;
 					}
+				})
+				.error(function(err) {
+					alert(JSON.stringify(err));
 				});
 		}
 
-		function _sendComment(text)
-		{
+		function _sendComment(text) {
 			$scope.sendingComment = true;
 
 			var newComment = {
@@ -98,79 +97,70 @@
 
 					$cordovaToast.showShortCenter(result);
 				})
-				.error(function(error) {
-					console.error(error);
+				.error(function(err) {
+					alert(JSON.stringify(err));
 					$scope.sendingComment = false;
 				});
 		}
 
-		function _clearComment()
-		{
+		function _clearComment() {
 			$scope.newComment = { text: '' };
 			$scope.sendingComment = false;
 			$scope.commentBoxVisible = false;
 			_apply();
 		}
 
-		$scope.photo = function(issue, size)
-		{
+		$scope.photo = function(issue, size) {
 			return (issue !== null && issue.photo !== '') ? URL.SITE + 'img/issues/' + size + '/' + issue.photo : '';
 		};
 
-		$scope.avatar = function(facebook_id)
-		{
+		$scope.avatar = function(facebook_id) {
 			return FB.avatar(facebook_id);
 		};
 
-		$scope.like = function()
-		{
-			if($scope.$storage.isLoggedIn)
-			{
+		$scope.like = function() {
+			if($scope.$storage.isLoggedIn) {
 				$scope.liked = !$scope.liked;
 
 				Issue.like($scope.issue.id)
 					.success(function(like) {
 						$scope.liked = like;
 						$scope.issue.likes = (like > 0) ? ($scope.issue.likes +1) : ($scope.issue.likes -1);
+					})
+					.error(function(err) {
+						alert(JSON.stringify(err));
 					});
 			}
 		};
 
-		$scope.toggleCommentBox = function()
-		{
+		$scope.toggleCommentBox = function() {
 			$scope.commentBoxVisible = !($scope.commentBoxVisible);
-			if($scope.commentBoxVisible)
-			{
+			if($scope.commentBoxVisible) {
 				$timeout(function() {
 					$ionicScrollDelegate.scrollTo(0, 700, true);
 				}, 500);
 			}
 		};
 
-		$scope.share = function()
-		{
+		$scope.share = function() {
 			FB.share($scope.issue)
 				.then(function(result) {
 					$cordovaToast.showShortCenter('Problema compartilhado com sucesso!');
 				}, function(err) {
-					if(err.errorCode != "4201")
-					{
-						console.error(err);
+					alert(JSON.stringify(err));
+					if(err.errorCode != "4201") {
 						$cordovaToast.showShortCenter('Ops, não foi possível compartilhar...');
 					}
 				});
 		};
 
-		$scope.sendComment = function(comment)
-		{
-			if(!$scope.$storage.isLoggedIn)
-			{
+		$scope.sendComment = function(comment) {
+			if(!$scope.$storage.isLoggedIn) {
 				alert('Entre com a conta do Facebook');
 				return;
 			}
 
-			if(!comment || comment === '')
-			{
+			if(!comment || comment === '') {
 				alert('Escreva o comentário');
 				return;
 			}
@@ -178,8 +168,7 @@
 			_sendComment(comment);
 		};
 
-		$scope.goBack = function()
-		{
+		$scope.goBack = function() {
 			$ionicHistory.goBack();
 		};
 

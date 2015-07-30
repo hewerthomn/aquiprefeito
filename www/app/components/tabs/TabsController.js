@@ -8,10 +8,9 @@
 		.module('app')
 		.controller('TabsController', TabsController);
 
-	function TabsController ($scope)
-	{
-		function _init()
-		{
+	function TabsController ($scope) {
+
+		function _init() {
 			$scope.galleryNotifications = 1;
 
 			/**

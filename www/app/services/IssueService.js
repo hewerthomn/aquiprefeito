@@ -8,10 +8,9 @@
 		.module('app')
 		.service('Issue', IssueService);
 
-	function IssueService($http, $localStorage, $cordovaFileTransfer, URL)
-	{
-		this.new = function(issue)
-		{
+	function IssueService($http, $localStorage, $cordovaFileTransfer, URL) {
+
+		this.new = function(issue) {
 			return {
 				photo: '',
 				comment: '',
@@ -21,20 +20,17 @@
 			};
 		};
 
-		this.get = function(id)
-		{
+		this.get = function(id) {
 			return $http.get(URL.API + 'issue/' + id);
 		};
 
-		this.getPoints = function()
-		{
+		this.getPoints = function() {
 			return $http.get(URL.API + 'issue/map', {
 				params: { city_name: $localStorage.city.name }
 			});
 		};
 
-		this.getIssues = function(params)
-		{
+		this.getIssues = function(params) {
 			return $http.get(URL.API + 'issue', {
 				params: {
 					page: params.page,
@@ -43,28 +39,24 @@
 			});
 		};
 
-		this.like = function(id)
-		{
+		this.like = function(id) {
 			var data = {
 				facebook_id: $localStorage.user.id
 			};
 			return $http.post(URL.API + 'issue/' + id + '/like', data);
 		};
 
-		this.checkLike = function(id)
-		{
+		this.checkLike = function(id) {
 			return $http.get(URL.API + 'issue/' + id + '/like', {
 				params: { facebook_id: $localStorage.user.id }
 			});
 		};
 
-		this.getComments = function(id)
-		{
+		this.getComments = function(id) {
 			return $http.get(URL.API + 'issue/' + id + '/comment');
 		};
 
-		this.comment = function(id, text)
-		{
+		this.comment = function(id, text) {
 			var data = {
 				issue_id: id,
 				comment: text,
@@ -74,8 +66,7 @@
 			return $http.post(URL.API + 'issue/' + id + '/comment', data);
 		};
 
-		this.save = function(issue, successCallback, errorCallback, progressCallback)
-		{
+		this.save = function(issue, successCallback, errorCallback, progressCallback) {
 			var url = URL.API + 'upload';
 			var trustHosts = false;
 			var options = {
@@ -91,8 +82,7 @@
 				}
 			};
 
-			document.addEventListener('deviceready', function()
-			{
+			document.addEventListener('deviceready', function() {
 				return $cordovaFileTransfer
 									.upload(url, issue.photo, options, trustHosts)
 									.then(successCallback, errorCallback, progressCallback);

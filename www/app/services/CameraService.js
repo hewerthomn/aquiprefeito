@@ -8,12 +8,10 @@
 		.module('app')
 		.service('Camera', CameraService);
 
-	function CameraService($cordovaCamera)
-	{
-		this.getPicture = function(successCallback, errorCallback)
-		{
-			document.addEventListener('deviceready', function()
-			{
+	function CameraService($cordovaCamera) {
+
+		this.getPicture = function(successCallback, errorCallback) {
+			document.addEventListener('deviceready', function() {
 				var options = {
 		      destinationType: Camera.DestinationType.FILE_URI,
 		      sourceType: Camera.PictureSourceType.CAMERA

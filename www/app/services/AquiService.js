@@ -8,10 +8,9 @@
 		.module('app')
 		.service('Aqui', AquiService);
 
-	function AquiService($localStorage, $cordovaDevice, Map, FB, Geocoder)
-	{
-		this.init = function()
-		{
+	function AquiService($localStorage, $cordovaDevice, Map, FB, Geocoder) {
+
+		this.init = function() {
 			$localStorage.$default({
 				user: null,
 				isLoggedIn: false,
@@ -40,16 +39,13 @@
 					});
 			});
 
-			document.addEventListener('deviceready', function()
-			{
+			document.addEventListener('deviceready', function() {
 				FB.init();
-
 				$localStorage.device = $cordovaDevice.getDevice();
 			}, false);
 		};
 
-		this.storage = function()
-		{
+		this.storage = function() {
 			return $localStorage;
 		};
 	}

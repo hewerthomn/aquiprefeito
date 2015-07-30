@@ -8,13 +8,12 @@
 		.module('app')
 		.controller('HomeController', HomeController);
 
-	function HomeController($scope, $window, $state, Aqui, Category, Issue, Map)
-	{
-		function _init()
-		{
+	function HomeController($scope, $window, $state, Aqui, Category, Issue, Map) {
+
+		function _init() {
+
 			Aqui.init();
 			$scope.$storage = Aqui.storage();
-
 			$scope.issues = [];
 
 			Category.getAll()
@@ -38,8 +37,7 @@
 			angular.element($window).bind('resize', function() { Map.fixMapHeight(); });
 		}
 
-		function _getPosition()
-		{
+		function _getPosition() {
 			Map.getPosition(function(lonlat) {
 				Map.setCenterMap(lonlat, 12, { transformTo: 'EPSG:4326' });
 			}, function(err) {
@@ -47,8 +45,7 @@
 			});
 		}
 
-		function _getPoints()
-		{
+		function _getPoints() {
 			Issue.getPoints()
 				.success(function(points) {
 					Map.addPoints(points, { transformTo: 'EPSG:4326' });
@@ -57,16 +54,13 @@
 				});
 		}
 
-		function _onSelectPoint(point)
-		{
-			if(point.hasOwnProperty('id'))
-			{
+		function _onSelectPoint(point) {
+			if(point.hasOwnProperty('id')) {
 				$state.go('issue', { id: point.id }, { reload: true });
 			}
 		}
 
-		$scope.getPosition = function()
-		{
+		$scope.getPosition = function() {
 			_getPosition();
 		};
 

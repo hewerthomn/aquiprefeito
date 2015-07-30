@@ -8,15 +8,13 @@
 		.module('app')
 		.service('Category', CategoryService);
 
-	function CategoryService($http, URL)
-	{
-		this.get = function(id)
-		{
+	function CategoryService($http, URL) {
+
+		this.get = function(id) {
 			return $http.get(URL.API + 'category/' + id);
 		};
 
-		this.getAll = function()
-		{
+		this.getAll = function() {
 			return $http.get(URL.API + 'category');
 		};
 	}

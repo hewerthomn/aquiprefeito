@@ -8,10 +8,9 @@
 		.module('app')
 		.service('Geocoder', GeocoderService);
 
-	function GeocoderService($http)
-	{
-	  this.searchPlace = function(query)
-		{
+	function GeocoderService($http) {
+
+	  this.searchPlace = function(query) {
 			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
 				params: {
 					address: query,
@@ -20,8 +19,7 @@
 			});
 		};
 
-		this.getPlaceInfo = function(lonlat)
-		{
+		this.getPlaceInfo = function(lonlat) {
 			return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
 				params: {
 					latlng: lonlat.lat + ',' + lonlat.lon,

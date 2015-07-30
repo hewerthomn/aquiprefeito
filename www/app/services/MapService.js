@@ -9,14 +9,13 @@
 		.module('app')
 		.service('Map', MapService);
 
-	function MapService($cordovaGeolocation)
-	{
+	function MapService($cordovaGeolocation) {
+
 		var self = this;
 
-		this.init = function(opts)
-		{
-			if(google === undefined)
-			{
+		this.init = function(opts) {
+
+			if(google === undefined) {
 				alert('ERRO: API do Google Maps não foi carregada. Verifique sua conexão de Internet.');
 				return;
 			}
@@ -30,8 +29,7 @@
 		/**
 	 	* setup method
 	 	*/
-	  this.setup = function(opts)
-	  {
+	  this.setup = function(opts) {
 	    OpenLayers.Util.applyDefaults(opts, self.defaultOpts);
 
 	    self._map = new OpenLayers.Map(opts.id, {
@@ -54,12 +52,10 @@
 	    self.setupControls();
 	  };
 
-
 	  /**
 	   * setBaseLayers method
 	   */
-	  this.setupLayers = function()
-	  {
+	  this.setupLayers = function() {
 	    self._baselayers = [
 				new OpenLayers.Layer.Google('Google Maps', {
 					numZoomLevels: 19
@@ -105,8 +101,7 @@
 			};
 
 			self._map.addLayers(self._baselayers);
-			for(var key in self._layers)
-			{
+			for(var key in self._layers) {
 				self._map.addLayer(self._layers[key]);
 			}
 	  };
@@ -114,8 +109,7 @@
 	  /**
 	   * setControls method
 	   */
-	  this.setupControls = function()
-	  {
+	  this.setupControls = function() {
 	    self._controls = {
 	      zoom: new OpenLayers.Control.Zoom(),
 	      nav: new OpenLayers.Control.Navigation({
@@ -129,8 +123,7 @@
 	      })
 	    };
 
-	    for(var key in this._controls)
-	    {
+	    for(var key in this._controls) {
 	      this._map.addControl(this._controls[key]);
 	    }
 	  };
@@ -140,18 +133,15 @@
 	   * @param {OpenLayers.LonLat} point
 	   * @param {int} zoom
 	   */
-	  this.setCenterMap = function(point, zoom, opts)
-	  {
+	  this.setCenterMap = function(point, zoom, opts) {
 	  	opts = opts || {};
 	  	var defaultOpts = {};
 
-	  	if(point && !point.hasOwnProperty('CLASS_NAME') && point.CLASS_NAME !== 'OpenLayers.LonLat')
-	  	{
+	  	if(point && !point.hasOwnProperty('CLASS_NAME') && point.CLASS_NAME !== 'OpenLayers.LonLat') {
 	  		point = new OpenLayers.LonLat(point.lon, point.lat);
 	  	}
 
-	  	if(opts.hasOwnProperty('transformTo'))
-	  	{
+	  	if(opts.hasOwnProperty('transformTo')) {
 	  		point = point.transform(opts.transformTo, self._map.getProjection());
 	  	}
 
@@ -174,8 +164,7 @@
 
 			OpenLayers.Util.applyDefaults(opts, defaultOpts);
 
-			for(var key in points)
-			{
+			for(var key in points) {
 				var label = points[key].hasOwnProperty('label') ? points[key].label : '';
 				var pointOpts = {
 					label: label,
@@ -183,8 +172,7 @@
 				};
 
 				var point = new OpenLayers.Geometry.Point(points[key].lon, points[key].lat);
-				if (opts.hasOwnProperty('transformTo'))
-				{
+				if (opts.hasOwnProperty('transformTo')) {
 					point = point.transform(opts.transformTo, self._map.getProjection());
 				}
 
@@ -194,8 +182,7 @@
 				arrPontos.push(feature);
 			}
 
-			if(opts.clearBefore)
-			{
+			if(opts.clearBefore) {
 				self._layers[opts.layer].destroyFeatures();
 			}
 
@@ -210,8 +197,7 @@
 		* @param {Object} opcoes
 		* @param {Function} callback function
 		*/
-		this.addPoint = function(point, opts, callback)
-		{
+		this.addPoint = function(point, opts, callback) {
 			self.addPoints([point], opts, callback);
 		};
 
@@ -219,10 +205,8 @@
 		* onSelectFeature
 		* @private
 		*/
-		this.onSelectFeature = function(feature)
-		{
-			if(feature.cluster)
-			{
+		this.onSelectFeature = function(feature) {
+			if(feature.cluster) {
 				var zoom = self.getZoom() + 1;
 				var lonlat = {
 					lon: feature.geometry.x,
@@ -236,14 +220,12 @@
 			self.onSelectPoint(feature.data);
 		};
 
-		this.onSelectPoint = function(callback)
-		{
+		this.onSelectPoint = function(callback) {
 			if(!callback) return;
 			self.onSelectPointFeature = callback;
 		};
 
-	  this.getPosition =  function(successCallback, errorCallback, alwaysCallback)
-	  {
+	  this.getPosition =  function(successCallback, errorCallback, alwaysCallback) {
 	  	var positionOptions = {
 	  		timeout: 10000,
 	  		enableHighAccuracy: true
@@ -262,8 +244,7 @@
 	  		});
 	  };
 
-	  this.getCenter = function()
-	  {
+	  this.getCenter = function() {
 	  	var center = self._map.getCenter();
 
 	  	return {
@@ -272,22 +253,18 @@
 	  	};
 	  };
 
-	  this.getZoom = function()
-	  {
+	  this.getZoom = function() {
 	  	return self._map.getZoom();
 	  };
 
-		this.getActualZoom = function(callback)
-		{
+		this.getActualZoom = function(callback) {
 			self._map.events.register('zoomend', self._map, function(e) {
 	      callback(zoom);
 	    });
 		};
 
-	  this.clearLayer = function(layer)
-	  {
-	  	if(self._layers.hasOwnProperty(layer))
-	  	{
+	  this.clearLayer = function(layer) {
+	  	if(self._layers.hasOwnProperty(layer)) {
 	  		self._layers[layer].removeFeatures(self._layers[layer].features);
 	  	}
 	  };
@@ -301,21 +278,16 @@
 			 *
 			 * @return hash hash with lon and lat properties
 			 */
-		this.transform = function(lonlat, from, to)
-		{
+		this.transform = function(lonlat, from, to) {
 			var dest = new OpenLayers.LonLat(lonlat.lon, lonlat.lat);
 			dest = dest.transform(from, to);
-
 			return { lon: dest.lon, lat: dest.lat };
 		};
 
-		this.fixMapHeight = function(offset)
-		{
+		this.fixMapHeight = function(offset) {
 			var height 	= window.innerHeight;
 			var element = self._map.div.id;
-
-			if(self._map.div)
-			{
+			if(self._map.div) {
 				element = document.getElementById(element);
 				height -= self._offset || 0;
 				element.style.height = height + 'px';
