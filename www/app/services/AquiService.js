@@ -26,8 +26,7 @@
 			Map.getPosition(function(lonlat) {
 				Geocoder.getPlaceInfo(lonlat)
 					.success(function(response) {
-						if(response.hasOwnProperty('results'))
-						{
+						if(response.hasOwnProperty('results')) {
 							var city = {
 								lonlat: lonlat,
 								name: response.results[0].address_components[4].long_name
@@ -37,6 +36,8 @@
 					}, function(err) {
 						alert(JSON.stringify(err));
 					});
+			}, function(err) {
+				alert(JSON.stringify(err));
 			});
 
 			document.addEventListener('deviceready', function() {
