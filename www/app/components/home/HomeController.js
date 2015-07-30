@@ -19,7 +19,8 @@
 			Category.getAll()
 				.success(function(categories) {
 					$scope.categories = categories;
-				}, function(err) {
+				})
+				.error(function(err) {
 					alert(JSON.stringify(err));
 				});
 

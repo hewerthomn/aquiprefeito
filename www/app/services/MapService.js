@@ -239,7 +239,6 @@
 	  			if(typeof alwaysCallback === 'function') alwaysCallback();
 	  		}, function(error) {
 	  			errorCallback(error);
-	  			alert(JSON.stringify(error));
 	  			if(typeof alwaysCallback === 'function') alwaysCallback();
 	  		});
 	  };
