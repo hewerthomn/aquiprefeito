@@ -114,9 +114,17 @@
 		  },
 
 			watch: {
-				min: {
-					files: ['Gruntfile.js', 'www/app/**/*.js', 'www/css/**/*.css'],
-					tasks: ['concat:app', 'concat_css', 'jshint'],
+				js: {
+					files: ['Gruntfile.js', 'www/app/**/*.js'],
+					tasks: ['concat:app', 'jshint'],
+					options: {
+						atBegin: true,
+						liveReload: true
+					}
+				},
+				css: {
+					files: ['www/css/**/*.css'],
+					tasks: ['concat_css'],
 					options: {
 						atBegin: true,
 						liveReload: true
